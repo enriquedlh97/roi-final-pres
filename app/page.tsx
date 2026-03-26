@@ -3,6 +3,9 @@ import Title from "@/components/deck/Title";
 import Team from "@/components/deck/Team";
 import ProblemOutline from "@/components/deck/ProblemOutline";
 import Challenges from "@/components/deck/Challenges";
+import PriorWork from "@/components/deck/PriorWork";
+import OurApproach from "@/components/deck/OurApproach";
+import ComparisonTable from "@/components/deck/ComparisonTable";
 import PipelineOverview from "@/components/deck/PipelineOverview";
 import BoardsSegmentation from "@/components/deck/BoardsSegmentation";
 import Homography from "@/components/deck/Homography";
@@ -13,10 +16,11 @@ import FutureImprovements from "@/components/deck/FutureImprovements";
 import AsksMitsubishi from "@/components/deck/AsksMitsubishi";
 import Thanks from "@/components/deck/Thanks";
 
+// WARNING: minimap indices must match slide order below. Update if slides are added/removed.
 const PIPELINE_MINIMAP = {
-  slide: 4,
-  range: [5, 8] as [number, number],
-  highlights: { 5: "banner-seg", 6: "homography", 7: "overlay-logo", 8: "detect-player" },
+  slide: 7,
+  range: [8, 11] as [number, number],
+  highlights: { 8: "banner-seg", 9: "homography", 10: "overlay-logo", 11: "detect-player" },
 };
 
 const SLIDE_STEPS = [
@@ -24,6 +28,9 @@ const SLIDE_STEPS = [
   5,  // Team (1 heading + 4 reveals)
   2,  // Problem Outline (1 base + 1 bounding box reveal)
   1,  // Challenges
+  4,  // Prior Work (title + commercial + academic + gap)
+  3,  // Our Approach (thesis + pipeline diagram + conclusion)
+  2,  // Comparison Table (full table + row highlight)
   1,  // Pipeline Overview
   6,  // Boards Segmentation (1 intro + 1 SAM + 4 experiments)
   15, // Homography (1 intro + 5 motivation + 1 vanishing point + 8 fit steps)
@@ -42,6 +49,9 @@ export default function Home() {
       <Team />
       <ProblemOutline />
       <Challenges />
+      <PriorWork />
+      <OurApproach />
+      <ComparisonTable />
       <PipelineOverview />
       <BoardsSegmentation />
       <Homography />
