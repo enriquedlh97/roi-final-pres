@@ -7,10 +7,12 @@ import PriorWork from "@/components/deck/PriorWork";
 import OurApproach from "@/components/deck/OurApproach";
 import ComparisonTable from "@/components/deck/ComparisonTable";
 import PipelineOverview from "@/components/deck/PipelineOverview";
-import BoardsSegmentation from "@/components/deck/BoardsSegmentation";
+import Sam2Architecture from "@/components/deck/Sam2Architecture";
+import PlayerTracking from "@/components/deck/PlayerTracking";
+import BannerSegmentation from "@/components/deck/BannerSegmentation";
+import BannerSegmentationVideos from "@/components/deck/BannerSegmentationVideos";
 import Homography from "@/components/deck/Homography";
 import LogoOverlay from "@/components/deck/LogoOverlay";
-import PlayerTracking from "@/components/deck/PlayerTracking";
 import Demo from "@/components/deck/Demo";
 import FutureImprovements from "@/components/deck/FutureImprovements";
 import AsksMitsubishi from "@/components/deck/AsksMitsubishi";
@@ -19,27 +21,37 @@ import Thanks from "@/components/deck/Thanks";
 // WARNING: minimap indices must match slide order below. Update if slides are added/removed.
 const PIPELINE_MINIMAP = {
   slide: 7,
-  range: [8, 11] as [number, number],
-  highlights: { 8: "banner-seg", 9: "homography", 10: "overlay-logo", 11: "detect-player" },
+  range: [8, 14] as [number, number],
+  highlights: {
+    8: "sam2-arch",
+    9: "detect-player",
+    10: "banner-seg",
+    11: "banner-seg-videos",
+    12: "homography",
+    13: "overlay-logo",
+    14: "demo",
+  },
 };
 
 const SLIDE_STEPS = [
-  1,  // Title
-  5,  // Team (1 heading + 4 reveals)
-  2,  // Problem Outline (1 base + 1 bounding box reveal)
-  1,  // Challenges
-  4,  // Prior Work (title + commercial + academic + gap)
-  3,  // Our Approach (thesis + pipeline diagram + conclusion)
-  2,  // Comparison Table (full table + row highlight)
-  1,  // Pipeline Overview
-  6,  // Boards Segmentation (1 intro + 1 SAM + 4 experiments)
-  15, // Homography (1 intro + 5 motivation + 1 vanishing point + 8 fit steps)
-  3,  // Logo Overlay (1 intro + 2 examples)
-  2,  // Player Tracking (1 intro + 1 video demo)
-  3,  // Demo (stable + moving + player overlay)
-  1,  // Future Improvements
-  1,  // Asks From Mitsubishi
-  1,  // Thanks
+  1,  // 0  Title
+  5,  // 1  Team (1 heading + 4 reveals)
+  2,  // 2  Problem Outline (1 base + 1 bounding box reveal)
+  1,  // 3  Challenges
+  4,  // 4  Prior Work (title + commercial + academic + gap)
+  3,  // 5  Our Approach (thesis + pipeline diagram + conclusion)
+  2,  // 6  Comparison Table (full table + row highlight)
+  1,  // 7  Pipeline Overview (06)
+  1,  // 8  SAM2 Architecture (07)
+  2,  // 9  Player Tracking (08) (1 intro + 1 video demo)
+  1,  // 10 Banner Segmentation (09)
+  4,  // 11 Banner Segmentation Videos (10) (4 experiments)
+  15, // 12 Homography (11) (1 intro + 5 motivation + 1 vanishing point + 8 fit steps)
+  3,  // 13 Logo Overlay (12) (1 intro + 2 examples)
+  3,  // 14 Demo (13) (stable + moving + player overlay)
+  1,  // 15 Future Improvements
+  1,  // 16 Asks From Mitsubishi
+  1,  // 17 Thanks
 ];
 
 export default function Home() {
@@ -53,10 +65,12 @@ export default function Home() {
       <OurApproach />
       <ComparisonTable />
       <PipelineOverview />
-      <BoardsSegmentation />
+      <Sam2Architecture />
+      <PlayerTracking />
+      <BannerSegmentation />
+      <BannerSegmentationVideos />
       <Homography />
       <LogoOverlay />
-      <PlayerTracking />
       <Demo />
       <FutureImprovements />
       <AsksMitsubishi />

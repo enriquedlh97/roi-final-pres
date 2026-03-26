@@ -38,7 +38,7 @@ export default function PriorWork() {
           }}
         >
           <span className="mb-2 block font-mono text-sm tracking-widest text-accent">
-            PRIOR WORK
+            03
           </span>
           <h2 className="text-3xl font-bold tracking-tight text-foreground">
             Existing Approaches & Landscape

@@ -35,7 +35,7 @@ export default function PipelineOverview() {
         className="animate-stagger mb-6 flex flex-col items-center transition-opacity duration-500"
         style={{ opacity: isMinimap ? 0 : 1 }}
       >
-        <span className="mb-2 font-mono text-sm tracking-widest text-accent">03</span>
+        <span className="mb-2 font-mono text-sm tracking-widest text-accent">06</span>
         <h2 className="text-3xl font-bold tracking-tight text-foreground">
           Full Pipeline Overview
         </h2>

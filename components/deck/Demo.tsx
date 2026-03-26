@@ -18,7 +18,7 @@ export default function Demo() {
         {/* Header row */}
         <div className="flex w-full items-end justify-between">
           <div>
-            <span className="mb-1 block font-mono text-sm tracking-widest text-accent">08</span>
+            <span className="mb-1 block font-mono text-sm tracking-widest text-accent">13</span>
             <h2 className="text-3xl font-bold tracking-tight text-foreground">Demo</h2>
           </div>
 

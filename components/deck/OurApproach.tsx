@@ -35,7 +35,7 @@ export default function OurApproach() {
           }}
         >
           <span className="mb-2 font-mono text-sm tracking-widest text-accent">
-            OUR APPROACH
+            04
           </span>
           <h2 className="text-3xl font-bold tracking-tight text-foreground">
             Why This Combination is Novel

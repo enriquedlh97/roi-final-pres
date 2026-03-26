@@ -27,7 +27,7 @@ export default function BoardsSegmentation() {
         }}
       >
         <div className="animate-stagger flex max-w-2xl flex-col items-start">
-          <span className="mb-4 font-mono text-sm tracking-widest text-accent">04</span>
+          <span className="mb-4 font-mono text-sm tracking-widest text-accent">07</span>
           <h2 className="text-5xl font-bold leading-tight tracking-tight text-foreground">
             Banner Segmentation<br />& Tracking
           </h2>
@@ -50,7 +50,7 @@ export default function BoardsSegmentation() {
         <div className="flex w-full max-w-5xl flex-col items-center gap-6">
           <div className="flex w-full items-start gap-10">
             <div className="flex shrink-0 flex-col">
-              <span className="mb-2 font-mono text-sm tracking-widest text-accent">04</span>
+              <span className="mb-2 font-mono text-sm tracking-widest text-accent">07</span>
               <h2 className="text-3xl font-bold tracking-tight text-foreground">
                 Segment Anything<br />Model 2
               </h2>

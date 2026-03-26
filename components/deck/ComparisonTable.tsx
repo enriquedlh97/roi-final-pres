@@ -58,7 +58,7 @@ export default function ComparisonTable() {
       >
         <div className="w-full">
           <span className="mb-2 block font-mono text-sm tracking-widest text-accent">
-            COMPARISON
+            05
           </span>
           <h2 className="text-3xl font-bold tracking-tight text-foreground">
             How We Compare
