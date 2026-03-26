@@ -2,43 +2,33 @@
 
 import { useSlideStep } from "../SlideContext";
 
-const COLUMNS = ["System", "Hardware", "Training", "Operators", "Occlusion", "Latency"];
+const COLUMNS = ["System", "Hardware", "Training", "Operators", "Occlusion", "Stability", "Latency"];
 
 const ROWS = [
   {
     system: "Supponor (NHL)",
-    hardware: "IR strips",
-    training: "Proprietary",
-    operators: "Central hub",
-    occlusion: "No (clipping)",
-    latency: "Real-time",
+    cells: ["IR strips", "Proprietary", "Central hub", "No (clipping)", "High", "Real-time"],
     isOurs: false,
   },
   {
     system: "uniqFEED",
-    hardware: "None",
-    training: "Custom CV",
-    operators: "Trained ops",
-    occlusion: "Partial (bbox)",
-    latency: "Near real-time",
+    cells: ["None", "Custom CV", "Trained ops", "Partial (bbox)", "High", "Near real-time"],
     isOurs: false,
   },
   {
     system: "Vizrt / Viz Arena",
-    hardware: "Camera HW",
-    training: "Required",
-    operators: "Required",
-    occlusion: "Partial (bbox)",
-    latency: "Real-time",
+    cells: ["Camera HW", "Required", "Required", "Partial (bbox)", "High", "Real-time"],
     isOurs: false,
   },
   {
+    system: "MEIL (Prior)",
+    cells: ["None", "Custom", "Manual", "Limited", "Jittering", "Below real-time"],
+    isOurs: false,
+    isPrior: true,
+  },
+  {
     system: "This Pipeline",
-    hardware: "None",
-    training: "None (SAM 2)",
-    operators: "1 click",
-    occlusion: "Per-pixel masks",
-    latency: "TBD",
+    cells: ["None", "None (SAM 2)", "1 click", "Per-pixel masks", "Stable", "~30 fps*"],
     isOurs: true,
   },
 ];
@@ -83,14 +73,8 @@ export default function ComparisonTable() {
             </thead>
             <tbody>
               {ROWS.map((row, i) => {
-                const cells = [
-                  row.system,
-                  row.hardware,
-                  row.training,
-                  row.operators,
-                  row.occlusion,
-                  row.latency,
-                ];
+                const allCells = [row.system, ...row.cells];
+                const isPrior = "isPrior" in row && row.isPrior;
 
                 return (
                   <tr
@@ -107,17 +91,27 @@ export default function ComparisonTable() {
                             background: "rgba(99,102,241,0.06)",
                           }
                         : {}),
+                      ...(isPrior
+                        ? {
+                            background: "rgba(245,158,11,0.04)",
+                            borderLeft: "3px solid rgba(245,158,11,0.3)",
+                          }
+                        : {}),
                     }}
                   >
-                    {cells.map((cell, j) => (
+                    {allCells.map((cell, j) => (
                       <td
                         key={j}
-                        className={`px-4 py-3 text-sm ${
+                        className={`px-4 py-2.5 text-sm ${
                           j === 0
                             ? row.isOurs
                               ? "font-bold text-accent"
-                              : "font-semibold text-foreground"
-                            : "text-muted"
+                              : isPrior
+                                ? "font-semibold text-amber-400/80"
+                                : "font-semibold text-foreground"
+                            : isPrior
+                              ? "text-amber-400/50"
+                              : "text-muted"
                         }`}
                       >
                         {cell}
@@ -139,7 +133,10 @@ export default function ComparisonTable() {
           }}
         >
           <p className="text-center text-xs text-muted">
-            Fully software-based · Zero training · Minimal operator input · Per-pixel occlusion
+            Fully software-based · Zero training · Minimal operator input · Per-pixel occlusion · Stable tracking
+          </p>
+          <p className="mt-1 text-center text-[10px] text-muted/50">
+            * Preliminary estimate — benchmarks in progress
           </p>
         </div>
       </div>

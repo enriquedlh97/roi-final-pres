@@ -92,12 +92,59 @@ export default function OurApproach() {
           </div>
         </div>
 
-        {/* Step 2 — Conclusion */}
+        {/* Step 2 — Strengths addressing known challenges */}
         <div
-          className="transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+          className="w-full transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
           style={{
             opacity: step >= 2 ? 1 : 0,
             transform: step >= 2 ? "translateY(0)" : "translateY(12px)",
+          }}
+        >
+          <div className="flex w-full gap-4">
+            {[
+              {
+                label: "Stable Tracking",
+                detail: "Homography fitting combined with optical flow produces consistent overlays with minimal jitter across frames.",
+                color: "rgba(34,197,94,0.15)",
+                border: "rgba(34,197,94,0.25)",
+              },
+              {
+                label: "Occlusion Handling",
+                detail: "Dedicated player segmentation pass generates per-pixel masks, allowing overlays to render correctly behind players.",
+                color: "rgba(34,197,94,0.15)",
+                border: "rgba(34,197,94,0.25)",
+              },
+              {
+                label: "Targeting 30 fps",
+                detail: "Early results suggest real-time performance is achievable with GPU acceleration. Benchmarks in progress.",
+                color: "rgba(34,197,94,0.15)",
+                border: "rgba(34,197,94,0.25)",
+              },
+            ].map((item, i) => (
+              <div
+                key={item.label}
+                className="flex-1 rounded-lg border px-4 py-3"
+                style={{
+                  borderColor: item.border,
+                  background: item.color,
+                  opacity: step >= 2 ? 1 : 0,
+                  transform: step >= 2 ? "translateY(0)" : "translateY(8px)",
+                  transition: `all 500ms cubic-bezier(0.16,1,0.3,1) ${i * 100}ms`,
+                }}
+              >
+                <p className="text-xs font-semibold text-foreground">{item.label}</p>
+                <p className="mt-1 text-[11px] leading-relaxed text-muted">{item.detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Step 3 — Conclusion */}
+        <div
+          className="transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
+          style={{
+            opacity: step >= 3 ? 1 : 0,
+            transform: step >= 3 ? "translateY(0)" : "translateY(12px)",
           }}
         >
           <div className="rounded-xl border border-accent/20 bg-accent/5 px-6 py-3">

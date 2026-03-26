@@ -39,7 +39,7 @@ const SLIDE_STEPS = [
   2,  // 2  Problem Outline (1 base + 1 bounding box reveal)
   1,  // 3  Challenges
   4,  // 4  Prior Work (title + commercial + academic + gap)
-  3,  // 5  Our Approach (thesis + pipeline diagram + conclusion)
+  4,  // 5  Our Approach (thesis + pipeline diagram + strengths + conclusion)
   2,  // 6  Comparison Table (full table + row highlight)
   1,  // 7  Pipeline Overview (06)
   1,  // 8  SAM2 Architecture (07)
