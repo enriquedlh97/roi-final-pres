@@ -2,13 +2,14 @@
 
 import { useSlideStep } from "../SlideContext";
 import AutoVideo from "../AutoVideo";
+import { BASE } from "@/lib/basePath";
 
 const EXPERIMENTS = [
-  { label: "Banners Stable Camera", video: "/baners_stable_camera.mp4" },
-  { label: "Banners Moving Camera", video: "/banners_moving_camera.mp4" },
-  { label: "Logos Stable Camera", video: "/logos_stable_camera.mp4" },
-  { label: "Logos Moving Camera", video: "/logos_moving_camera.mp4" },
-  { label: "Camera Cuts", video: "/camera_cuts_experiment.mp4", tag: "experiment" },
+  { label: "Banners Stable Camera", video: `${BASE}/baners_stable_camera.mp4` },
+  { label: "Banners Moving Camera", video: `${BASE}/banners_moving_camera.mp4` },
+  { label: "Logos Stable Camera", video: `${BASE}/logos_stable_camera.mp4` },
+  { label: "Logos Moving Camera", video: `${BASE}/logos_moving_camera.mp4` },
+  { label: "Camera Cuts", video: `${BASE}/camera_cuts_experiment.mp4`, tag: "experiment" },
 ];
 
 export default function BannerSegmentationVideos() {

@@ -2,11 +2,12 @@
 
 import { useSlideStep } from "../SlideContext";
 import AutoVideo from "../AutoVideo";
+import { BASE } from "@/lib/basePath";
 
 const DEMOS = [
-  { label: "Stable Camera", video: "/demo-stable.mp4" },
-  { label: "Camera Movement", video: "/demo-moving.mp4" },
-  { label: "Player Overlay (experimental)", video: "/demo-player-overlay.mp4" },
+  { label: "Stable Camera", video: `${BASE}/demo-stable.mp4` },
+  { label: "Camera Movement", video: `${BASE}/demo-moving.mp4` },
+  { label: "Player Overlay (experimental)", video: `${BASE}/demo-player-overlay.mp4` },
 ];
 
 export default function Demo() {

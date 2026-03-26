@@ -2,6 +2,7 @@
 
 import { useSlideStep } from "../SlideContext";
 import AutoVideo from "../AutoVideo";
+import { BASE } from "@/lib/basePath";
 
 export default function PlayerTracking() {
   const step = useSlideStep();
@@ -43,7 +44,7 @@ export default function PlayerTracking() {
             {step >= 1 && (
               <AutoVideo
                 key="player-tracking"
-                src="/player-tracking.mp4"
+                src={`${BASE}/player-tracking.mp4`}
                 className="w-full"
               />
             )}

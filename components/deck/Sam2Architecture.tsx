@@ -1,5 +1,7 @@
 "use client";
 
+import { BASE } from "@/lib/basePath";
+
 export default function Sam2Architecture() {
   return (
     <div className="flex h-full w-full items-center justify-center px-16">
@@ -34,7 +36,7 @@ export default function Sam2Architecture() {
         <div className="w-full">
           <div className="overflow-hidden rounded-xl border border-surface-light bg-white/[0.03] px-6 py-5 shadow-2xl shadow-black/30">
             <img
-              src="/sam-architecture.png"
+              src={`${BASE}/sam-architecture.png`}
               alt="SAM 2 architecture — image encoder, memory attention, mask decoder, memory bank"
               className="w-full"
             />

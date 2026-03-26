@@ -1,6 +1,7 @@
 "use client";
 
 import { useSlideStep } from "../SlideContext";
+import { BASE } from "@/lib/basePath";
 
 function StepImage({ src, alt }: { src: string; alt: string }) {
   return (
@@ -55,11 +56,11 @@ export default function Homography() {
 
         <div className="flex items-center">
           {[
-            { src: "/homography/1_original.png", alt: "Original camera frame", label: "Original frame",        w: "w-52", aspect: "aspect-video", at: 1 },
-            { src: "/homography/2_bbox.png",     alt: "Frame with bounding box", label: "Detect region",       w: "w-52", aspect: "aspect-video", at: 2 },
-            { src: "/homography/3_rectified.png", alt: "Rectified flat banner", label: "Rectify to flat",      w: "w-44", aspect: "",             at: 3 },
-            { src: "/homography/4_logo_flat.png", alt: "Replacement logo (flat)", label: "New logo (flat)",     w: "w-44", aspect: "",             at: 4 },
-            { src: "/homography/5_overlay.png",  alt: "New overlay in perspective", label: "Warp overlay back", w: "w-52", aspect: "aspect-video", at: 5 },
+            { src: `${BASE}/homography/1_original.png`, alt: "Original camera frame", label: "Original frame",        w: "w-52", aspect: "aspect-video", at: 1 },
+            { src: `${BASE}/homography/2_bbox.png`,     alt: "Frame with bounding box", label: "Detect region",       w: "w-52", aspect: "aspect-video", at: 2 },
+            { src: `${BASE}/homography/3_rectified.png`, alt: "Rectified flat banner", label: "Rectify to flat",      w: "w-44", aspect: "",             at: 3 },
+            { src: `${BASE}/homography/4_logo_flat.png`, alt: "Replacement logo (flat)", label: "New logo (flat)",     w: "w-44", aspect: "",             at: 4 },
+            { src: `${BASE}/homography/5_overlay.png`,  alt: "New overlay in perspective", label: "Warp overlay back", w: "w-52", aspect: "aspect-video", at: 5 },
           ].map((item, i) => {
             const show = step >= item.at;
             const showArrow = i > 0 && step >= item.at;
@@ -121,7 +122,7 @@ export default function Homography() {
           </div>
           <div className="flex-1 min-w-0 overflow-hidden rounded-xl border border-surface-light bg-white/[0.03] shadow-2xl shadow-black/30">
             <img
-              src="/homography/vanishing_point.png"
+              src={`${BASE}/homography/vanishing_point.png`}
               alt="Vanishing point visualization with converging lines"
               className="w-full"
             />
@@ -192,14 +193,14 @@ export default function Homography() {
           <div className="relative flex-1 min-w-0">
             <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-surface-light bg-black/40 shadow-2xl shadow-black/30">
               {[
-                { src: "/homography/fit-steps/1_frame.png", at: 7 },
-                { src: "/homography/fit-steps/2_mask_overlay.png", at: 8 },
-                { src: "/homography/fit-steps/3_bw_mask.png", at: 9 },
-                { src: "/homography/fit-steps/4_minrect.png", at: 10 },
-                { src: "/homography/fit-steps/5_axes_points.png", at: 11 },
-                { src: "/homography/fit-steps/6_fitted_lines.png", at: 12 },
-                { src: "/homography/fit-steps/7_intersections.png", at: 13 },
-                { src: "/homography/fit-steps/8_rectified.png", at: 14 },
+                { src: `${BASE}/homography/fit-steps/1_frame.png`, at: 7 },
+                { src: `${BASE}/homography/fit-steps/2_mask_overlay.png`, at: 8 },
+                { src: `${BASE}/homography/fit-steps/3_bw_mask.png`, at: 9 },
+                { src: `${BASE}/homography/fit-steps/4_minrect.png`, at: 10 },
+                { src: `${BASE}/homography/fit-steps/5_axes_points.png`, at: 11 },
+                { src: `${BASE}/homography/fit-steps/6_fitted_lines.png`, at: 12 },
+                { src: `${BASE}/homography/fit-steps/7_intersections.png`, at: 13 },
+                { src: `${BASE}/homography/fit-steps/8_rectified.png`, at: 14 },
               ].map((item) => (
                 <div
                   key={item.src}

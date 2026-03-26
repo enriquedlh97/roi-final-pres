@@ -1,6 +1,7 @@
 "use client";
 
 import { useSlideStep } from "../SlideContext";
+import { BASE } from "@/lib/basePath";
 
 function VideoFrame({ zoomed }: { zoomed: boolean }) {
   return (
@@ -12,7 +13,7 @@ function VideoFrame({ zoomed }: { zoomed: boolean }) {
     >
       {/* Playing video */}
       <video
-        src="/original-tennis-clip.mp4"
+        src={`${BASE}/original-tennis-clip.mp4`}
         autoPlay
         loop
         muted
@@ -23,7 +24,7 @@ function VideoFrame({ zoomed }: { zoomed: boolean }) {
 
       {/* Static first frame (shown when zoomed) */}
       <img
-        src="/tennis-frame1.jpg"
+        src={`${BASE}/tennis-frame1.jpg`}
         alt="Tennis broadcast frame"
         className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
         style={{ opacity: zoomed ? 1 : 0 }}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useSlideStep } from "../SlideContext";
+import { BASE } from "@/lib/basePath";
 
 export default function LogoOverlay() {
   const step = useSlideStep();
@@ -33,9 +34,9 @@ export default function LogoOverlay() {
         {/* Right — example images (crossfade: original → example 1 → example 2) */}
         <div className="relative flex-1 min-w-0 aspect-video overflow-hidden rounded-xl border border-surface-light bg-black/40 shadow-2xl shadow-black/30">
           {[
-            { src: "/overlay-original.png", at: 0 },
-            { src: "/overlay-example-1.png", at: 1 },
-            { src: "/overlay-example-2.png", at: 2 },
+            { src: `${BASE}/overlay-original.png`, at: 0 },
+            { src: `${BASE}/overlay-example-1.png`, at: 1 },
+            { src: `${BASE}/overlay-example-2.png`, at: 2 },
           ].map((item) => (
             <div
               key={item.src}
