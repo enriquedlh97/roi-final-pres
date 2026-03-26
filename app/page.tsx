@@ -45,7 +45,7 @@ const SLIDE_STEPS = [
   1,  // 8  SAM2 Architecture (07)
   2,  // 9  Player Tracking (08) (1 intro + 1 video demo)
   1,  // 10 Banner Segmentation (09)
-  4,  // 11 Banner Segmentation Videos (10) (4 experiments)
+  5,  // 11 Banner Segmentation Videos (10) (5 experiments)
   15, // 12 Homography (11) (1 intro + 5 motivation + 1 vanishing point + 8 fit steps)
   3,  // 13 Logo Overlay (12) (1 intro + 2 examples)
   3,  // 14 Demo (13) (stable + moving + player overlay)
