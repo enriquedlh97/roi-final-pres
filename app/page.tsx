@@ -84,7 +84,7 @@ const SLIDE_STEPS = [
   4,  // 17 Final Result — Region by Region
   5,  // 18 Walkover Sequence
   3,  // 19 Demo
-  2,  // 20 Visual Review > Rubric
+  3,  // 20 Evaluation — three layers (Layer 1 / Layer 2 / Layer 3 reveals)
   1,  // 21 Future Improvements
   1,  // 22 Thanks
 ];
