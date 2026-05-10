@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "export",
-  basePath: "/roi-midterm-pres",
+  basePath: "/roi-final-pres",
   images: { unoptimized: true },
 };
 
