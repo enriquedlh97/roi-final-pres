@@ -4,10 +4,15 @@ import { useSlideStep } from "../SlideContext";
 import AutoVideo from "../AutoVideo";
 import { BASE } from "@/lib/basePath";
 
+// Cache-bust version: bump when the underlying video bytes change so browsers
+// that had the previous version don't keep serving stale (and possibly
+// codec-incompatible) cached bytes.
+const VIDEO_VERSION = "h264-v2";
+
 const DEMOS = [
-  { label: "Original broadcast", video: `${BASE}/final/input_clip.mov` },
-  { label: "Final composite", video: `${BASE}/final/composited.mp4` },
-  { label: "Side-by-side vs V68 gold", video: `${BASE}/final/side_by_side_vs_gold.mp4` },
+  { label: "Original broadcast", video: `${BASE}/final/input_clip.mov?v=${VIDEO_VERSION}` },
+  { label: "Final composite", video: `${BASE}/final/composited.mp4?v=${VIDEO_VERSION}` },
+  { label: "Side-by-side vs V68 gold", video: `${BASE}/final/side_by_side_vs_gold.mp4?v=${VIDEO_VERSION}` },
 ];
 
 export default function Demo() {
