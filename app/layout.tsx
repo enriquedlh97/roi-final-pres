@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Midterm Presentation — ROI Tracking",
-  description: "Research capstone midsemester presentation",
+  title: "Final Presentation — ROI Tracking",
+  description: "Research capstone final presentation — virtual ad insertion in tennis broadcasts",
 };
 
 export default function RootLayout({
