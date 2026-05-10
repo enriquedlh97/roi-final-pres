@@ -16,9 +16,11 @@ import BannerSegmentationVideos from "@/components/deck/BannerSegmentationVideos
 import Homography from "@/components/deck/Homography";
 import SingleVanishingPoint from "@/components/deck/SingleVanishingPoint";
 import LogoOverlay from "@/components/deck/LogoOverlay";
+import FinalResultRegions from "@/components/deck/FinalResultRegions";
+import WalkoverSequence from "@/components/deck/WalkoverSequence";
 import Demo from "@/components/deck/Demo";
+import VisualReviewDiscipline from "@/components/deck/VisualReviewDiscipline";
 import FutureImprovements from "@/components/deck/FutureImprovements";
-import AsksMitsubishi from "@/components/deck/AsksMitsubishi";
 import Thanks from "@/components/deck/Thanks";
 
 // WARNING: minimap indices must match slide order below. Update if slides are added/removed.
@@ -30,33 +32,34 @@ import Thanks from "@/components/deck/Thanks";
 //   4  Prior Work
 //   5  Our Approach
 //   6  Comparison Table
-//   7  Modal + Speed Benchmarking   ← NEW
-//   8  Pipeline Overview
-//   9  SAM2 Architecture
-//  10  SAM3 Experiments              ← NEW (after SAM2 architecture)
+//   7  Modal + Speed Benchmarking
+//   8  Pipeline Overview        ← minimap host
+//   9  SAM2 Architecture        ← minimap range start
+//  10  SAM3 Experiments
 //  11  Player Tracking
 //  12  Banner Segmentation
 //  13  Banner Segmentation Videos
 //  14  Homography
-//  15  Single Vanishing Point        ← NEW (after Homography)
-//  16  Logo Overlay
-//  17  Demo
-//  18  Future Improvements
-//  19  Asks From Mitsubishi
-//  20  Thanks
+//  15  Single Vanishing Point
+//  16  Logo Overlay             ← minimap range end (last pipeline stage)
+//  17  Final Result — Region by Region   ← NEW (paired crop strips)
+//  18  Walkover Sequence                  ← NEW (5 forensic sheets)
+//  19  Demo                                (final video + side-by-side)
+//  20  Visual Review > Rubric              ← NEW (the discipline narrative)
+//  21  Future Improvements
+//  22  Thanks
 const PIPELINE_MINIMAP = {
   slide: 8, // Pipeline Overview
-  range: [9, 17] as [number, number],
+  range: [9, 16] as [number, number],
   highlights: {
     9: "sam2-arch",
-    10: "sam2-arch", // SAM3 Experiments — keep SAM-arch highlight lit
+    10: "sam2-arch", // SAM3 Experiments — keep SAM-arch lit
     11: "detect-player",
     12: "banner-seg",
     13: "banner-seg-videos",
     14: "homography",
     15: "homography", // Single Vanishing Point — keep homography lit
     16: "overlay-logo",
-    17: "demo",
   },
 };
 
@@ -78,10 +81,12 @@ const SLIDE_STEPS = [
   15, // 14 Homography
   1,  // 15 Single Vanishing Point
   3,  // 16 Logo Overlay
-  3,  // 17 Demo
-  1,  // 18 Future Improvements
-  1,  // 19 Asks From Mitsubishi
-  1,  // 20 Thanks
+  4,  // 17 Final Result — Region by Region
+  5,  // 18 Walkover Sequence
+  3,  // 19 Demo
+  2,  // 20 Visual Review > Rubric
+  1,  // 21 Future Improvements
+  1,  // 22 Thanks
 ];
 
 export default function Home() {
@@ -104,9 +109,11 @@ export default function Home() {
       <Homography />
       <SingleVanishingPoint />
       <LogoOverlay />
+      <FinalResultRegions />
+      <WalkoverSequence />
       <Demo />
+      <VisualReviewDiscipline />
       <FutureImprovements />
-      <AsksMitsubishi />
       <Thanks />
     </Presentation>
   );
