@@ -5,9 +5,9 @@ import AutoVideo from "../AutoVideo";
 import { BASE } from "@/lib/basePath";
 
 const DEMOS = [
-  { label: "Stable Camera", video: `${BASE}/demo-stable.mp4` },
-  { label: "Camera Movement", video: `${BASE}/demo-moving.mp4` },
-  { label: "Player Overlay (experimental)", video: `${BASE}/demo-player-overlay.mp4` },
+  { label: "Original broadcast", video: `${BASE}/final/input_clip.mov` },
+  { label: "Final composite", video: `${BASE}/final/composited.mp4` },
+  { label: "Side-by-side vs V68 gold", video: `${BASE}/final/side_by_side_vs_gold.mp4` },
 ];
 
 export default function Demo() {

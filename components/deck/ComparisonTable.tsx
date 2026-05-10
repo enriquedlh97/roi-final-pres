@@ -28,7 +28,7 @@ const ROWS = [
   },
   {
     system: "This Pipeline",
-    cells: ["None", "None (SAM 2)", "1 click", "Per-pixel masks", "Stable", "~30 fps*"],
+    cells: ["None", "None (SAM 2)", "1 click", "Per-pixel masks", "Stable", "2.68 fps (H200)*"],
     isOurs: true,
   },
 ];

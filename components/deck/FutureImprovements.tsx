@@ -2,29 +2,52 @@
 
 const items = [
   {
-    tag: "Visual",
-    title: "Visual Improvements",
-    points: ["Ball tracking", "Occlusion handling", "Shadows & lighting correction"],
+    tag: "Texture",
+    title: "Texture-match ceiling",
+    points: [
+      "Smoothed inpaint micro-grain visible vs gritty court paint at close zoom",
+      "Needs real texture transfer (noise injection / GAN-based inpaint)",
+    ],
   },
   {
-    tag: "Cuts",
-    title: "Camera Cuts",
-    points: ["Detect and handle camera angle transitions gracefully"],
+    tag: "Smoothing",
+    title: "Adaptive vp_smoothing",
+    points: [
+      "Code shipped (P3-A2) but the parameter sweep didn't conclude",
+      "Motion-aware EMA could lift walkover-window stability further",
+    ],
   },
   {
     tag: "Speed",
-    title: "Real-Time Performance",
-    points: ["Model fine-tuning for speed", "Inference benchmarking at 30 fps target"],
+    title: "Real-time performance",
+    points: [
+      "End-to-end ~2.7 fps on H200 today",
+      "Target 30 fps for broadcast-viable; needs model + pipeline optimisation",
+    ],
   },
   {
     tag: "Auto",
-    title: "Automatic Region Selection",
-    points: ["Remove manual click-to-select step", "Auto-detect ad regions from frame content"],
+    title: "Auto-detection of regions",
+    points: [
+      "Remove the manual click step (see feat/sam3-light-v1)",
+      "Best generic SAM3 prompt: \"sponsor logo on fixed advertising board\"",
+    ],
+  },
+  {
+    tag: "Cuts",
+    title: "Camera cuts + zoom",
+    points: [
+      "Detect angle transitions; reseed homography on cuts",
+      "Validate on data/zoom-clip-melbourne.mov + multi-clip eval",
+    ],
   },
   {
     tag: "Sports",
-    title: "Other Sports",
-    points: ["Generalize pipeline beyond tennis to football, basketball, etc."],
+    title: "Other sports",
+    points: [
+      "Pipeline supports any clip via configs/eval/reference.yaml",
+      "Generalize beyond tennis (football, basketball)",
+    ],
   },
 ];
 
