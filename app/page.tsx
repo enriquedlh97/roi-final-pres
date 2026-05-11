@@ -11,6 +11,7 @@ import PipelineOverview from "@/components/deck/PipelineOverview";
 import Sam2Architecture from "@/components/deck/Sam2Architecture";
 import Sam3Model from "@/components/deck/Sam3Model";
 import Sam3Light from "@/components/deck/Sam3Light";
+import Sam3AutomaticDetection from "@/components/deck/Sam3AutomaticDetection";
 import Sam3Experiments from "@/components/deck/Sam3Experiments";
 import PlayerTracking from "@/components/deck/PlayerTracking";
 import BannerSegmentation from "@/components/deck/BannerSegmentation";
@@ -42,22 +43,23 @@ import Thanks from "@/components/deck/Thanks";
 //  11  Banner Seg & Tracking  (10)
 //  12  Banner Seg Videos      (11)
 //  13  SAM3 Model             (12)
-//  14  SAM3-Light             (13) ★ NEW
-//  15  SAM3 Experiments       (14)
-//  16  Homography             (15)
-//  17  Single Vanishing Point (16)
-//  18  Logo Overlay           (17)
-//  19  Final Result           (18)
-//  20  Walkover Sequence      (19)
-//  21  Demo                   (20)
-//  22  Headline Numbers       (21)
-//  23  Evaluation             (22)
-//  24  Modal + Speed          (23)
-//  25  Future Improvements    (—)
-//  26  Thanks                 (—)
+//  14  SAM3-Light             (13)
+//  15  SAM3 - Automatic det.  (14) ★ NEW
+//  16  SAM3 Experiments       (15)
+//  17  Homography             (16)
+//  18  Single Vanishing Point (17)
+//  19  Logo Overlay           (18)
+//  20  Final Result           (19)
+//  21  Walkover Sequence      (20)
+//  22  Demo                   (21)
+//  23  Headline Numbers       (22)
+//  24  Evaluation             (23)
+//  25  Modal + Speed          (24)
+//  26  Future Improvements    (—)
+//  27  Thanks                 (—)
 const PIPELINE_MINIMAP = {
   slide: 8, // Pipeline Overview
-  range: [9, 18] as [number, number],
+  range: [9, 19] as [number, number],
   highlights: {
     9: "sam2-arch",
     10: "detect-player",
@@ -66,9 +68,10 @@ const PIPELINE_MINIMAP = {
     13: "sam2-arch",
     14: "sam2-arch",
     15: "sam2-arch",
-    16: "homography",
+    16: "sam2-arch",
     17: "homography",
-    18: "overlay-logo",
+    18: "homography",
+    19: "overlay-logo",
   },
 };
 
@@ -88,18 +91,19 @@ const SLIDE_STEPS = [
   5,  // 12 Banner Segmentation Videos
   1,  // 13 SAM3 Model
   1,  // 14 SAM3-Light
-  1,  // 15 SAM3 Experiments
-  15, // 16 Homography
-  1,  // 17 Single Vanishing Point
-  3,  // 18 Logo Overlay
-  4,  // 19 Final Result
-  5,  // 20 Walkover Sequence
-  3,  // 21 Demo
-  1,  // 22 Headline Numbers
-  3,  // 23 Evaluation
-  1,  // 24 Modal + Speed
-  1,  // 25 Future Improvements
-  1,  // 26 Thanks
+  7,  // 15 SAM3 - Automatic detection (7 videos)
+  1,  // 16 SAM3 Experiments
+  15, // 17 Homography
+  1,  // 18 Single Vanishing Point
+  3,  // 19 Logo Overlay
+  4,  // 20 Final Result
+  5,  // 21 Walkover Sequence
+  3,  // 22 Demo
+  1,  // 23 Headline Numbers
+  3,  // 24 Evaluation
+  1,  // 25 Modal + Speed
+  1,  // 26 Future Improvements
+  1,  // 27 Thanks
 ];
 
 export default function Home() {
@@ -120,6 +124,7 @@ export default function Home() {
       <BannerSegmentationVideos />
       <Sam3Model />
       <Sam3Light />
+      <Sam3AutomaticDetection />
       <Sam3Experiments />
       <Homography />
       <SingleVanishingPoint />
