@@ -56,7 +56,7 @@ export default function WalkoverSequence() {
         {/* Header row, title left, tabs right */}
         <div className="flex items-end justify-between gap-6">
           <div>
-            <span className="mb-1 block font-mono text-sm tracking-widest text-accent">20</span>
+            <span className="mb-1 block font-mono text-sm tracking-widest text-accent">21</span>
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
               Walkover sequence
             </h2>

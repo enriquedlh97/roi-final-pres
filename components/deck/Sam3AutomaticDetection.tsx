@@ -93,10 +93,10 @@ export default function Sam3AutomaticDetection() {
 
           {(["SAM 3", "SAM 3-Light"] as const).map((groupName) => (
             <div key={groupName} className="mt-5">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-muted/60">
+              <span className="block rounded-md bg-accent/10 px-2 py-1 font-mono text-[11px] font-bold uppercase tracking-wider text-accent">
                 {groupName}
               </span>
-              <ul className="mt-1 flex flex-col gap-0.5">
+              <ul className="mt-1.5 flex flex-col gap-0.5">
                 {VIDEOS.map((v, i) => {
                   if (v.group !== groupName) return null;
                   const isActive = activeIdx === i;

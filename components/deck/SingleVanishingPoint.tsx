@@ -8,7 +8,7 @@ export default function SingleVanishingPoint() {
       <div className="flex w-full max-w-6xl items-center gap-10">
         {/* Left: text */}
         <div className="animate-stagger flex flex-1 flex-col">
-          <span className="mb-1 block font-mono text-sm tracking-widest text-accent">17</span>
+          <span className="mb-1 block font-mono text-sm tracking-widest text-accent">18</span>
           <h2 className="text-3xl font-bold tracking-tight text-foreground">
             Single vanishing point
           </h2>
