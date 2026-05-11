@@ -48,7 +48,7 @@ export default function FinalResultRegions() {
         {/* Header + region tabs */}
         <div className="flex items-end justify-between gap-6">
           <div>
-            <span className="mb-1 block font-mono text-sm tracking-widest text-accent">17</span>
+            <span className="mb-1 block font-mono text-sm tracking-widest text-accent">18</span>
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
               Final result, region by region
             </h2>

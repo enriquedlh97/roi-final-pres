@@ -14,7 +14,7 @@ export default function Sam3Experiments() {
     <div className="flex h-full w-full items-center justify-center px-16">
       <div className="flex w-full max-w-6xl flex-col gap-5">
         <div className="animate-stagger flex flex-col">
-          <span className="mb-1 block font-mono text-sm tracking-widest text-accent">13</span>
+          <span className="mb-1 block font-mono text-sm tracking-widest text-accent">14</span>
           <h2 className="text-3xl font-bold tracking-tight text-foreground">
             SAM3, auto-detection experiments
           </h2>
