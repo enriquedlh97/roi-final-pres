@@ -46,7 +46,7 @@ const PHASES = [
     bullets: [
       "V68 manually-clicked corners (seed)",
       "BTN dynamic homography · hybrid_lock@30",
-      "V68 compositor unchanged — none of the autonomous tweaks",
+      "V68 compositor unchanged — none of the experimental tweaks",
     ],
     verdict: "All 4 region scorecards pass · walkover_occlusion_iou = 0.985 · temporal SSIM ≥ 0.99 every region.",
     verdictTone: "win",
