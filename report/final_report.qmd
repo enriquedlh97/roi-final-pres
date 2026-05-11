@@ -598,11 +598,11 @@ All five placement regions pass deterministic per-region quality gates, walkover
 
 # Acknowledgements {.unnumbered}
 
-This work was conducted as part of the Computational Science and Engineering and Data Science Capstone Programme (AC297r) at the Harvard John A. Paulson School of Engineering and Applied Sciences, sponsored by Mitsubishi Electric Research Laboratories (MERL), Cambridge, MA.
+This work was conducted as part of the Computational Science and Engineering and Data Science Capstone Programme (AC297r) at the Harvard John A. Paulson School of Engineering and Applied Sciences, sponsored by Mitsubishi Electric Innovation Center (MELIC).
 
 The author team is split between Harvard and Politecnico di Milano. Raghav Punnam and Enrique Díaz de León Hicks are MS students in Computational Science and Engineering and Data Science at Harvard University. Giovanni Visi and Martina Maiorana are MS students in Computer Science and Engineering at Politecnico di Milano.
 
-We thank our MERL industry partners for the problem framing and the regular feedback that shaped the quality bar, and our Harvard programme advisors for the structural guidance that shaped the methodology.
+We thank our MELIC industry partners for the problem framing and the regular feedback that shaped the quality bar, and our Harvard programme advisors for the structural guidance that shaped the methodology.
 
 ::: {#refs}
 :::
