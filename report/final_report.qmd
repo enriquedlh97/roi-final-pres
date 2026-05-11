@@ -39,10 +39,12 @@ format:
         \usepackage{amsmath}
         \usepackage{booktabs}
         \usepackage{array}
-        % Force the table of contents onto its own page (after the title page
-        % with abstract, before the body) by clearing the page after \maketitle.
-        \let\quartoorigmaketitle\maketitle
-        \renewcommand{\maketitle}{\quartoorigmaketitle\clearpage}
+        % Force the table of contents onto its own page after the abstract.
+        % Quarto renders the abstract via \begin{abstract}...\end{abstract}
+        % OUTSIDE \maketitle, so we hook the end of the abstract environment
+        % rather than overriding \maketitle itself.
+        \usepackage{etoolbox}
+        \AtEndEnvironment{abstract}{\clearpage}
   html:
     toc: true
     toc-depth: 3
