@@ -34,7 +34,7 @@ export default function ModalSpeedBenchmark() {
           <p className="mt-4 text-sm leading-relaxed text-zinc-400">
             Every experiment ran on <span className="text-foreground">Modal</span>, a serverless GPU
             platform. Up to <span className="text-foreground">10 concurrent GPUs</span> let us run
-            parallel waves of autonomous experiments (~50 H200 runs across 14 waves in Phase 3).
+            parallel waves of experiments — ~50 H200 runs across 14 waves of iteration in Phase 3.
             Configs are frozen per-run; outputs land in <code className="rounded bg-surface px-1.5 py-0.5 text-[11px]">experiments/&lt;timestamp&gt;_&lt;gpu&gt;/</code>.
           </p>
         </div>
@@ -84,10 +84,9 @@ export default function ModalSpeedBenchmark() {
             <div className="rounded-xl border border-surface-light bg-surface/50 p-5">
               <h3 className="mb-2 text-sm font-semibold text-foreground">Parallelism unlock</h3>
               <p className="text-[13px] leading-relaxed text-muted">
-                10 concurrent H200 slots let one manager agent dispatch 5–8 worker
-                cycles per wave. Phase 3 ran ~50 runs in &lt;14 hours wall clock —
-                most of that budget went on per-cycle eval + visual review, not
-                GPU inference.
+                10 concurrent H200 slots let us launch 5–8 parallel runs per wave.
+                Phase 3 ran ~50 runs in &lt;14 hours wall clock — most of that budget
+                went on per-cycle evaluation + visual review, not GPU inference itself.
               </p>
             </div>
           </div>
