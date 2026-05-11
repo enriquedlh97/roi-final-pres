@@ -47,7 +47,7 @@ export default function VisualReviewDiscipline() {
         <div className="animate-stagger flex flex-col">
           <span className="mb-1 block font-mono text-sm tracking-widest text-accent">21</span>
           <h2 className="text-3xl font-bold tracking-tight text-foreground">
-            Evaluation — three layers
+            Evaluation, three layers
           </h2>
           <div className="mt-2 h-px w-16 bg-accent" />
           <p className="mt-3 max-w-3xl text-[13px] leading-relaxed text-zinc-400">
@@ -58,7 +58,7 @@ export default function VisualReviewDiscipline() {
         </div>
 
         <div className="grid grid-cols-3 gap-4">
-          {/* Layer 1 — Deterministic metrics */}
+          {/* Layer 1, Deterministic metrics */}
           <div
             className="rounded-xl border border-surface-light bg-surface/50 p-4 transition-opacity duration-500"
             style={{ opacity: step >= 0 ? 1 : 0.4 }}
@@ -86,7 +86,7 @@ export default function VisualReviewDiscipline() {
             </p>
           </div>
 
-          {/* Layer 2 — Visual rubric */}
+          {/* Layer 2, Visual rubric */}
           <div
             className="rounded-xl border border-surface-light bg-surface/50 p-4 transition-opacity duration-500"
             style={{ opacity: step >= 1 ? 1 : 0.4 }}
@@ -121,7 +121,7 @@ export default function VisualReviewDiscipline() {
             </div>
           </div>
 
-          {/* Layer 3 — Direct visual review */}
+          {/* Layer 3, Direct visual review */}
           <div
             className="rounded-xl border border-accent/40 bg-surface/50 p-4 transition-opacity duration-500"
             style={{ opacity: step >= 2 ? 1 : 0.4 }}
@@ -154,7 +154,7 @@ export default function VisualReviewDiscipline() {
               </p>
               <p className="mt-2 text-[11px] font-medium text-foreground">
                 → Final pick:{" "}
-                <span className="font-mono text-accent">P3-A1</span> — the simpler BTN port
+                <span className="font-mono text-accent">P3-A1</span>, the simpler BTN port
                 baseline, with V68&apos;s compositor unchanged.
               </p>
             </div>
@@ -170,7 +170,7 @@ export default function VisualReviewDiscipline() {
             <br />
             Numerical gates and the visual rubric are great <em>regression detectors</em>; the rubric
             is great for surfacing dimensions worth inspecting. But the final accept/reject decision
-            needs a human looking at the actual video against the original broadcast — the metrics
+            needs a human looking at the actual video against the original broadcast, the metrics
             we ship are the ones we&apos;d defend on screen, not just on paper.
           </p>
         </div>

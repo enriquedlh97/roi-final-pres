@@ -29,7 +29,7 @@ git push origin enrique-changes
 # → GitHub Actions builds + publishes to gh-pages within ~1 min
 ```
 
-**Node version**: the CI runner uses Node 20. Locally use `nvm use 20` or any ≥20 version — `next build` requires it.
+**Node version**: the CI runner uses Node 20. Locally use `nvm use 20` or any ≥20 version, `next build` requires it.
 
 ---
 
@@ -38,7 +38,7 @@ git push origin enrique-changes
 | Path | What |
 |---|---|
 | [`app/`](app) | Next.js App Router entry. `page.tsx` is the deck's slide order + reveal counts; `layout.tsx` is the HTML shell + `<title>`. |
-| [`components/Presentation.tsx`](components/Presentation.tsx) | The deck runtime — handles arrow-key navigation, fullscreen, the bottom slide-dots, slide/step state. |
+| [`components/Presentation.tsx`](components/Presentation.tsx) | The deck runtime, handles arrow-key navigation, fullscreen, the bottom slide-dots, slide/step state. |
 | [`components/SlideContext.tsx`](components/SlideContext.tsx) | React context for `useSlideStep()` (per-slide reveal index) and `useSlideMinimap()` (for the Pipeline Overview minimap). |
 | [`components/AutoVideo.tsx`](components/AutoVideo.tsx) | `<video muted loop autoplay playsInline>` wrapper used on the demo slides. Pauses on unmount and on tab visibility change. |
 | [`components/slides/`](components/slides) | Generic slide layouts (TitleSlide, BulletSlide, ContentSlide, ImageSlide, SectionSlide, TeamSlide, ClosingSlide). |
@@ -60,7 +60,7 @@ git push origin enrique-changes
 // app/page.tsx
 const SLIDE_STEPS = [
   1,  // 0  Title
-  5,  // 1  Team — 1 heading + 4 reveals
+  5,  // 1  Team, 1 heading + 4 reveals
   2,  // 2  Problem Outline
   ...
 ];
@@ -82,23 +82,23 @@ const PIPELINE_MINIMAP = {
 
 ### Adding a new slide
 
-1. Create `components/deck/MyNewSlide.tsx` (use an existing slide as template — patterns vary by content type).
+1. Create `components/deck/MyNewSlide.tsx` (use an existing slide as template, patterns vary by content type).
 2. Import + add to JSX in `app/page.tsx` at the position you want.
 3. Add the reveal count to `SLIDE_STEPS` **at the same index** as the JSX position.
-4. Update the **slide-number label** inside the new slide's `<span className="tracking-widest text-accent">XX</span>` — labels follow `label = position - 1` (positions 0 & 1 = Title/Team are unlabeled; Future + Thanks at the end are unlabeled).
+4. Update the **slide-number label** inside the new slide's `<span className="tracking-widest text-accent">XX</span>`, labels follow `label = position - 1` (positions 0 & 1 = Title/Team are unlabeled; Future + Thanks at the end are unlabeled).
 5. Shift label numbers in every slide **after** your new one by +1 (sed pattern: `s|text-accent">NN</span>|text-accent">NN+1</span>|`).
 6. If your slide affects the pipeline-overview minimap, update `PIPELINE_MINIMAP.range` and `.highlights`.
 7. `npx next build` to catch type errors. Push to deploy.
 
 ### Removing / reordering slides
 
-Same idea in reverse. Be careful: SLIDE_STEPS, the JSX order in page.tsx, and the slide-number labels inside the components must stay in sync. The label-update step is the easiest one to forget — best done via `sed -i ''` across the affected files.
+Same idea in reverse. Be careful: SLIDE_STEPS, the JSX order in page.tsx, and the slide-number labels inside the components must stay in sync. The label-update step is the easiest one to forget, best done via `sed -i ''` across the affected files.
 
 ### Reveal patterns
 
 - **Single-step slide** (no reveals): `SLIDE_STEPS[i] = 1`, slide ignores `useSlideStep()`.
-- **Card-by-card reveal** (Project Journey, Visual Review): `step >= n` style — each card lights up at its step.
-- **Tab switch** (Demo, Final Result, Walkover): `step === n` style — show only one tab/image at a time.
+- **Card-by-card reveal** (Project Journey, Visual Review): `step >= n` style, each card lights up at its step.
+- **Tab switch** (Demo, Final Result, Walkover): `step === n` style, show only one tab/image at a time.
 - **Multi-stage with crossfade** (Logo Overlay, Homography): combination of the above with CSS opacity transitions.
 
 ---
@@ -107,8 +107,8 @@ Same idea in reverse. Be careful: SLIDE_STEPS, the JSX order in page.tsx, and th
 
 | # | UI counter | Label | Slide | Component | Reveals |
 |---|---|---|---|---|---|
-| 0 | 1 | — | Title | `Title.tsx` | 1 |
-| 1 | 2 | — | Team | `Team.tsx` | 5 |
+| 0 | 1 | n/a | Title | `Title.tsx` | 1 |
+| 1 | 2 | n/a | Team | `Team.tsx` | 5 |
 | 2 | 3 | 01 | Problem Outline | `ProblemOutline.tsx` | 2 |
 | 3 | 4 | 02 | Key Challenges | `Challenges.tsx` | 1 |
 | 4 | 5 | 03 | Prior Work | `PriorWork.tsx` | 4 |
@@ -124,14 +124,14 @@ Same idea in reverse. Be careful: SLIDE_STEPS, the JSX order in page.tsx, and th
 | 14 | 15 | 13 | Homography | `Homography.tsx` | 15 |
 | 15 | 16 | 14 | Single Vanishing Point | `SingleVanishingPoint.tsx` | 1 |
 | 16 | 17 | 15 | New Logo Overlay | `LogoOverlay.tsx` | 3 (stages) |
-| 17 | 18 | 16 | Final Result — region by region | `FinalResultRegions.tsx` | 4 (regions) |
+| 17 | 18 | 16 | Final Result, region by region | `FinalResultRegions.tsx` | 4 (regions) |
 | 18 | 19 | 17 | Walkover Sequence | `WalkoverSequence.tsx` | 5 (frames) |
 | 19 | 20 | 18 | Demo | `Demo.tsx` | 3 (videos) |
 | 20 | 21 | 19 | **Headline Numbers** | `HeadlineNumbers.tsx` | 1 |
-| 21 | 22 | 20 | Evaluation — three layers | `VisualReviewDiscipline.tsx` | 3 (layers) |
+| 21 | 22 | 20 | Evaluation, three layers | `VisualReviewDiscipline.tsx` | 3 (layers) |
 | 22 | 23 | 21 | Modal + Speed Benchmarking | `ModalSpeedBenchmark.tsx` | 1 |
-| 23 | 24 | — | Future Improvements | `FutureImprovements.tsx` | 1 |
-| 24 | 25 | — | Thanks | `Thanks.tsx` | 1 |
+| 23 | 24 | n/a | Future Improvements | `FutureImprovements.tsx` | 1 |
+| 24 | 25 | n/a | Thanks | `Thanks.tsx` | 1 |
 
 ---
 
@@ -139,15 +139,15 @@ Same idea in reverse. Be careful: SLIDE_STEPS, the JSX order in page.tsx, and th
 
 All static media lives under [`public/`](public). Anything outside the basePath needs `${BASE}` prepended in code (`${BASE}/final/composited.mp4`).
 
-### `public/final/` — the FINAL deliverable assets (all from P3-A1 run)
+### `public/final/`, the FINAL deliverable assets (all from P3-A1 run)
 
 Sourced from `homography-fitting/experiments/2026-05-05_18-38-39_hull_H200/`. Regenerated via `ffmpeg` if you need different crops; see `README` in the homography-fitting repo or the commit history of this repo for the exact ffmpeg invocations.
 
 | File | Used by | Notes |
 |---|---|---|
-| `input_clip.mov` | Demo (BEFORE) | 60 fps, 767 frames, 36 MB. H.264 in `.mov` container — Chrome/Safari/Firefox play it fine. |
+| `input_clip.mov` | Demo (BEFORE) | 60 fps, 767 frames, 36 MB. H.264 in `.mov` container, Chrome/Safari/Firefox play it fine. |
 | `composited.mp4` | Demo (AFTER), Logo Overlay stage 02 | Final composite, H.264 yuv420p. |
-| `side_by_side_vs_gold.mp4` | Demo (side-by-side) | Ultra-wide 2868×536 (5.35:1 aspect). **Must be H.264** — previously was MPEG-4 Simple Profile which Chrome refuses to play. See "Video codec gotcha" below. |
+| `side_by_side_vs_gold.mp4` | Demo (side-by-side) | Ultra-wide 2868×536 (5.35:1 aspect). **Must be H.264**, previously was MPEG-4 Simple Profile which Chrome refuses to play. See "Video codec gotcha" below. |
 | `crops_back_3banners.png` | Final Result · Back banners | 870×300. 3 distinct obj_1/2/5 positions, paired orig/composite. |
 | `crops_left_1.png` | Final Result · Left side banner | 460×320. Single paired crop. |
 | `crops_floor_walkover.png` | Final Result · Court floor logo | 2160×760. 3 walkover-window frames (f694/704/713). |
@@ -158,11 +158,11 @@ Sourced from `homography-fitting/experiments/2026-05-05_18-38-39_hull_H200/`. Re
 | `logo_overlay_composite.png` | Logo Overlay stage 02 | Frame 350 from composited.mp4. |
 | `logo_overlay_walkover_zoom.png` | Logo Overlay stage 03 | 900×450 crop of frame 704 around the floor logo + player. |
 
-### `public/homography/` — midterm geometry figures (still used by Homography slide)
+### `public/homography/`, midterm geometry figures (still used by Homography slide)
 
 `vanishing_point.png`, `1_original.png`, `2_bbox.png`, `3_rectified.png`, `4_logo_flat.png`, `5_overlay.png`, plus a `fit-steps/` subdir.
 
-### Other `public/` videos — used by midterm-derived slides (Banner Segmentation Videos, Player Tracking)
+### Other `public/` videos, used by midterm-derived slides (Banner Segmentation Videos, Player Tracking)
 
 `baners_stable_camera.mp4`, `banners_moving_camera.mp4`, `logos_stable_camera.mp4`, `logos_moving_camera.mp4`, `camera_cuts_experiment.mp4`, `player-tracking.mp4`, `sam2-*.mp4`, `original-tennis-clip.mp4`, `demo-stable.mp4`, `demo-moving.mp4`, `demo-player-overlay.mp4`.
 
@@ -191,10 +191,10 @@ Each slide file is single-purpose. Open the `.tsx` file, edit the string literal
 ### Swap an image
 1. Drop new image into `public/final/` (keep filename consistent or update the reference).
 2. Update the `image: "..."` field in the slide's data array (e.g. `STAGES` in LogoOverlay, `REGIONS` in FinalResultRegions, `FRAMES` in WalkoverSequence).
-3. If the new image has a very different aspect ratio, check that the slide's `<img>` container CSS still produces a sensible layout. The Final Result slide caps height at `max-h-[55vh]` and centers — that handles most aspect ratios.
+3. If the new image has a very different aspect ratio, check that the slide's `<img>` container CSS still produces a sensible layout. The Final Result slide caps height at `max-h-[55vh]` and centers, that handles most aspect ratios.
 
 ### Swap a video
-1. Drop new video into `public/final/`. Verify codec with `ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of csv=p=0 file.mp4` — must be `h264` or similar browser-supported.
+1. Drop new video into `public/final/`. Verify codec with `ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of csv=p=0 file.mp4`, must be `h264` or similar browser-supported.
 2. Update reference in `components/deck/Demo.tsx` (or wherever it's used).
 3. **Bump `VIDEO_VERSION`** in `components/deck/Demo.tsx` to bust browser cache.
 
@@ -205,7 +205,7 @@ See "Slide model" above. Three things must stay in sync: JSX order in `app/page.
 [`components/deck/PipelineOverview.tsx`](components/deck/PipelineOverview.tsx) has a hand-coded SVG. Node coordinates are absolute. Each rect-and-text pair is wrapped in a `<g>` that respects the minimap-highlight opacity. To rename a node, just edit the `<text>` content; to move one, edit the `x/y/width/height` on its `<rect>` and reposition its `<text>` to match.
 
 ### Re-encode an asset
-See the ffmpeg recipes above. Crops, side-by-side strips, and frame extractions were generated by `ffmpeg` directly — no ImageMagick required. Commit messages in this repo's history have the exact incantations used for `crops_back_3banners.png`, `crops_floor_walkover.png`, and `side_by_side_vs_gold.mp4` re-encode.
+See the ffmpeg recipes above. Crops, side-by-side strips, and frame extractions were generated by `ffmpeg` directly, no ImageMagick required. Commit messages in this repo's history have the exact incantations used for `crops_back_3banners.png`, `crops_floor_walkover.png`, and `side_by_side_vs_gold.mp4` re-encode.
 
 ---
 
@@ -222,7 +222,7 @@ This deck repo only contains:
 - The deck source (Next.js)
 - Compiled visual assets from the final run (videos, paired crop strips, walkover forensic sheets)
 
-If you're trying to **modify the pipeline itself**, you're in the wrong repo — go to homography-fitting and read its `docs/FINAL_REPORT.md`.
+If you're trying to **modify the pipeline itself**, you're in the wrong repo, go to homography-fitting and read its `docs/FINAL_REPORT.md`.
 
 ---
 

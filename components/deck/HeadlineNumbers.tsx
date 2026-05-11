@@ -50,7 +50,7 @@ export default function HeadlineNumbers() {
           </h2>
           <div className="mt-2 h-px w-16 bg-accent" />
           <p className="mt-3 max-w-2xl text-[13px] leading-relaxed text-zinc-400">
-            The final-run results in one screen — what the eval framework measured on
+            The final-run results in one screen, what the eval framework measured on
             <code className="mx-1 rounded bg-surface px-1.5 py-0.5 text-[11px]">experiments/2026-05-05_18-38-39_hull_H200/</code>.
           </p>
         </div>
@@ -87,7 +87,7 @@ export default function HeadlineNumbers() {
             </span>
             <br />
             V68 manually-clicked corners + BallTrackerNet dynamic homography + hybrid_lock at
-            30-px tolerance + V68&apos;s LED-blend compositor — five placements, broadcast-stable,
+            30-px tolerance + V68&apos;s LED-blend compositor, five placements, broadcast-stable,
             occluded correctly through a player walkover.
           </p>
         </div>

@@ -16,8 +16,8 @@ abstract: |
   The system replaces baked-in courtside ads with arbitrary sponsor logos while
   preserving photographic realism through camera motion and through player occlusion
   (when a player physically walks across a court-floor logo). Our canonical test case
-  places five virtual ads simultaneously — three back-wall banners, one side panel,
-  and one court-floor walkover logo — onto a thirteen-second sequence from the
+  places five virtual ads simultaneously, three back-wall banners, one side panel,
+  and one court-floor walkover logo, onto a thirteen-second sequence from the
   Melbourne broadcast in which a player crosses the field of view.
 
   We combine off-the-shelf foundation models (SAM 2 for region segmentation,
@@ -28,8 +28,8 @@ abstract: |
   ramps to the dynamic estimate when motion exceeds tolerance. We composite using a
   median-fill inpaint plus an LED-style local brightness re-bake.
 
-  We also describe a three-layer evaluation framework — deterministic per-region
-  gates, a structured visual rubric, and direct visual review — and report a case
+  We also describe a three-layer evaluation framework, deterministic per-region
+  gates, a structured visual rubric, and direct visual review, and report a case
   where the rubric and the numerical gates agreed on a candidate the visual review
   ultimately rejected. The final deliverable passes all per-region quality gates,
   achieves a walkover-window occlusion IoU of 0.985, and maintains temporal SSIM
@@ -68,8 +68,8 @@ courtside boards, back-wall banners, painted floor logos, scoreboard placements,
 and umpire-stand signage are all monetised. Today these placements are physically
 baked into the venue and identical for every viewer. **Virtual ad insertion**
 replaces those baked-in ads with software-rendered logos at broadcast time. The
-business value is large — it enables regional, demographic, and even personalised
-sponsor targeting on the same physical broadcast — but the technical bar is high.
+business value is large, it enables regional, demographic, and even personalised
+sponsor targeting on the same physical broadcast, but the technical bar is high.
 The viewer must not be able to tell that the ad has been swapped: it must track
 the camera, occlude correctly when players move in front of it, and look
 photographically integrated with the surface it is painted on.
@@ -119,8 +119,8 @@ for the implementation) are linked throughout.
 
 ## What makes virtual ad insertion hard
 
-A naive approach — alpha-composite a logo image at a fixed quadrilateral on every
-frame — fails on three counts.
+A naive approach, alpha-composite a logo image at a fixed quadrilateral on every
+frame, fails on three counts.
 
 **Geometry.** The broadcast camera is a real PTZ rig with non-zero motion.
 Logos placed on the court floor or on a sideline banner must stay anchored to
@@ -129,7 +129,7 @@ visibly "slides off the court." We need a per-frame homography that maps the
 canonical court plane to the broadcast image plane.
 
 **Occlusion.** When a player walks over a court-floor logo, their body must
-occlude the logo with pixel-accurate silhouette tracking — not a bounding box,
+occlude the logo with pixel-accurate silhouette tracking, not a bounding box,
 not a soft alpha sheen, but the actual person shape, including legs, feet,
 racket, shadows. Anything less reads as obviously fake.
 
@@ -140,13 +140,13 @@ alpha-feathering edges, and inpainting the original underlying ad cleanly.
 
 ## The Melbourne walkover demonstration clip
 
-Our canonical test case is `melbourne-walking-over-logo.mov` — a thirteen-second
+Our canonical test case is `melbourne-walking-over-logo.mov`, a thirteen-second
 sequence from the Melbourne broadcast at 60 fps (767 frames). It packs every
 hard mode into one clip:
 
 - **Five simultaneous placements**: three back-wall banners (objects 1, 2, 5
-  in our configuration — initially KIA-baked), one left-side banner (object 4
-  — initially YoPRO-baked), and one court-floor walkover logo (object 3 — the
+  in our configuration, initially KIA-baked), one left-side banner (object 4
+ , initially YoPRO-baked), and one court-floor walkover logo (object 3, the
   baked MELBOURNE wordmark).
 - **A player walkover** between approximately frames 685 and 723: a player
   enters the floor-logo region, walks directly across it, and exits. This is
@@ -188,8 +188,7 @@ lower realism.
 
 Academic interest in this space has been concentrated in soccer-field
 registration [@homayounfar2017; @nie2021]. Both papers focus on the homography
-estimation step — registering the broadcast image plane to a canonical pitch —
-but neither integrates the full ad-replacement pipeline (segmentation,
+estimation step, registering the broadcast image plane to a canonical pitch , but neither integrates the full ad-replacement pipeline (segmentation,
 occlusion handling, photometric blending). TrackNet [@stylianou2020tracknet],
 which we draw on directly for our court-keypoint detector, was originally
 formulated for tennis-ball tracking, but its 14-keypoint heatmap head provides
@@ -206,8 +205,8 @@ Our system targets the same effect as the hardware-instrumented commercial
 solutions, but with two cost reductions: zero in-venue instrumentation and
 minimal operator input (1 click per ad region on a single seed frame, plus a
 clean-plate reference video that can be produced offline). The deliverable is
-not yet at the per-frame latency a live broadcast demands — our final
-end-to-end measurement is 2.68 fps on a single H200 — but the visual quality
+not yet at the per-frame latency a live broadcast demands, our final
+end-to-end measurement is 2.68 fps on a single H200, but the visual quality
 of the static-camera portions is broadcast-credible and the per-frame design
 allows independent optimisation of throughput as a separate engineering axis.
 
@@ -285,11 +284,11 @@ disp = max_corner_distance(project(seed_corners, H_seed),
                            project(seed_corners, H_t))
 
 if disp < tolerance_px:
-    # Camera is "still enough" — keep the seed
+    # Camera is "still enough", keep the seed
     ramp_progress = 0
     return H_seed
 else:
-    # Camera moved — ramp toward the new BTN estimate
+    # Camera moved, ramp toward the new BTN estimate
     ramp_progress += 1
     alpha = min(1.0, ramp_progress / ramp_min_frames)
     return blend(H_seed, H_t, alpha)
@@ -311,7 +310,7 @@ per-frame estimator noise during the static portion (always-dynamic).
 ## Person matte: MatAnyone2
 
 To handle occlusion when a player walks across a placement region, we need a
-continuous-valued alpha matte at the player silhouette — not a bounding box,
+continuous-valued alpha matte at the player silhouette, not a bounding box,
 not a binary segmentation. We use MatAnyone2 [@yang2024matanyone], a 2026
 alpha-matting model that takes the original frame plus sparse positive prompt
 points and returns a per-pixel alpha (0 = background, 1 = foreground) at full
@@ -344,7 +343,7 @@ Per frame, per placed region, the compositor performs four operations:
 3. **LED-style brightness re-bake.** For each pixel inside the placement quad,
    take the warped logo's RGB value and re-bake its luminance against the local
    surface luminance computed from the inpainted background. This makes the
-   logo read like a physical paint or print job — the logo brightness adapts to
+   logo read like a physical paint or print job, the logo brightness adapts to
    local lighting conditions on the surface, exactly as a real ad would. Without
    this step the inserted logo reads as a 2D overlay floating on top of the
    frame.
@@ -372,7 +371,7 @@ failures. Fast, reproducible, gates the build.
 **Layer 2: structured visual rubric.** A thirteen-dimension rubric scored
 manually by a reviewer against paired top-original / bottom-composite crop
 strips, with the original baked-in ad as the comparison anchor. Catches
-qualitative regressions that numerical metrics miss — halo, edge reflex,
+qualitative regressions that numerical metrics miss, halo, edge reflex,
 texture match, player contact shadow.
 
 **Layer 3: direct visual review.** Human review of the actual output video
@@ -403,7 +402,7 @@ A second set of warning-only metrics (Lab ΔE color match, noise variance ratio,
 edge sharpness ratio) surfaces issues but does not gate.
 
 The framework also produces reference-comparison metrics when a gold run is
-configured in `configs/eval/reference.yaml` — corner distance vs gold, ROI SSIM
+configured in `configs/eval/reference.yaml`, corner distance vs gold, ROI SSIM
 vs gold, walkover-IoU delta vs gold. A 5% deviation in the wrong direction
 flips an `any_regression: true` flag and the exit code to 3, even when the
 per-region gates all pass.
@@ -415,7 +414,7 @@ Numerical metrics catch motion and structural problems but miss perceptual
 scored by a human reviewer.
 
 For each candidate run, the eval framework writes paired crop strips per
-region — top row is the unmodified original broadcast (the real baked-in ad),
+region, top row is the unmodified original broadcast (the real baked-in ad),
 bottom row is our composite at the same frames. The original is always
 present as the comparison anchor, because absolute scoring drifts toward "looks
 fine" without it.
@@ -431,7 +430,7 @@ region:
   player contact-shadow plausibility
 
 The rubric scores are surfaced alongside Layer 1 metrics in the run's
-`quality_metrics.json`. They are warning-only — they never gate the build.
+`quality_metrics.json`. They are warning-only, they never gate the build.
 
 ## Layer 3: direct visual review
 
@@ -443,7 +442,7 @@ The reason for this third layer is that Layer 1 and Layer 2 can both miss the
 same class of failure: a candidate run might pass every numerical gate, score
 well on the rubric, and still produce a composite that any viewer would
 immediately read as fake. The lesson from Phase 3 (Section [The visual-review
-override]) was that this is not a hypothetical — it actually happened to us on
+override]) was that this is not a hypothetical, it actually happened to us on
 a high-scoring candidate.
 
 ## Walkover-window detection
@@ -469,7 +468,7 @@ here both because the negative result from Phase 2 narrowed the design space
 and because the Phase 3 visual-review override is informative about how to use
 numerical and rubric scores in practice.
 
-## Phase 1: V68 — manually-clicked corners
+## Phase 1: V68, manually-clicked corners
 
 **Goal:** an end-to-end working pipeline producing a watchable composite on
 the Melbourne clip.
@@ -482,7 +481,7 @@ locked across the entire clip. The compositor settings (`mask_dilate_px=20`,
 final delivery.
 
 **Result.** Visually excellent on the static portions of the clip. **Failed any
-time the camera moved** — the logos visibly drifted off the court. This was
+time the camera moved**, the logos visibly drifted off the court. This was
 the binding limitation that motivated Phase 2.
 
 V68's `quality_metrics.json` (held as the regression gold reference for the
@@ -534,7 +533,7 @@ improvement over the V68 baseline.
 We ported BallTrackerNet [@stylianou2020tracknet] as a 14-output-channel CNN
 court-keypoint detector with the frame-0 bridge to V68's seed (Section [Court
 geometry: BallTrackerNet learned-keypoint detector]). The first run with the
-new backend — designated **P3-A1** — was sufficient: floor ROI SSIM 0.9927,
+new backend, designated **P3-A1**, was sufficient: floor ROI SSIM 0.9927,
 walkover IoU 0.985, every gate passes. P3-A1 became the new baseline for any
 further compositor work and, as we describe next, the final deliverable.
 
@@ -548,22 +547,21 @@ scores were collected centrally. The waves explored:
 - Contact-shadow root cause (turned out to be the `erase_text` flag on the
   court_floor surface, not the occlusion-mask dilate parameter we initially
   suspected).
-- A code change introducing **shadow synthesis** — multiplying inserted Red
+- A code change introducing **shadow synthesis**, multiplying inserted Red
   Bull pixels by a Gaussian-blurred dilation of the player mask to synthesise a
   soft player-foot cast shadow.
 - A shadow-strength sweep that identified 0.6 as the photographically credible
   setting (0.3–0.4 reads as too soft, 0.7+ as a "blob").
 
 The candidate that won the structured visual rubric on the two user-flagged
-artifact dimensions (`halo_presence` and `edge_reflex`) was **P3-A38/e2** — a
+artifact dimensions (`halo_presence` and `edge_reflex`) was **P3-A38/e2**, a
 recipe that combined P3-A1's BTN-plus-hybrid-lock with shadow synthesis at
 strength 0.6, `erase_text=true` on the court floor, and a tightened banner
 edge (`obj_4 padding=0`).
 
 ## The visual-review override
 
-P3-A38/e2 scored 5/5 on `realism.halo_presence` and `realism.edge_reflex` —
-the two dimensions a stakeholder reviewer had previously flagged on V68 — and
+P3-A38/e2 scored 5/5 on `realism.halo_presence` and `realism.edge_reflex` , the two dimensions a stakeholder reviewer had previously flagged on V68, and
 passed every Layer 1 gate. By the metrics it was the right pick.
 
 **On direct visual review (Layer 3) it had visible regressions vs P3-A1:**
@@ -572,8 +570,8 @@ passed every Layer 1 gate. By the metrics it was the right pick.
   pixels under the player's feet in a way that read as a darkened blob rather
   than a shadow.
 - `erase_text=true` removed the painted MELBOURNE wordmark from under the
-  floor logo. The rubric counted this as "no bleed-through" — which it
-  technically is — but visually the logo now sat on a plain green floor instead
+  floor logo. The rubric counted this as "no bleed-through", which it
+  technically is, but visually the logo now sat on a plain green floor instead
   of the patterned painted court area, which read as artificial.
 - `obj_4 padding=0` exposed harder banner edges on the left logo. The rubric
   called this `edge_reflex=5` (no smearing); on direct viewing the harder edge
@@ -587,13 +585,13 @@ remotely competent. The pairing-based prompt was specified in our reviewer
 brief but turned out not to be sufficient to enforce direct-comparison
 scoring discipline.
 
-**Lesson.** A numerical rubric — even a thoughtfully designed structured visual
-one — is not a substitute for direct human visual review against ground truth.
+**Lesson.** A numerical rubric, even a thoughtfully designed structured visual
+one, is not a substitute for direct human visual review against ground truth.
 Layer 1 gates and Layer 2 rubric scores are excellent regression detectors,
 but the final accept-or-reject decision needs a human looking at the actual
 video against the original broadcast.
 
-**Decision.** P3-A1 — the BTN port baseline before any compositor tweaks — was
+**Decision.** P3-A1, the BTN port baseline before any compositor tweaks, was
 designated the final deliverable. The shadow-synthesis code and the v2 rubric
 both remain on the production branch behind feature flags, so future work can
 revisit those knobs if it wants. The final configuration does not enable them.
@@ -623,10 +621,10 @@ walkover-window evaluation passes both floor-specific gates.
 
 | Region | Pass | `temporal_ssim_mean` | `jitter_ratio` | `walkover_logo_visible_pct` | `walkover_occlusion_iou` |
 |---|---|---:|---:|---:|---:|
-| Back banners | ✅ | 0.9999 | 0.291 | — | — |
-| Left side banner | ✅ | 1.0000 | 0.390 | — | — |
+| Back banners | ✅ | 0.9999 | 0.291 | n/a | n/a |
+| Left side banner | ✅ | 1.0000 | 0.390 | n/a | n/a |
 | Floor logo | ✅ | 0.9927 | 0.805 | 0.179 | 0.985 |
-| Full frame | ✅ | 0.9987 | 0.687 | — | — |
+| Full frame | ✅ | 0.9987 | 0.687 | n/a | n/a |
 
 : Final-run per-region metrics (P3-A1). Gates: SSIM > 0.95, jitter ≤ 1.05, walkover_logo_visible_pct > 0.10, walkover_occlusion_iou > 0.80. {#tbl-final}
 
@@ -636,8 +634,8 @@ increase). **This is by design**: V68 is statically locked, so its floor
 jitter is the lowest physically possible (frame-to-frame inpaint variance
 only). P3-A1's hybrid_lock introduces a small amount of correctly-tracked
 frame-to-frame motion in the walkover window, which the jitter metric flags
-as a deviation. The visual outcome is the desired one — the placement now
-follows the camera — so the flag is treated as an expected side effect rather
+as a deviation. The visual outcome is the desired one, the placement now
+follows the camera, so the flag is treated as an expected side effect rather
 than a regression.
 
 ## Visual results
@@ -645,27 +643,27 @@ than a regression.
 Figure @fig-back shows the back-banner crop strip (three banner positions on
 the back wall, paired top-original / bottom-composite).
 
-![Back banners — three distinct positions (obj_1, obj_2, obj_5) from the same frame, with KIA originals on top and our Red Bull composite on the bottom.](../public/final/crops_back_3banners.png){#fig-back width=95%}
+![Back banners, three distinct positions (obj_1, obj_2, obj_5) from the same frame, with KIA originals on top and our Red Bull composite on the bottom.](../public/final/crops_back_3banners.png){#fig-back width=95%}
 
 Figure @fig-left shows the left side banner.
 
-![Left side banner — YoPRO original (top) replaced by Red Bull composite (bottom).](../public/final/crops_left_1.png){#fig-left width=60%}
+![Left side banner, YoPRO original (top) replaced by Red Bull composite (bottom).](../public/final/crops_left_1.png){#fig-left width=60%}
 
 Figure @fig-floor shows the court floor logo during the walkover window. Three
 frames are captured at f694 (pre-contact), f704 (player on the logo), and f713
 (post-contact), each paired original / composite.
 
-![Court floor logo during the walkover window — three frames from inside frames 685–723. Top row: original broadcast with the painted MELBOURNE wordmark. Bottom row: our composite with the Red Bull logo, occluded correctly through the player's silhouette.](../public/final/crops_floor_walkover.png){#fig-floor width=95%}
+![Court floor logo during the walkover window, three frames from inside frames 685–723. Top row: original broadcast with the painted MELBOURNE wordmark. Bottom row: our composite with the Red Bull logo, occluded correctly through the player's silhouette.](../public/final/crops_floor_walkover.png){#fig-floor width=95%}
 
-Figure @fig-contact shows the forensic sheet at f704 — the showpiece frame
+Figure @fig-contact shows the forensic sheet at f704, the showpiece frame
 where the player is directly on top of the floor logo. The six columns are:
 original | clean court (no logo, no player) | our composite | original-clean
 delta heatmap | survival heatmap (logo pixels persisting through the matte) |
 red leak overlay (suspected mis-occlusion). On a successful run, columns 4–6
-are visually quiet — large signal in column 4 means the player is genuinely
+are visually quiet, large signal in column 4 means the player is genuinely
 there, and column 6 should be empty.
 
-![Walkover forensic sheet at frame 704 — player on the logo. Six columns left-to-right: original broadcast, clean court reference, our composite, original-clean delta, survival heatmap, leak overlay. The composite in column 3 shows the Red Bull logo with the player's silhouette correctly cut out via alpha matting.](../public/final/walkover_contact.png){#fig-contact width=95%}
+![Walkover forensic sheet at frame 704, player on the logo. Six columns left-to-right: original broadcast, clean court reference, our composite, original-clean delta, survival heatmap, leak overlay. The composite in column 3 shows the Red Bull logo with the player's silhouette correctly cut out via alpha matting.](../public/final/walkover_contact.png){#fig-contact width=95%}
 
 The side-by-side regression video
 (`eval/vs_reference_side_by_side.mp4`) stacks our composite, the V68 gold
@@ -692,8 +690,7 @@ For at-a-glance reference:
 
 ## Strengths
 
-The pipeline is **broadcast-credible on the static portions of the clip** —
-visually indistinguishable from the V68 manually-clicked gold reference,
+The pipeline is **broadcast-credible on the static portions of the clip** , visually indistinguishable from the V68 manually-clicked gold reference,
 which itself sets a high bar against the original baked-in ads. It is
 **stable through the walkover window**, with an occlusion IoU of 0.985 (gate
 > 0.80) and a per-pixel-accurate player matte from MatAnyone2. It is
@@ -713,7 +710,7 @@ Several quality limits remain and are honest enough to call out:
 - **Texture-match on the left banner and floor logo.** Smoothed inpaint
   micro-grain is visible at close zoom against the gritty real court paint and
   banner material. Lifting this would need real texture transfer (noise
-  injection, GAN-based inpaint, or a learned texture prior) — not a parameter
+  injection, GAN-based inpaint, or a learned texture prior), not a parameter
   sweep on the existing compositor.
 - **End-to-end throughput.** 2.68 fps on H200 is approximately 10× slower than
   the real-time target for live broadcast use. The pipeline was designed
@@ -795,11 +792,11 @@ when the camera is still and ramps to the dynamic estimate when motion
 exceeds tolerance. All five placement regions pass deterministic per-region
 quality gates, walkover-window occlusion IoU is 0.985, and temporal SSIM
 exceeds 0.99 in every region. We also presented the three-layer evaluation
-framework we built — numerical gates, structured visual rubric, and direct
-visual review — and reported the visual-review override that selected the
-final deliverable. The lesson — that a structured rubric, however carefully
+framework we built, numerical gates, structured visual rubric, and direct
+visual review, and reported the visual-review override that selected the
+final deliverable. The lesson, that a structured rubric, however carefully
 designed, is not a substitute for direct human visual review against the
-original broadcast — is the most important methodological finding of the
+original broadcast, is the most important methodological finding of the
 project.
 
 # Acknowledgements {.unnumbered}

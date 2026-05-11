@@ -34,9 +34,9 @@ case "$TARGET" in
     ;;
   *)
     echo "Usage: $0 [pdf|html|all]"
-    echo "  pdf   — render PDF only"
-    echo "  html  — render HTML only"
-    echo "  all   — render both (default)"
+    echo "  pdf  , render PDF only"
+    echo "  html , render HTML only"
+    echo "  all  , render both (default)"
     exit 1
     ;;
 esac

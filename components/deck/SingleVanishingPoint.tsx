@@ -26,14 +26,14 @@ export default function SingleVanishingPoint() {
               <h3 className="text-[13px] font-semibold text-foreground">VP-constrained fitters</h3>
               <p className="mt-1 text-[12px] leading-relaxed text-muted">
                 Wall banners and side panels are fitted with rays projecting from the depth or
-                width vanishing point — gives geometrically correct perspective without solving
+                width vanishing point, gives geometrically correct perspective without solving
                 full intrinsics.
               </p>
             </li>
             <li className="rounded-xl border border-surface-light bg-surface/50 px-4 py-3">
               <h3 className="text-[13px] font-semibold text-foreground">Why it didn&apos;t make the final</h3>
               <p className="mt-1 text-[12px] leading-relaxed text-muted">
-                The Hough estimator is frame-to-frame noisy — even with smoothing, projected
+                The Hough estimator is frame-to-frame noisy, even with smoothing, projected
                 corners deviate 5–15 px between frames on a static camera. Phase 2 swept
                 <code className="mx-1 rounded bg-surface px-1 py-0.5 text-[11px]">tolerance_px ∈ {`{2..30}`}</code>
                 under hybrid_lock; only the always-locked V68 baseline passed all gates.

@@ -1,6 +1,6 @@
-# Claude Code briefing — roi-final-pres
+# Claude Code briefing, roi-final-pres
 
-You are working in a **Next.js 16 static-export slide deck** that gets deployed to GitHub Pages. It is the public-facing presentation for a capstone project on virtual ad insertion in tennis broadcasts. **The pipeline implementation lives in a sister repo, [`enriquedlh97/homography-fitting`](https://github.com/enriquedlh97/homography-fitting)** — not here.
+You are working in a **Next.js 16 static-export slide deck** that gets deployed to GitHub Pages. It is the public-facing presentation for a capstone project on virtual ad insertion in tennis broadcasts. **The pipeline implementation lives in a sister repo, [`enriquedlh97/homography-fitting`](https://github.com/enriquedlh97/homography-fitting)**, not here.
 
 Read `README.md` for the human-facing version of this. This file is the operational quickref for an AI agent.
 
@@ -12,7 +12,7 @@ Read `README.md` for the human-facing version of this. This file is the operatio
 
 2. **All asset URLs must use `${BASE}` from `lib/basePath.ts`.** In production the basePath is `/roi-final-pres`. If you write `<img src="/final/foo.png">` it will 404 on GitHub Pages because Next.js doesn't auto-rewrite absolute paths inside JSX. Always write `` <img src={`${BASE}/final/foo.png`}> ``.
 
-3. **Browsers cache media aggressively.** If you replace a video file under the same filename, every browser that already loaded the old version keeps serving stale bytes. The Demo slide uses a `?v=h264-v2` query suffix on its video URLs (`VIDEO_VERSION` constant in `components/deck/Demo.tsx`). **Bump that string any time you regenerate a video.** PNGs don't currently cache-bust — rename PNGs if you replace their contents.
+3. **Browsers cache media aggressively.** If you replace a video file under the same filename, every browser that already loaded the old version keeps serving stale bytes. The Demo slide uses a `?v=h264-v2` query suffix on its video URLs (`VIDEO_VERSION` constant in `components/deck/Demo.tsx`). **Bump that string any time you regenerate a video.** PNGs don't currently cache-bust, rename PNGs if you replace their contents.
 
 ---
 
@@ -21,8 +21,8 @@ Read `README.md` for the human-facing version of this. This file is the operatio
 - Deck has **25 slides** producing a ~30-min final presentation
 - Latest deploy: live at https://enriquedlh97.github.io/roi-final-pres/
 - Default branch: `enrique-changes` (push here → auto-deploy via `.github/workflows/deploy.yml`)
-- Local Node requirement: **20+** for `next build`. The user has nvm with v20.19.5 available — `export PATH="$HOME/.nvm/versions/node/v20.19.5/bin:$PATH"` if the default shell node is too old (it usually is, the system node is 16.13.2).
-- The user has **a Chrome tab open at the deployed URL** (tab ID may have changed between sessions). They also have a separate `localhost:8765` tab for an unrelated project — don't touch it.
+- Local Node requirement: **20+** for `next build`. The user has nvm with v20.19.5 available, `export PATH="$HOME/.nvm/versions/node/v20.19.5/bin:$PATH"` if the default shell node is too old (it usually is, the system node is 16.13.2).
+- The user has **a Chrome tab open at the deployed URL** (tab ID may have changed between sessions). They also have a separate `localhost:8765` tab for an unrelated project, don't touch it.
 
 ---
 
@@ -36,7 +36,7 @@ Read `README.md` for the human-facing version of this. This file is the operatio
 5. Validate via browser automation if available (see "Browser validation" below).
 
 ### "Swap a video on the Demo slide"
-1. ffprobe the new file — must be H.264 yuv420p inside MP4 or MOV. **MPEG-4 Simple Profile = unsupported = black screen** in Chrome. Re-encode with `ffmpeg -i in.mp4 -c:v libx264 -preset fast -crf 22 -pix_fmt yuv420p -movflags +faststart -an out.mp4`.
+1. ffprobe the new file, must be H.264 yuv420p inside MP4 or MOV. **MPEG-4 Simple Profile = unsupported = black screen** in Chrome. Re-encode with `ffmpeg -i in.mp4 -c:v libx264 -preset fast -crf 22 -pix_fmt yuv420p -movflags +faststart -an out.mp4`.
 2. Drop into `public/final/`.
 3. Update the `video: ` field in `components/deck/Demo.tsx`'s `DEMOS` array.
 4. **Bump `VIDEO_VERSION`** in the same file.
@@ -97,7 +97,7 @@ Frame indices that matter on the demo clip:
 | 3 | `Challenges.tsx` | Three challenge cards. |
 | 4 | `PriorWork.tsx` | Commercial + academic landscape. |
 | 5 | `OurApproach.tsx` | Pipeline thesis. |
-| 6 | `ProjectJourney.tsx` | **4 phase cards** — V68 → Phase 2 fail → BTN port → P3-A1. |
+| 6 | `ProjectJourney.tsx` | **4 phase cards**, V68 → Phase 2 fail → BTN port → P3-A1. |
 | 7 | `ComparisonTable.tsx` | Mitsubishi-style comparison row vs commercial systems. |
 | 8 | `PipelineOverview.tsx` | **Hand-coded SVG** of the data-flow graph. Hosts the minimap for slides 9-16. |
 | 9 | `Sam2Architecture.tsx` | SAM 2 model card. |
@@ -108,11 +108,11 @@ Frame indices that matter on the demo clip:
 | 14 | `Homography.tsx` | 15-step deep dive. Longest single slide. |
 | 15 | `SingleVanishingPoint.tsx` | Detail on the line-based VP-constrained fitter (Phase 2 axis). |
 | 16 | `LogoOverlay.tsx` | 3-stage compositor walkthrough (original → composite → walkover zoom). |
-| 17 | `FinalResultRegions.tsx` | **4-tab result showcase** — back / left / floor / full. Each tab swaps the image + caption. |
+| 17 | `FinalResultRegions.tsx` | **4-tab result showcase**, back / left / floor / full. Each tab swaps the image + caption. |
 | 18 | `WalkoverSequence.tsx` | **5-frame forensic-sheet reveal** at frames 685/694/704/713/723. |
-| 19 | `Demo.tsx` | **3 videos** — input / composite / side-by-side. BEFORE/AFTER overlay badges. |
+| 19 | `Demo.tsx` | **3 videos**, input / composite / side-by-side. BEFORE/AFTER overlay badges. |
 | 20 | `HeadlineNumbers.tsx` | 6 big-number cards. |
-| 21 | `VisualReviewDiscipline.tsx` | "Evaluation — three layers": numerical / visual rubric / direct review. |
+| 21 | `VisualReviewDiscipline.tsx` | "Evaluation, three layers": numerical / visual rubric / direct review. |
 | 22 | `ModalSpeedBenchmark.tsx` | GPU cost matrix + final-run timing. |
 | 23 | `FutureImprovements.tsx` | 6 future-work cards. |
 | 24 | `Thanks.tsx` | Closing slide. |
@@ -135,7 +135,7 @@ Workaround: use `mcp__claude-in-chrome__javascript_tool` which uses a different 
 })()
 ```
 
-Don't use async/await with `setTimeout` chains > 30s — the CDP `Runtime.evaluate` will time out and you'll freeze the renderer. Use short sleeps (<= 2000ms) or split into multiple synchronous calls.
+Don't use async/await with `setTimeout` chains > 30s, the CDP `Runtime.evaluate` will time out and you'll freeze the renderer. Use short sleeps (<= 2000ms) or split into multiple synchronous calls.
 
 When the user reports "I don't see X" but the content is in the DOM, they almost always have a stale cache. Either ask them to hard-refresh (Cmd+Shift+R) or navigate them to `?bust=N` with a fresh number.
 
@@ -145,7 +145,7 @@ When the user reports "I don't see X" but the content is in the DOM, they almost
 
 - **Don't touch the midterm repo** [`roi-midterm-pres`](https://github.com/enriquedlh97/roi-midterm-pres). It's frozen as the midterm-deployed reference. There's even a `midterm-deployed` git tag on it.
 - **Don't refactor `Presentation.tsx` or `SlideContext.tsx`** unless you have a strong reason. The reveal-step machinery and arrow-key bindings live there; breaking them silently breaks every slide.
-- **Don't add a CMS or content-management layer.** All slide content is intentionally in TSX so it's grep-able and refactor-able. The audience for this code is "a future maintainer skimming files in their editor" — keep it that way.
+- **Don't add a CMS or content-management layer.** All slide content is intentionally in TSX so it's grep-able and refactor-able. The audience for this code is "a future maintainer skimming files in their editor", keep it that way.
 - **Don't add tracking analytics, cookie banners, or third-party SDKs.** Static deck. Stays that way.
 - **Don't change `next.config.ts` basePath** unless you're renaming the repo (and even then the workflow + lib/basePath.ts also need updating).
 - **Don't commit secrets / API keys / tokens.** There aren't any in here; keep it that way.

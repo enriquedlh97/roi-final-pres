@@ -1,6 +1,6 @@
 # Final report
 
-The capstone final report — single Quarto document (`final_report.qmd`) that
+The capstone final report, single Quarto document (`final_report.qmd`) that
 compiles to PDF + HTML.
 
 ## Files
@@ -10,14 +10,14 @@ compiles to PDF + HTML.
 | `final_report.qmd` | The report source. Quarto markdown with YAML frontmatter for PDF + HTML targets. |
 | `references.bib` | BibTeX citation database (BallTrackerNet, SAM 2, MatAnyone2, commercial systems, academic prior work). |
 | `ieee.csl` | IEEE citation style (downloaded by `setup.sh`, gitignored). |
-| `setup.sh` | One-time toolchain install — Quarto + TinyTeX + IEEE CSL. |
+| `setup.sh` | One-time toolchain install, Quarto + TinyTeX + IEEE CSL. |
 | `render.sh` | Renders the report. Targets: `pdf`, `html`, or `all` (default). |
 | `.gitignore` | Excludes compiled outputs and Quarto's temp dirs. |
 
 ## Quick start
 
 ```bash
-# 1. One-time setup — install Quarto + TinyTeX + IEEE CSL
+# 1. One-time setup, install Quarto + TinyTeX + IEEE CSL
 ./setup.sh
 
 # 2. Render both PDF and HTML
@@ -46,7 +46,7 @@ You can also render only one format:
 - **On macOS:** `brew` (Homebrew) for the Quarto install path.
 - **On Linux:** `sudo` rights for `dpkg -i` (a `.deb` is downloaded).
 
-The setup script is idempotent — running it twice does nothing harmful.
+The setup script is idempotent, running it twice does nothing harmful.
 
 ## Figures
 
@@ -65,13 +65,13 @@ We use IEEE format (`ieee.csl`). To switch to a different style:
 
 ## Troubleshooting
 
-- **"Quarto not found"** — run `./setup.sh` first.
-- **"LaTeX Error: File X not found"** — TinyTeX is missing a package. Run
+- **"Quarto not found"**, run `./setup.sh` first.
+- **"LaTeX Error: File X not found"**, TinyTeX is missing a package. Run
   `quarto install tinytex --update-path` (or `./setup.sh` again, which does
   the same).
-- **PDF won't render but HTML does** — usually a TeX issue. Check
+- **PDF won't render but HTML does**, usually a TeX issue. Check
   `quarto render final_report.qmd --to pdf --verbose` for the actual error.
-- **Figures don't appear** — verify the relative path. The QMD assumes
+- **Figures don't appear**, verify the relative path. The QMD assumes
   rendering from inside `report/`, so figures at `../public/final/foo.png`
   resolve to `<repo>/public/final/foo.png`.
 
@@ -80,18 +80,18 @@ We use IEEE format (`ieee.csl`). To switch to a different style:
 The report is the single canonical document for the capstone deliverable. It
 covers:
 
-1. **Introduction** — motivation, contributions, structure
-2. **Problem and demonstration clip** — what makes virtual ad insertion hard;
+1. **Introduction**, motivation, contributions, structure
+2. **Problem and demonstration clip**, what makes virtual ad insertion hard;
    the Melbourne walkover case
-3. **Related work** — commercial systems and academic prior work
-4. **Pipeline architecture** — SAM 2, hull fitting, BallTrackerNet,
+3. **Related work**, commercial systems and academic prior work
+4. **Pipeline architecture**, SAM 2, hull fitting, BallTrackerNet,
    hybrid-lock, MatAnyone2, compositor
-5. **Evaluation framework** — three-layer eval (numerical, rubric, visual)
-6. **Project journey** — Phase 1 (V68) → Phase 2 (failed) → Phase 3
+5. **Evaluation framework**, three-layer eval (numerical, rubric, visual)
+6. **Project journey**, Phase 1 (V68) → Phase 2 (failed) → Phase 3
    (BTN port + iteration) → visual-review override
-7. **Results** — per-region metrics, walkover analysis, figures
-8. **Discussion** — strengths, limitations, lessons learned
-9. **Future work** — texture transfer, real-time throughput, multi-clip
+7. **Results**, per-region metrics, walkover analysis, figures
+8. **Discussion**, strengths, limitations, lessons learned
+9. **Future work**, texture transfer, real-time throughput, multi-clip
    validation, auto-detection
 10. **Conclusion**
 

@@ -12,7 +12,7 @@ const PHASES = [
       "Static homography across all 767 frames",
       "5 placements live: 3 back banners + left + floor",
     ],
-    verdict: "Looks perfect when the camera is still — drifts off the court the moment it moves.",
+    verdict: "Looks perfect when the camera is still, drifts off the court the moment it moves.",
     verdictTone: "warn",
   },
   {
@@ -24,7 +24,7 @@ const PHASES = [
       "7 tolerance sweeps · 3 ramp speeds",
       "Gated by hybrid_lock state machine",
     ],
-    verdict: "All tolerances regress floor SSIM monotonically. Line estimator is frame-to-frame too noisy. Failed axis — gold remains V68.",
+    verdict: "All tolerances regress floor SSIM monotonically. Line estimator is frame-to-frame too noisy. Failed axis, gold remains V68.",
     verdictTone: "fail",
   },
   {
@@ -46,7 +46,7 @@ const PHASES = [
     bullets: [
       "V68 manually-clicked corners (seed)",
       "BTN dynamic homography · hybrid_lock@30",
-      "V68 compositor unchanged — none of the experimental tweaks",
+      "V68 compositor unchanged, none of the experimental tweaks",
     ],
     verdict: "All 4 region scorecards pass · walkover_occlusion_iou = 0.985 · temporal SSIM ≥ 0.99 every region.",
     verdictTone: "win",
@@ -78,7 +78,7 @@ export default function ProjectJourney() {
           </p>
         </div>
 
-        {/* Timeline — 4 phase cards */}
+        {/* Timeline, 4 phase cards */}
         <div className="grid grid-cols-4 gap-3">
           {PHASES.map((p, i) => {
             const isRevealed = step >= i;
@@ -120,7 +120,7 @@ export default function ProjectJourney() {
           })}
         </div>
 
-        {/* Arrow row — purely visual */}
+        {/* Arrow row, purely visual */}
         <div className="flex items-center justify-between px-4">
           {[0, 1, 2].map((i) => (
             <div

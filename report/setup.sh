@@ -2,7 +2,7 @@
 # Set up the environment to render the final report.
 #
 # Installs Quarto and the TinyTeX TeX distribution it uses for PDF output.
-# Idempotent — safe to re-run.
+# Idempotent, safe to re-run.
 #
 # Tested on macOS (Apple Silicon) and Linux (Ubuntu 22.04). Windows users
 # should install Quarto via the .msi from https://quarto.org/docs/get-started/
@@ -23,7 +23,7 @@ echo
 if command -v quarto >/dev/null 2>&1; then
   echo "==> Quarto already installed: $(quarto --version)"
 else
-  echo "==> Quarto not found — installing"
+  echo "==> Quarto not found, installing"
   if [[ "$OSTYPE" == "darwin"* ]]; then
     if command -v brew >/dev/null 2>&1; then
       brew install --quiet quarto
@@ -52,7 +52,7 @@ fi
 # 2. Install TinyTeX for PDF output
 # --------------------------------------------------------------------------
 # Quarto bundles a minimal TeX distribution called TinyTeX. We need it for the
-# PDF output target. The `quarto install tinytex` command is idempotent — it
+# PDF output target. The `quarto install tinytex` command is idempotent, it
 # detects an existing installation and updates packages as needed.
 echo
 echo "==> Installing/updating TinyTeX (for PDF output)"

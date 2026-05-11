@@ -15,7 +15,7 @@ const DEMOS = [
     video: `${BASE}/final/input_clip.mov?v=${VIDEO_VERSION}`,
     badge: "BEFORE",
     badgeAccent: "bg-accent/85 text-white ring-1 ring-white/30",
-    caption: "767 frames @ 60 fps from the Melbourne broadcast — the input to the pipeline.",
+    caption: "767 frames @ 60 fps from the Melbourne broadcast, the input to the pipeline.",
     aspect: "video",
   },
   {
@@ -67,7 +67,7 @@ export default function Demo() {
           </div>
         </div>
 
-        {/* Video container — full width for ultra-wide side-by-side */}
+        {/* Video container, full width for ultra-wide side-by-side */}
         <div className="relative w-full overflow-hidden rounded-xl border border-surface-light bg-black/40 shadow-2xl shadow-black/30">
           {DEMOS.map((d, i) => {
             const isActive = step === i;
@@ -91,7 +91,7 @@ export default function Demo() {
                     className="h-full w-full object-contain"
                   />
                 )}
-                {/* Persistent BEFORE / AFTER overlay — large enough to be unmistakable
+                {/* Persistent BEFORE / AFTER overlay, large enough to be unmistakable
                     even when the deck is in fullscreen mode. */}
                 {isActive && (
                   <div className="pointer-events-none absolute top-3 left-3 z-10">
@@ -107,7 +107,7 @@ export default function Demo() {
           })}
         </div>
 
-        {/* Caption — clarifies what's on screen, especially the side-by-side panels */}
+        {/* Caption, clarifies what's on screen, especially the side-by-side panels */}
         <div className="w-full rounded-xl border border-surface-light bg-surface/50 px-5 py-3">
           <div className="flex items-baseline gap-3">
             <span className="font-mono text-[10px] uppercase tracking-wider text-accent">

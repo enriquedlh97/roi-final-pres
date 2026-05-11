@@ -13,20 +13,20 @@ const FRAMES = [
   {
     label: "Pre-contact",
     frame: 694,
-    caption: "~25% across the window — player approaching the logo.",
+    caption: "~25% across the window, player approaching the logo.",
     image: "walkover_pre.png",
   },
   {
     label: "Contact",
     frame: 704,
-    caption: "Player ON the logo — the hardest occlusion case.",
+    caption: "Player ON the logo, the hardest occlusion case.",
     image: "walkover_contact.png",
     highlight: true,
   },
   {
     label: "Post-contact",
     frame: 713,
-    caption: "~75% across — player exiting.",
+    caption: "~75% across, player exiting.",
     image: "walkover_post.png",
   },
   {
@@ -53,7 +53,7 @@ export default function WalkoverSequence() {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center px-8 py-4">
       <div className="flex w-full max-w-[1500px] flex-col gap-4">
-        {/* Header row — title left, tabs right */}
+        {/* Header row, title left, tabs right */}
         <div className="flex items-end justify-between gap-6">
           <div>
             <span className="mb-1 block font-mono text-sm tracking-widest text-accent">18</span>
@@ -84,7 +84,7 @@ export default function WalkoverSequence() {
           </div>
         </div>
 
-        {/* Hero image — centered, much wider */}
+        {/* Hero image, centered, much wider */}
         <div className="relative w-full overflow-hidden rounded-xl border border-surface-light bg-black/40">
           {FRAMES.map((f, i) => {
             const isActive = step === i;
@@ -101,7 +101,7 @@ export default function WalkoverSequence() {
               >
                 <img
                   src={`${BASE}/final/${f.image}`}
-                  alt={`Walkover forensic sheet frame ${f.frame} — ${f.label}`}
+                  alt={`Walkover forensic sheet frame ${f.frame}, ${f.label}`}
                   className="block h-auto w-full object-contain"
                   loading={isActive ? "eager" : "lazy"}
                 />
@@ -110,7 +110,7 @@ export default function WalkoverSequence() {
           })}
         </div>
 
-        {/* Columns legend — horizontal strip below the image (since the image already shows the 6 columns visually) */}
+        {/* Columns legend, horizontal strip below the image (since the image already shows the 6 columns visually) */}
         <div className="flex items-center gap-3 overflow-x-auto">
           {COLUMNS.map((c, i) => (
             <span

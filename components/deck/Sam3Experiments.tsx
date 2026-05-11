@@ -16,13 +16,13 @@ export default function Sam3Experiments() {
         <div className="animate-stagger flex flex-col">
           <span className="mb-1 block font-mono text-sm tracking-widest text-accent">13</span>
           <h2 className="text-3xl font-bold tracking-tight text-foreground">
-            SAM3 — auto-detection experiments
+            SAM3, auto-detection experiments
           </h2>
           <div className="mt-3 h-px w-16 bg-accent" />
           <p className="mt-4 text-sm leading-relaxed text-zinc-400">
             Parallel exploration: remove the manual click step by detecting placement regions
             directly from a <span className="text-foreground">text prompt</span>. Two variants on
-            separate branches — full per-frame SAM3 (~1 fps) and a <span className="text-foreground">light</span> variant
+            separate branches, full per-frame SAM3 (~1 fps) and a <span className="text-foreground">light</span> variant
             that only re-runs SAM3 when an HSV histogram gate detects a scene change.
           </p>
         </div>
@@ -52,8 +52,7 @@ export default function Sam3Experiments() {
               ))}
             </ul>
             <p className="mt-3 text-[11px] leading-relaxed text-muted/70">
-              Detection count vs throughput. Best generic prompt highlighted —
-              brand-specific (<span className="text-foreground/70">KIA…</span>) detects fewer
+              Detection count vs throughput. Best generic prompt highlighted ,               brand-specific (<span className="text-foreground/70">KIA…</span>) detects fewer
               logos but runs faster.
             </p>
           </div>
@@ -64,11 +63,11 @@ export default function Sam3Experiments() {
               <h3 className="mb-2 text-sm font-semibold text-foreground">SAM3-light core idea</h3>
               <ol className="flex flex-col gap-2 text-[12px] leading-relaxed text-muted">
                 <li>
-                  <span className="font-mono text-[10px] text-accent">f0</span> — full SAM3 run;
+                  <span className="font-mono text-[10px] text-accent">f0</span>, full SAM3 run;
                   store HSV histogram as <em>target</em>.
                 </li>
                 <li>
-                  <span className="font-mono text-[10px] text-accent">ft</span> — compute
+                  <span className="font-mono text-[10px] text-accent">ft</span>, compute
                   <code className="mx-1 rounded bg-surface px-1 py-0.5 text-[10px]">sim = corr(target, cur)</code>.
                 </li>
                 <li>

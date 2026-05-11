@@ -103,7 +103,7 @@ export default function PipelineOverview() {
           </text>
         </g>
 
-        {/* diamond — new camera? */}
+        {/* diamond, new camera? */}
         <g style={{ opacity: diamond.opacity, transition: "opacity 400ms" }}>
           <polygon
             points="205,158 245,200 205,242 165,200"
@@ -204,7 +204,7 @@ export default function PipelineOverview() {
           <line x1={610} y1={200} x2={635} y2={200} stroke={W} strokeWidth={1} />
           <polyline points="205,242 205,329 424,329" stroke={W} strokeWidth={1} markerEnd="url(#ah)" />
           <text x={213} y={278} fill={AL} fontSize={10.5} fontWeight={600}>STAY</text>
-          <text x={213} y={294} fill={TM} fontSize={9.5} opacity={0.75}>hybrid_lock — keep seed homography</text>
+          <text x={213} y={294} fill={TM} fontSize={9.5} opacity={0.75}>hybrid_lock, keep seed homography</text>
           <polyline points="550,329 635,329 635,200" stroke={W} strokeWidth={1} />
           <line x1={635} y1={200} x2={660} y2={200} stroke={W} strokeWidth={1} markerEnd="url(#ah)" />
           <polyline points="350,72 721,72 721,178" stroke={W} strokeWidth={1} markerEnd="url(#ah)" />

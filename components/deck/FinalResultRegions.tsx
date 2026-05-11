@@ -9,7 +9,7 @@ const REGIONS = [
     objIds: "obj_1 · obj_2 · obj_5",
     surface: "banner",
     crops: 3,
-    note: "3 distinct back-wall banner positions, same frame (f0350). Temporal SSIM 0.9999 · jitter 0.291 — visually identical to V68 gold.",
+    note: "3 distinct back-wall banner positions, same frame (f0350). Temporal SSIM 0.9999 · jitter 0.291, visually identical to V68 gold.",
     image: "crops_back_3banners.png",
   },
   {
@@ -17,7 +17,7 @@ const REGIONS = [
     objIds: "obj_4",
     surface: "banner",
     crops: 1,
-    note: "Red Bull logo on the side panel (was YoPRO baked-in). Temporal SSIM 1.0000 — pass. Edge realism + texture-match are the binding constraints; visible mild halo at letter edges.",
+    note: "Red Bull logo on the side panel (was YoPRO baked-in). Temporal SSIM 1.0000, pass. Edge realism + texture-match are the binding constraints; visible mild halo at letter edges.",
     image: "crops_left_1.png",
   },
   {
@@ -25,13 +25,13 @@ const REGIONS = [
     objIds: "obj_3",
     surface: "court_floor",
     crops: 3,
-    note: "3 frames from the walkover window (685–723) — player on the logo. Walkover occlusion IoU 0.985 · logo visible pct 0.179 (gate > 0.10).",
+    note: "3 frames from the walkover window (685–723), player on the logo. Walkover occlusion IoU 0.985 · logo visible pct 0.179 (gate > 0.10).",
     image: "crops_floor_walkover.png",
   },
   {
     label: "Full frame",
     objIds: "all five together",
-    surface: "—",
+    surface: ",",
     crops: 3,
     note: "All five placements together. Full-frame temporal SSIM 0.9987. The real baked-in ads (Kia / YoPRO / Melbourne) are the quality bar.",
     image: "crops_full_3.png",
@@ -50,7 +50,7 @@ export default function FinalResultRegions() {
           <div>
             <span className="mb-1 block font-mono text-sm tracking-widest text-accent">17</span>
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
-              Final result — region by region
+              Final result, region by region
             </h2>
             <div className="mt-2 h-px w-16 bg-accent" />
             <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-zinc-400">
@@ -74,7 +74,7 @@ export default function FinalResultRegions() {
           </div>
         </div>
 
-        {/* Image — cap height so narrow-aspect images (e.g. single-crop left banner)
+        {/* Image, cap height so narrow-aspect images (e.g. single-crop left banner)
             don't blow up to full screen when stretched to container width. */}
         <div className="relative flex w-full items-center justify-center overflow-hidden rounded-xl border border-surface-light bg-black/40">
           {REGIONS.map((r, i) => {
@@ -95,7 +95,7 @@ export default function FinalResultRegions() {
               >
                 <img
                   src={`${BASE}/final/${r.image}`}
-                  alt={`${r.label} — paired original vs composite crop strip`}
+                  alt={`${r.label}, paired original vs composite crop strip`}
                   className="block max-h-[55vh] w-auto max-w-full object-contain"
                   loading={isActive ? "eager" : "lazy"}
                 />

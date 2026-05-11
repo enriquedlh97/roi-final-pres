@@ -19,14 +19,14 @@ const STAGES = [
   {
     tag: "03",
     title: "Logo on the ground",
-    desc: "Walkover window — player walks over the floor logo. Person-mask alpha matting occludes correctly through the silhouette.",
+    desc: "Walkover window, player walks over the floor logo. Person-mask alpha matting occludes correctly through the silhouette.",
     image: "logo_overlay_walkover_zoom.png",
   },
 ];
 
 const TECHNIQUES = [
   { title: "Inpaint", desc: "Remove the original logo from the surface (median_fill, temporal)" },
-  { title: "LED-blend brightness re-bake", desc: "Match local surface luminance — read as painted, not pasted" },
+  { title: "LED-blend brightness re-bake", desc: "Match local surface luminance, read as painted, not pasted" },
   { title: "Person-mask occlusion", desc: "Alpha-matte the player silhouette so logos hide behind feet, legs, racket" },
 ];
 
@@ -37,7 +37,7 @@ export default function LogoOverlay() {
   return (
     <div className="flex h-full w-full items-center justify-center px-12">
       <div className="flex w-full max-w-7xl items-center gap-10">
-        {/* Left — techniques + step indicator */}
+        {/* Left, techniques + step indicator */}
         <div className="flex w-[230px] shrink-0 flex-col">
           <span className="mb-2 font-mono text-sm tracking-widest text-accent">16</span>
           <h2 className="text-2xl font-bold tracking-tight text-foreground">
@@ -79,7 +79,7 @@ export default function LogoOverlay() {
           </div>
         </div>
 
-        {/* Right — example image + caption */}
+        {/* Right, example image + caption */}
         <div className="flex flex-1 min-w-0 flex-col gap-3">
           <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-surface-light bg-black/40 shadow-2xl shadow-black/30">
             {STAGES.map((s, i) => {
