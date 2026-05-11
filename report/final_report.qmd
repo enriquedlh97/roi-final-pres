@@ -10,9 +10,10 @@ author:
     affiliation: "Politecnico di Milano, MS in Computer Science and Engineering"
   - name: "Martina Maiorana"
     affiliation: "Politecnico di Milano, MS in Computer Science and Engineering"
-date: "May 2026"
+date: "2026-05-01"
+date-format: "MMMM YYYY"
 abstract: |
-  We present an end-to-end software pipeline for inserting virtual advertising into real tennis broadcasts. The system replaces baked-in courtside ads with arbitrary sponsor logos while preserving photographic realism through camera motion and through player occlusion (specifically, when a player physically walks across a court-floor logo). The canonical test case places five virtual advertisements simultaneously (three back-wall banners, one side panel, and one court-floor walkover logo) onto a thirteen-second sequence from the Melbourne broadcast in which a player crosses the field of view.
+  We present an end-to-end software pipeline for inserting virtual advertising into live tennis broadcasts. The system replaces baked-in courtside ads with arbitrary sponsor logos while preserving photographic realism through camera motion and through player occlusion (specifically, when a player physically walks across a court-floor logo). The canonical test case places five virtual advertisements simultaneously (three back-wall banners, one left-side banner, and one court-floor walkover logo) onto a thirteen-second sequence from the 2026 Melbourne broadcast in which a player crosses the field of view.
 
   We combine three foundation models (SAM 2 for region segmentation, MatAnyone for video alpha matting, and a TrackNet-derived court-keypoint detector) with two project-specific components: a hybrid-lock state machine that holds the placement pixel-locked to a manually-clicked seed when the camera is still and ramps to a dynamic estimate when motion exceeds a calibrated tolerance, and a custom inpaint-plus-LED-blend compositor that re-bakes the inserted logo's luminance against the local surface response.
 
@@ -77,19 +78,19 @@ This paper makes three contributions.
 
 ## Paper structure
 
-Section [Problem Formulation and Demonstration Clip] frames the placement problem and introduces the Melbourne walkover demonstration clip. Section [Related Work] positions our system against the commercial and academic landscape. Section [Pipeline Architecture] describes the production architecture component by component, with the relevant equations for each stage. Section [Evaluation Framework] presents the three-layer evaluation framework. Section [Project Journey] reports the three iteration phases that produced the final design. Section [Results] presents per-region quantitative metrics and visual artefacts. Sections [Discussion], [Future Work], and [Conclusion] close the paper. The implementation is available in our companion code repository [^repo].
+@sec-problem frames the placement problem and introduces the Melbourne walkover demonstration clip. @sec-related positions our system against the commercial and academic landscape. @sec-pipeline describes the production architecture component by component, with the relevant equations for each stage. @sec-eval presents the three-layer evaluation framework. @sec-journey reports the three iteration phases that produced the final design. @sec-results presents per-region quantitative metrics and visual artefacts. @sec-discussion, @sec-future-work, and @sec-conclusion close the paper. The implementation is available in our companion code repository [^repo].
 
 [^repo]: Implementation: `https://github.com/enriquedlh97/homography-fitting`.
 
 
 
-# Problem Formulation and Demonstration Clip
+# Problem Formulation and Demonstration Clip {#sec-problem}
 
 ## What makes virtual ad insertion hard
 
 A naive baseline (alpha-composite a logo image at a fixed quadrilateral on every frame) fails on three independent counts.
 
-**Geometry.** The broadcast camera is a real pan-tilt-zoom (PTZ) rig with non-zero motion. Logos placed on the court floor or on a sideline banner must stay anchored to those physical surfaces, or the placement visibly drifts off the court. Formally, we require a per-frame homography $H_t \in \mathrm{SL}(3)$ that maps the canonical court plane $\mathcal{C} \subset \mathbb{R}^2$ to the broadcast image plane $\mathcal{I}_t \subset \mathbb{R}^2$ for every frame index $t$.
+**Geometry.** The broadcast camera is a real pan-tilt-zoom (PTZ) rig with non-zero motion. Logos placed on the court floor or on a sideline banner must stay anchored to those physical surfaces, or the placement visibly drifts off the court. Formally, we require a per-frame homography $H_t \in \mathrm{PGL}(3, \mathbb{R})$ (a $3 \times 3$ projective transformation defined up to non-zero scale) that maps the canonical court plane $\mathcal{C} \subset \mathbb{R}^2$ to the broadcast image plane $\mathcal{I}_t \subset \mathbb{R}^2$ for every frame index $t$.
 
 **Occlusion.** When a player walks over a court-floor logo, the player's silhouette must occlude the logo at the pixel level (not a bounding box, not a soft alpha sheen, but the actual person shape, including legs, feet, racket, and shadow boundaries). This requires a continuous-valued alpha matte $\alpha_t \in [0,1]^{H \times W}$ rather than a binary mask.
 
@@ -97,7 +98,7 @@ A naive baseline (alpha-composite a logo image at a fixed quadrilateral on every
 
 ## The Melbourne walkover demonstration clip
 
-Our canonical test case is `melbourne-walking-over-logo.mov`, a thirteen-second sequence from the 2026 Melbourne broadcast at 60 fps (767 frames). It packs every hard mode into one clip:
+Our canonical test case is `melbourne-walking-over-logo.mov`, a thirteen-second sequence from the 2026 Melbourne broadcast at approximately 59 fps (767 frames at 1920 $\times$ 1080). It packs every hard mode into one clip:
 
 - **Five simultaneous placements**: three back-wall banners (objects 1, 2, 5 in our configuration, initially KIA-baked), one left-side banner (object 4, initially YoPRO-baked), and one court-floor walkover logo (object 3, the baked MELBOURNE wordmark).
 - **A player walkover** between approximately frames 685 and 723: a player enters the floor-logo region, walks directly across it, and exits. This is the demanding occlusion case.
@@ -115,7 +116,7 @@ Our canonical test case is `melbourne-walking-over-logo.mov`, a thirteen-second 
 
 
 
-# Related Work
+# Related Work {#sec-related}
 
 ## Commercial systems
 
@@ -133,11 +134,11 @@ Foundation-model segmentation has matured rapidly in the last two years. SAM [@k
 
 ## The gap we address
 
-To our knowledge, no published system combines foundation-model segmentation (SAM 2), foundation-model alpha matting (MatAnyone), and a learned-keypoint court estimator (TrackNet-derived) into a single end-to-end ad-replacement pipeline. Our system targets the same effect as hardware-instrumented commercial solutions with two cost reductions: zero in-venue instrumentation and a one-click-per-region operator input. The final pipeline is not yet at the per-frame latency a live broadcast demands (we measure 2.68 fps on a single NVIDIA H200), but it is broadcast-credible on static-camera portions and the per-frame design admits throughput optimisation as an independent engineering axis (Section [Future Work]).
+To our knowledge, no published system combines foundation-model segmentation (SAM 2), foundation-model alpha matting (MatAnyone), and a learned-keypoint court estimator (TrackNet-derived) into a single end-to-end ad-replacement pipeline. Our system targets the same effect as hardware-instrumented commercial solutions with two cost reductions: zero in-venue instrumentation and a one-click-per-region operator input. The final pipeline is not yet at the per-frame latency a live broadcast demands (we measure 2.68 fps on a single NVIDIA H200), but it is broadcast-credible on static-camera portions and the per-frame design admits throughput optimisation as an independent engineering axis (see @sec-future-work).
 
 
 
-# Pipeline Architecture
+# Pipeline Architecture {#sec-pipeline}
 
 ## Overview
 
@@ -214,7 +215,7 @@ End-to-end pipeline data flow. Per frame: SAM 2 produces banner-region masks; Tr
 
 :::
 
-The five stages (segmentation, quad fitting, court-geometry estimation, hybrid-lock gating, alpha matting, and compositing) are described in turn.
+The six stages (segmentation, quad fitting, court-geometry estimation, hybrid-lock gating, alpha matting, and compositing) are described in turn.
 
 ## SAM 2 segmentation {#sec-sam2}
 
@@ -224,11 +225,11 @@ SAM 2 is a foundation model for *promptable visual segmentation* that unifies im
 
 The per-frame image branch follows the SAM lineage but replaces the original Vision Transformer with a *Hiera* hierarchical vision encoder, whose multi-scale features feed a lightweight prompt encoder and a transformer-based mask decoder. The decoder emits multiple candidate masks together with a scalar intersection-over-union (IoU) prediction used for ambiguity resolution and mask ranking.
 
-The principal departure from SAM 1 is the introduction of a *memory module* that turns the per-image segmenter into a video tracker. Each processed frame is encoded into a compact set of spatial memory tokens and object pointers, written to a first-in-first-out memory bank of recent and prompted frames. When segmenting frame $t$, the mask decoder is conditioned on the current frame features and on cross-attention against this bank. Letting $F_t$ denote the Hiera image embedding of frame $t$ and $(K, V)$ the concatenated keys and values of memory tokens in the bank, memory attention produces conditioned features
+The principal departure from SAM 1 is the introduction of a *memory module* that turns the per-image segmenter into a video tracker. Each processed frame is encoded into a compact set of spatial memory tokens and object pointers, written to a first-in-first-out memory bank of recent and prompted frames. When segmenting frame $t$, the mask decoder is conditioned on the current frame features and on cross-attention against this bank. The memory-attention block of [@ravi2025sam2] stacks $L$ transformer layers, each performing self-attention followed by cross-attention against the concatenated memory; schematically, with $F_t$ the Hiera image embedding of frame $t$, $M$ the spatial memory tokens, and $P$ the object pointers, a single block computes
 
 $$
-\tilde{F}_t \;=\; F_t \;+\; \mathrm{softmax}\!\left(\frac{Q_t K^\top}{\sqrt{d}}\right) V,
-\qquad Q_t = F_t W_Q.
+F'_t \;=\; F_t \;+\; \mathrm{SelfAttn}(F_t), \qquad
+\tilde{F}_t \;=\; F'_t \;+\; \mathrm{CrossAttn}\bigl(Q\!=\!F'_t W_Q,\; K\!=\![M;P] W_K,\; V\!=\![M;P] W_V\bigr).
 $$ {#eq-sam2-memory}
 
 The decoder then attends $\tilde{F}_t$ against the prompt tokens to emit the frame-$t$ mask. For each prompt the decoder produces $N{=}3$ candidate masks $\{\hat{m}_t^{(k)}\}_{k=1}^{3}$ with predicted IoU scores $s_t^{(k)}$, and the deployed mask is $\hat{m}_t^{\star} = \hat{m}_t^{(k^\star)}$ with $k^\star = \arg\max_k s_t^{(k)}$. This score also gates whether the frame's embedding is written into the memory bank, preventing low-quality frames from corrupting propagation.
@@ -252,49 +253,45 @@ $$
 \qquad k = 1, \dots, 14.
 $$ {#eq-btn-heatmap}
 
-Sub-pixel keypoints are extracted by binarising each heatmap and locating the strongest response with an OpenCV `HoughCircles` peak detector, which is robust to the broad, slightly anisotropic Gaussian blobs the network produces:
+Sub-pixel keypoints are extracted by thresholding each heatmap at $\tau = 170/255$ and locating the centre of the strongest connected blob using OpenCV's `HoughCircles` with a very loose accumulator threshold (`param2 = 2`) and radii in $[10, 25]$ px on the $640 \times 360$ resized frame. This is a peak-centring trick inherited from the upstream `TennisCourtDetector` implementation: HoughCircles is normally a circle detector, but the loose `param2` and the binarised input cause it to return the centre of the strongest super-threshold blob. Concretely,
 
 $$
-(\hat{u}_k, \hat{v}_k) \;=\; \operatorname{HoughCircle}\!\bigl(\mathbf{1}\{\hat{Y}_k > \tau\}\bigr).
+(\hat{u}_k, \hat{v}_k) \;=\; \operatorname{peakCentre}\!\bigl(\mathbf{1}\{\hat{Y}_k > \tau\}\bigr).
 $$
 
-Given $|\mathcal{I}| \geq 5$ image-reference correspondences against a canonical metric court template, we estimate the court-to-image homography $H_t^{\text{net}}$ by RANSAC [@fischler1981ransac] with a five-pixel reprojection threshold:
+Given $|\mathcal{I}| \geq 5$ image-reference correspondences against a canonical metric court template, we estimate the court-to-image homography $H_t^{\text{net}}$ by RANSAC [@fischler1981ransac] with a five-pixel reprojection threshold. RANSAC selects the homography that maximises the consensus-set size
 
 $$
-H_t^{\text{net}} \;=\; \arg\min_{H \in \mathrm{SL}(3)} \;\sum_{k \in \mathcal{I}} \rho\!\Bigl(\bigl\| (\hat{u}_k, \hat{v}_k) - \pi\!\bigl(H\,[X_k, Y_k, 1]^\top\bigr) \bigr\|\Bigr),
+\hat{H}_t^{\text{net}} \;=\; \arg\max_{H} \;\Big|\bigl\{\, k \in \mathcal{I} \;:\; \bigl\| (\hat{u}_k, \hat{v}_k) - \pi\!\bigl(H\,[X_k, Y_k, 1]^\top\bigr) \bigr\|_2 < \tau_{\text{reproj}} \,\bigr\}\Big|, \quad \tau_{\text{reproj}} = 5~\text{px},
 $$ {#eq-btn-ransac}
 
-where $\rho$ is the Huber loss and $\pi$ is the perspective projection. When fewer than five keypoints are detected we fall back to an exhaustive best-of-twelve four-point configuration search.
+where $\pi$ is the perspective projection; the returned $H_t^{\text{net}}$ is then refined by least-squares (DLT) over the inlier consensus set. When at least five keypoints are detected we run the RANSAC path above; with exactly four keypoints we fall back to an exhaustive best-of-twelve four-point configuration search (inherited from [@yastrebksv_tenniscourtdetector]); with fewer than four detections the estimator returns no homography on that frame and the placement holds the seed.
 
-To preserve compatibility with the manually-calibrated corners clicked on frame zero of each clip, we compose a one-shot bridge
+To align the learned-keypoint reference frame with the project's pre-existing classical-line backend (so that the YAML-configured `court_quad` fractional coordinates resolve to the same image-plane locations under either estimator), we compose a one-shot bridge between the two reference frames on frame zero:
 
 $$
-B \;=\; H_{\text{manual}}(0) \, H_0^{\text{net}\,-1},
+B \;=\; H_{\text{classical}}(0) \, H_0^{\text{net}\,-1},
 $$ {#eq-frame-zero-bridge}
 
-and report the absolute court-plane homography as $H_t = B \, H_t^{\text{net}}$ for all subsequent frames. The per-frame learned geometry is thereby anchored to user-defined reference corners without re-clicking on every clip.
+and report the absolute court-plane homography as $H_t = B \, H_t^{\text{net}}$ for all subsequent frames. The manually-clicked seed corners enter separately, via the hybrid-lock state machine described next; this bridge anchors the learned per-frame geometry to a consistent reference frame, not to the manually-clicked seed.
 
 ## Hybrid-lock state machine
 
-The hybrid-lock is a small state machine that runs after every keypoint-estimator call. It maintains the seed homography $H_{\text{seed}} = H_{\text{manual}}(0)$ and a ramp progress counter. Per frame, letting $\mathbf{c}_i$ denote the $i$-th manually-clicked corner of a placement region, the gate computes
+The hybrid-lock is a small state machine that runs after every keypoint-estimator call. It maintains the seed homography $H_{\text{seed}} = H_{\text{manual}}(0)$ and a per-corner *committed position* state $\{\mathbf{c}_i^{(\text{out})}\}_{i=1}^4$. Per frame, letting $\mathbf{c}_i$ denote the $i$-th manually-clicked corner of a placement region, the gate computes the mean projected-corner displacement under the new homography:
 
 $$
-d_t \;=\; \max_{i \in \{1, \dots, 4\}} \;\bigl\| \pi(H_{\text{seed}} \, \mathbf{c}_i) - \pi(H_t \, \mathbf{c}_i) \bigr\|_2,
+d_t \;=\; \frac{1}{4} \sum_{i=1}^{4} \;\bigl\| \pi(H_{\text{seed}} \, \mathbf{c}_i) - \pi(H_t \, \mathbf{c}_i) \bigr\|_2.
 $$ {#eq-hybrid-disp}
 
-i.e., the largest projected-corner displacement under the new homography. The state machine then outputs
+When $d_t < \tau_{\text{lock}}$ the gate stays locked and the committed positions are held at $\pi(H_{\text{seed}} \mathbf{c}_i)$. When $d_t \geq \tau_{\text{lock}}$ the gate fires and each committed corner is iteratively re-aimed at the new target $\pi(H_t \mathbf{c}_i)$ over $n$ frames via a per-corner recurrence,
 
 $$
-H_t^{\text{out}} \;=\;
-\begin{cases}
-H_{\text{seed}} & \text{if } d_t < \tau_{\text{lock}} \\
-(1 - \beta_t) H_{\text{seed}} + \beta_t H_t & \text{otherwise}
-\end{cases}
+\mathbf{c}_i^{(\text{out}, k)} \;=\; \mathbf{c}_i^{(\text{out}, k-1)} \;+\; \frac{1}{n - k + 1}\,\bigl(\pi(H_t \mathbf{c}_i) \,-\, \mathbf{c}_i^{(\text{out}, k-1)}\bigr), \quad k = 1, \dots, n,
 $$ {#eq-hybrid-lock}
 
-where the ramp coefficient $\beta_t = \min(1, r_t / R)$ advances over $R = 3$ frames once the gate first fires. Our final configuration uses $\tau_{\text{lock}} = 30~\text{px}$. The 30-pixel tolerance is loose enough that keypoint-detection noise does not fire the gate spuriously, but tight enough that real camera motion crosses the threshold and the dynamic estimate engages. The three-frame ramp prevents pop artefacts when the gate fires.
+with ramp length $n = \max(R_{\min}, \lceil d_t / v_{\max} \rceil)$, $R_{\min} = 3$, $v_{\max} = 2~\text{px/frame}$. The output homography $H_t^{(\text{out})}$ is reconstructed at each frame by fitting a DLT homography from the canonical corners $\{\mathbf{c}_i\}$ to the current committed positions $\{\mathbf{c}_i^{(\text{out},k)}\}$. Our final configuration uses $\tau_{\text{lock}} = 30~\text{px}$: loose enough that keypoint-detection noise does not fire the gate spuriously, tight enough that real camera motion crosses the threshold and the dynamic estimate engages. The ramp length is adaptive: small displacements ramp in three frames; aggressive motion (large $d_t$) ramps over more frames so that the per-frame motion remains bounded by $v_{\max}$ pixels. This prevents pop artefacts when the gate fires.
 
-On the Melbourne clip this means the vast majority of the 767 frames stay locked at $H_{\text{seed}}$ (visually pixel-identical to the manually-clicked baseline), and approximately 80 walkover-window frames where the camera drifts pick up stable per-frame tracking. Without the hybrid lock the placement would either drift during the walkover (always-locked) or pulse with per-frame keypoint noise during the static portion (always-dynamic).
+On the Melbourne clip the eval-framework counters report 751 of 767 frames locked at $H_{\text{seed}}$ (visually pixel-identical to the manually-clicked baseline), 16 frames inside the walkover window ramping toward the dynamic estimate, and 0 frames reaching the full estimate state (the camera motion subsides before any ramp completes). Without the hybrid lock the placement would either drift during the walkover (always-locked) or pulse with per-frame keypoint noise during the static portion (always-dynamic).
 
 ## Player matte: MatAnyone {#sec-matanyone}
 
@@ -314,7 +311,7 @@ $$
 U_t^{\text{GT}} \;=\; \mathbf{1}\!\left[\, \bigl| \alpha_{t-1}^{\text{GT}} - \alpha_t^{\text{GT}} \bigr| \geq \delta \,\right]
 $$
 
-with $\delta = 10^{-3}$. Intuitively, $U_t \to 1$ at boundaries (trust the current query, preserve detail) and $U_t \to 0$ in core regions (trust the propagated memory, suppress flicker). Training combines pixel-wise $L_1$ loss in core regions with a Deep Decomposition Constraint loss along boundaries.
+with $\delta = 10^{-3}$. Intuitively, $U_t$ is the per-pixel change probability: $U_t \to 1$ in regions where the alpha changed substantially between frames (typically object boundaries), and the fusion weights the freshly-attended memory readout $V_t^{m}$ so that fine detail is preserved; $U_t \to 0$ in stable core regions, and the fusion weights the propagated value $V_{t-1}$ so that flicker is suppressed. Training combines pixel-wise $L_1$ loss in core regions with a Deep Decomposition Constraint loss along boundaries [@yang2025matanyone].
 
 Binary segmentation (or a bounding box) was rejected because the player's silhouette at walkover frames is intricate (legs, racket arm, knee bend) and any hard cut produces visible vertical stripes through the floor logo. Alpha matting is the right primitive for this occlusion problem.
 
@@ -322,17 +319,17 @@ Binary segmentation (or a bounding box) was rejected because the player's silhou
 
 Per frame, per placed region, the compositor performs four operations.
 
-**(1) Erase the original ad.** The original-ad pixels inside the placement quad are inpainted with a `median_fill` filter that draws from a clean-court reference video produced offline. Where a clean reference is unavailable, we fall back to a spatial median. Edges are feathered:
+**(1) Erase the original ad.** Inside each placement quad we identify the text-mask region (the baked-in ad pixels) and replace it with a smooth fill matched to the surrounding court colour, plus matched-noise injection so the result does not read as a flat patch:
 
 $$
 \hat{I}_t^{\text{inpaint}}(p) \;=\;
 \begin{cases}
-\operatorname{med}_{s \in \mathcal{T}(p)} I_s(p) & \text{if } p \in \text{quad}_t \\
+\bigl( G_\sigma * \mathrm{fill}(I_t, \bar c_t) \bigr)(p) \;+\; \eta(p) & \text{if } p \in \text{text\_mask}_t \\
 I_t(p) & \text{otherwise},
 \end{cases}
 $$
 
-where $\mathcal{T}(p)$ is a temporal sample of clean-plate frames at the same pixel.
+where $\bar c_t = \operatorname{med}_{q \in \text{surround}(\text{text\_mask}_t)} I_t(q)$ is the spatial median of the surround region of the current frame, $G_\sigma$ is a Gaussian blur with kernel size set by `shade_blur_ksize`, and $\eta(p) \sim \mathcal{N}(0, \hat\sigma_{\text{surround}}^2)$ is texture-matched noise calibrated to the variance of the surround. A clean-court reference video, produced offline by temporal-median accumulation across player-absent intervals, is used downstream by the evaluation framework (walkover-window detection and occlusion-IoU) rather than by the per-frame compositor.
 
 **(2) Warp the new logo.** The sponsor logo $L$ is warped into the placement quad through the chosen homography:
 
@@ -340,13 +337,13 @@ $$
 \tilde{L}_t \;=\; \mathrm{warp}\!\bigl(L, \; H_t^{\text{out}}\bigr).
 $$
 
-**(3) LED-style brightness re-bake.** For each pixel inside the placement quad, the warped logo's chrominance is preserved while its luminance is re-baked against the local surface luminance computed from the inpainted background. Let $Y$ denote the luminance channel. The re-baked logo pixel is
+**(3) LED-style brightness re-bake.** For each pixel inside the placement quad, the warped logo's chrominance is preserved while its luminance is re-baked against the local surface luminance computed from the inpainted background. Let $Y$ denote the luminance channel. We compute a per-pixel shade map $s_t(p)$ that compares the Gaussian-blurred background luminance at $p$ to the median background luminance inside the placement quad, raised to a configurable strength $s$ and clipped:
 
 $$
-\tilde{L}_t^{\text{led}}(p) \;=\; \tilde{L}_t(p) \, \cdot \, \gamma\!\left(\frac{Y\!\bigl(\hat{I}_t^{\text{inpaint}}(p)\bigr)}{Y\!\bigl(\tilde{L}_t(p)\bigr) + \epsilon}\right),
+\tilde{L}_t^{\text{led}}(p) \;=\; \tilde{L}_t(p) \,\cdot\, \mathrm{clip}\!\left(\frac{Y\!\bigl(G_\sigma * \hat{I}_t^{\text{inpaint}}\bigr)(p)}{\bar{Y}_{\text{quad}, t}}\right)^{\!s}, \qquad \bar{Y}_{\text{quad}, t} = \operatorname{med}_{q \in \text{quad}_t} Y\!\bigl(G_\sigma * \hat{I}_t^{\text{inpaint}}\bigr)(q),
 $$ {#eq-led-blend}
 
-where $\gamma(\cdot)$ is a clipped gain function and $\epsilon$ is a stability constant. This makes the inserted logo read like a physically painted or printed ad whose brightness adapts to local lighting on the surface. Without this step the logo reads as a 2D overlay floating on top of the frame.
+with the gain clipped to $[\texttt{shade\_clip\_min}, \texttt{shade\_clip\_max}]$, $\sigma$ set by `shade_blur_ksize`, and $s$ set by `shade_strength`. This makes the inserted logo read like a physically painted or printed ad whose brightness tracks the local lighting on the surface: a logo placed in a shaded part of the court darkens, a logo in a bright patch brightens, all without altering the logo's intrinsic colours. Without this step the logo reads as a 2D overlay floating on top of the frame.
 
 **(4) Person-matte occlusion.** The final composite uses the MatAnyone alpha matte to occlude logo pixels behind the player:
 
@@ -356,13 +353,13 @@ $$ {#eq-occlusion}
 
 where $\alpha_t(p) = 0$ marks pure background (the logo is fully visible) and $\alpha_t(p) = 1$ marks pure foreground (the player covers the logo). Continuous values in between handle the silhouette anti-aliasing that binary segmentation cannot.
 
-The compositor additionally supports an optional shadow-synthesis mode (multiplying the placed pixels by a Gaussian-blurred dilation of the player mask, producing a soft player-foot cast shadow on a floor logo). This was disabled in the final configuration following the visual-review override described in Section [The visual-review override].
+The compositor additionally supports an optional shadow-synthesis mode (multiplying the placed pixels by a Gaussian-blurred dilation of the player mask, producing a soft player-foot cast shadow on a floor logo). This was disabled in the final configuration following the visual-review override described in @sec-override.
 
-![Compositor stage walkthrough on a single banner. Left to right: (1) the original broadcast crop containing the baked-in *blua.* ad; (2) the placement quad detected and outlined; (3) the quad rectified to a fronto-parallel rectangle in the canonical surface frame; (4) the replacement *Ferrari* logo composed in the same rectified frame; (5) the new logo warped back through the inverse homography into the original perspective and blended via the LED-style luminance re-bake (Eq. @eq-led-blend). The same pipeline runs per frame for every placement region.](../public/final/compositor_steps.png){#fig-compositor-steps width=100%}
+![Compositor stage walkthrough on a single banner. Left to right: (1) the original broadcast crop containing the baked-in *blua.* ad; (2) the placement quad detected and outlined; (3) the quad rectified to a fronto-parallel rectangle in the canonical surface frame; (4) the replacement *Ferrari* logo composed in the same rectified frame; (5) the new logo warped back through the inverse homography into the original perspective and blended via the LED-style luminance re-bake (@eq-led-blend). The same pipeline runs per frame for every placement region.](../public/final/compositor_steps.png){#fig-compositor-steps width=100%}
 
 
 
-# Evaluation Framework
+# Evaluation Framework {#sec-eval}
 
 A central deliverable of this project is the evaluation framework we built to score candidate runs. It has three layers, each capturing a different failure mode.
 
@@ -413,7 +410,7 @@ fraction of $\text{quad}_t$ pixels with logo signal in player-absent rows &
 $> 0.10$ &
 logo over-erased during walkover \\[2pt]
 \texttt{walkover\_occlusion\_iou} &
-$\mathrm{IoU}$ of $\mathbf{1}\{|I_t - C_t| > T\}$ vs $\mathbf{1}\{|O_t - L_t^{\text{baked}}| > T\}$ inside $\text{quad}_t$ &
+$\mathrm{IoU}$ of $\mathbf{1}\{|Y(I_t) - Y(C_t)| > T\}$ vs $\mathbf{1}\{|Y(O_t) - Y(L_t^{\text{baked}})| > T\}$ inside $\text{quad}_t$, with $T = 20$ on 8-bit luminance &
 $> 0.80$ &
 occlusion accuracy in walkover window \\
 \bottomrule
@@ -448,14 +445,14 @@ The rubric scores are surfaced alongside Layer 1 metrics in the run's machine-re
 
 The final gate is direct human review of the output video against the original broadcast. This is the accept-or-reject vote, and it overrides the lower layers in cases of disagreement.
 
-The reason for this third layer is that Layer 1 and Layer 2 can both miss the same class of failure: a candidate run might pass every numerical gate, score well on the rubric, and still produce a composite that any viewer would immediately read as fake. The lesson from Phase 3 (Section [The visual-review override]) is that this is not a hypothetical; it actually happened to us on a high-scoring candidate.
+The reason for this third layer is that Layer 1 and Layer 2 can both miss the same class of failure: a candidate run might pass every numerical gate, score well on the rubric, and still produce a composite that any viewer would immediately read as fake. The lesson from Phase 3 (@sec-override) is that this is not a hypothetical; it actually happened to us on a high-scoring candidate.
 
 ## Walkover-window detection
 
 The floor-logo walkover-specific metrics require knowing which frames the player is on the logo. We auto-detect the walkover window:
 
 1. Pad the floor placement quad's bounding box by 30 px horizontal $\times$ 60 px vertical.
-2. Compute the per-frame mean absolute luminance delta between the original video and a clean-court reference video, restricted to the padded quad: $\Delta_t = \mathrm{mean}_{p \in \text{padded quad}} \, |Y(I_t(p)) - Y(C_t(p))|$.
+2. Compute the per-frame mean absolute colour delta between the original video and a clean-court reference video, restricted to the padded quad and averaged over BGR channels: $\Delta_t = \mathrm{mean}_{p \in \text{padded quad}} \, \frac{1}{3} \,\| I_t(p) - C_t(p) \|_1$.
 3. Box-smooth $\{\Delta_t\}$ with a five-frame kernel.
 4. Threshold at $\mu(\Delta) + 2\,\sigma(\Delta)$, take the longest contiguous super-threshold run, pad $\pm 10$ frames.
 
@@ -463,7 +460,7 @@ On the Melbourne clip this auto-detects frames 685 to 723 as the walkover window
 
 
 
-# Project Journey
+# Project Journey {#sec-journey}
 
 The final design was reached through three iteration phases. We document them because the negative result from Phase 2 narrowed the design space and the Phase 3 visual-review override is informative about how to use numerical and rubric scores in practice.
 
@@ -477,7 +474,7 @@ We manually clicked the four court corners and the four corners of each of the f
 
 V68's per-region scorecard (held as the regression-gold reference for the rest of the project) passes every gate by construction: $\text{floor\_walkover\_occlusion\_iou} = 1.000$ (it is itself the gold), temporal SSIM $\geq 0.997$ across regions.
 
-## Phase 2: hybrid_lock with a line-based estimator (failed axis)
+## Phase 2: hybrid-lock with a line-based estimator (failed axis)
 
 **Hypothesis.** Replace the static homography with a per-frame `classical_lines_v1` estimator (Canny edges, probabilistic Hough lines, RANSAC over candidate line intersections), gated by a hybrid-lock state machine so noisy frames stay at the seed.
 
@@ -494,7 +491,7 @@ We swept the tolerance $\tau_{\text{lock}} \in \{2, 4, 6, 10, 15, 30, 99999\}$ a
 
 : Phase 2 tolerance sweep with the line-based estimator. Floor SSIM regresses monotonically as the tolerance loosens; only the always-locked sanity baseline passes all gates. {#tbl-phase2}
 
-**Diagnosis.** The line-based estimator is frame-to-frame noisy, not frame-zero misaligned. Even with the calibrated court-plane reference, per-frame projected corners deviated from the seed enough to fire the ramp gate on a substantial fraction of frames. Heavy EMA smoothing did not rescue tight tolerances. **Per-frame estimator noise is the binding constraint:** the hybrid-lock infrastructure was sound, it simply lacked a sufficiently stable upstream estimator.
+**Diagnosis.** The line-based estimator is frame-to-frame noisy, not frame-zero misaligned. Even with the calibrated court-plane reference, per-frame projected corners deviated from the seed enough to fire the ramp gate on a substantial fraction of frames; heavy EMA smoothing did not rescue tight tolerances. We note one confounder: the displacement gate of @eq-hybrid-disp is the mean L2 displacement across the four projected corners, which is direction-blind, so small but systematic vertical drift can be absorbed into the gate without firing. An axis-decomposed gate (separate vertical and horizontal thresholds) was not tested. With that caveat, the actionable conclusion of the sweep is that for this estimator and this gate, no Pareto improvement over the always-locked baseline was reachable; the path forward was a more stable upstream estimator (Phase 3) rather than further controller tuning.
 
 ![The classical line-based estimator on the demonstration clip. Hough lines are detected on the court markings (yellow / red), classified by orientation into a depth family and a width family, and intersected to recover the depth vanishing point (off-frame to the left and right). The estimator is unbiased on a static camera in expectation, but the per-frame intersection point drifts by 5 to 15 pixels between consecutive frames because the underlying line set is itself noisy. That residual is large enough to fire the hybrid-lock ramp gate on a substantial fraction of frames and small enough that EMA smoothing cannot suppress it without introducing latency.](../public/homography/vanishing_point.png){#fig-vp width=85%}
 
@@ -502,7 +499,7 @@ We swept the tolerance $\tau_{\text{lock}} \in \{2, 4, 6, 10, 15, 30, 99999\}$ a
 
 ## Phase 3: TrackNet-derived port and iteration
 
-We replaced `classical_lines_v1` with the TrackNet-derived court-keypoint detector described in Section [Court-keypoint detection and homography initialisation], composed with the frame-zero bridge of Eq. @eq-frame-zero-bridge, and ran the hybrid-lock with $\tau_{\text{lock}} = 30~\text{px}$. The first run with the new backend, designated **P3-A1**, was sufficient: floor-region temporal SSIM 0.9927, walkover occlusion IoU 0.985, every gate passes. P3-A1 became the baseline for the iteration phase that followed.
+We replaced `classical_lines_v1` with the TrackNet-derived court-keypoint detector described in @sec-btn, composed with the frame-zero bridge of @eq-frame-zero-bridge, and ran the hybrid-lock with $\tau_{\text{lock}} = 30~\text{px}$. The first run with the new backend, designated **P3-A1**, was sufficient: floor-region temporal SSIM 0.9927, walkover occlusion IoU 0.985, every gate passes. P3-A1 became the baseline for the iteration phase that followed.
 
 After P3-A1 we ran approximately fifty further iteration cycles on H200, sweeping compositor parameters: shadow synthesis strength, banner-edge feather, inpaint method, padding fractions, and so on. Each cycle produced one branched configuration and one inference run; metrics and rubric scores were collected centrally. The iteration explored:
 
@@ -513,9 +510,9 @@ After P3-A1 we ran approximately fifty further iteration cycles on H200, sweepin
 
 The candidate that won the structured visual rubric on the two user-flagged artefact dimensions (`halo_presence` and `edge_reflex`) was **P3-A38/e2**: a recipe combining P3-A1's TrackNet-plus-hybrid-lock with shadow synthesis at strength 0.6, the `erase_text` flag on the court floor, and a tightened banner edge.
 
-## The visual-review override
+## The visual-review override {#sec-override}
 
-P3-A38/e2 scored 5/5 on `realism.halo_presence` and `realism.edge_reflex` (the two dimensions a stakeholder reviewer had previously flagged on V68) and passed every Layer 1 gate. By the metrics it was the right pick.
+P3-A38/e2 scored 5/5 on `realism.halo_presence` and `realism.edge_reflex` (the two dimensions a stakeholder reviewer had previously flagged on V68) and passed every Layer 1 gate. On the numerical gates and the rubric alone, it was the recommended candidate.
 
 **On direct visual review (Layer 3) it had visible regressions versus P3-A1:**
 
@@ -531,7 +528,7 @@ The probable cause is that the rubric is scored in absolute terms (1 to 5 per di
 
 
 
-# Results
+# Results {#sec-results}
 
 ## Final deliverable
 
@@ -544,16 +541,30 @@ The final delivered configuration is **P3-A1**, with the recipe:
 
 ## Quantitative results
 
-@tbl-final reports per-region results extracted from the eval framework's machine-readable summary. All four region scorecards pass; the walkover-window evaluation passes both floor-specific gates.
+@tbl-final reports per-region results extracted from the eval framework's machine-readable summary. All region scorecards pass (the back banners are reported as a group; the left-side banner, the floor logo, and the full-frame summary are reported separately), and the walkover-window evaluation passes both floor-specific gates.
 
-| Region | Pass | Temporal SSIM | Jitter ratio | Walkover visible % | Walkover IoU |
-|:--|:--:|--:|--:|--:|--:|
-| Back banners | ✓ | 0.9999 | 0.291 | n/a | n/a |
-| Left side banner | ✓ | 1.0000 | 0.390 | n/a | n/a |
-| Floor logo | ✓ | 0.9927 | 0.805 | 0.179 | 0.985 |
-| Full frame | ✓ | 0.9987 | 0.687 | n/a | n/a |
+::: {#tbl-final}
 
-: Per-region quantitative metrics for the final deliverable (P3-A1). Gates: SSIM $> 0.95$, jitter $\leq 1.05$, walkover visible $> 0.10$, walkover IoU $> 0.80$. {#tbl-final}
+```{=latex}
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\footnotesize
+\begin{tabular}{@{} p{0.22\textwidth} c r r r r @{}}
+\toprule
+\textbf{Region} & \textbf{Pass} & \textbf{Temporal SSIM} & \textbf{Jitter ratio} & \textbf{Walkover visible \%} & \textbf{Walkover IoU} \\
+\midrule
+Back banners       & \checkmark & 0.9999 & 0.291 & n/a   & n/a   \\
+Left-side banner   & \checkmark & 1.0000 & 0.390 & n/a   & n/a   \\
+Floor logo         & \checkmark & 0.9927 & 0.805 & 0.179 & 0.985 \\
+Full frame         & \checkmark & 0.9987 & 0.687 & n/a   & n/a   \\
+\bottomrule
+\end{tabular}
+\end{center}
+```
+
+Per-region quantitative metrics for the final deliverable (P3-A1). Gates: SSIM $> 0.95$, jitter $\leq 1.05$, walkover visible $> 0.10$, walkover IoU $> 0.80$.
+
+:::
 
 **Reading the metrics.** Temporal SSIM at 0.9999 on the back banners means the placement is, frame to frame, visually identical to the V68 manually-clicked gold (the small residual deviation reflects only the inpaint's frame-to-frame variance). The left side banner reads identically (SSIM 1.0000 at four decimal places). The floor logo's slightly lower SSIM at 0.9927 is the expected consequence of two factors: the active hybrid lock during the walkover window introduces a few frames of correctly-tracked motion, and the floor surface has more luminance heterogeneity than the dark back banners (so any compositor noise is more visible).
 
@@ -561,7 +572,7 @@ The walkover occlusion IoU at 0.985 is the most important single number on this 
 
 The walkover *visible* percentage of 0.179 means that 17.9% of pixels inside the floor placement quad show logo signal in player-absent regions of the frame. The gate requires $> 0.10$; the gold's value is 0.179 (we match by design). A low value here would indicate that the inpaint had over-erased.
 
-The `any_regression: true` flag is set against V68, driven by a single metric, the floor-region jitter-ratio regression flag (`regression_floor_roi_`\allowbreak`jitter_ratio`), which moves from 0.494 (gold) to 0.805 (P3-A1), a 63% increase. **This is by design**: V68 is statically locked, so its floor jitter is the lowest physically possible (frame-to-frame inpaint variance only). P3-A1's hybrid lock introduces a small amount of correctly-tracked motion in the walkover window, which the jitter metric flags as a deviation. The visual outcome is the desired one (the placement now follows the camera), so the flag is treated as an expected side effect, not as a regression.
+The `any_regression: true` flag is set against V68, driven by a single metric, the floor-region jitter-ratio regression flag (the `regression_*` mirror of `floor_roi_jitter_ratio` in the eval framework), which moves from 0.494 (gold) to 0.805 (P3-A1), a 63% increase. **This is by design**: V68 is statically locked, so its floor jitter is the lowest physically possible (frame-to-frame inpaint variance only). P3-A1's hybrid lock introduces a small amount of correctly-tracked motion in the walkover window, which the jitter metric flags as a deviation. The visual outcome is the desired one (the placement now follows the camera), so the flag is treated as an expected side effect, not as a regression.
 
 ## Visual results
 
@@ -579,15 +590,15 @@ The `any_regression: true` flag is set against V68, driven by a single metric, t
 
 @fig-walkover-grid shows the per-frame forensic decomposition across the entire walkover window. Each row is one of the five key frames in the auto-detected window (entry, pre-contact, contact, post-contact, exit). The six columns in each row are, left to right: the original broadcast crop; the clean court reference (no logo, no player); our composite; the absolute difference between original and clean (which highlights the player's pixel footprint, brighter where the player physically blocks the wordmark); a *survival* heatmap of inserted-logo pixels surviving the alpha-matte gate (red where the logo remains visible, dark blue where the player covers it); and a red leak overlay marking pixels suspected of mis-occlusion.
 
-A correctly behaving pipeline produces a characteristic signature across the grid. In the original-minus-clean column (4), the player's silhouette is sharp and bright where they cover the wordmark and dark everywhere else; this is the ground-truth "where the player is" signal. In the survival column (5), the inserted Red Bull logo appears as bright red signal in the regions the player does *not* occupy, and is suppressed (dark blue) wherever the player covers it; this is "where the logo is visible." The red leak overlay (column 6) should be near-empty: a successful occlusion produces only sub-pixel anti-aliasing artefacts at the silhouette boundary. Reading down the rows tells the temporal story: at entry and exit the logo is fully visible and uncovered, at pre-contact and post-contact the player covers the wordmark progressively, and at the contact frame (row 3, $f704$) the player is directly atop the logo and the survival map shows the clean silhouette cutout. The walkover occlusion IoU of 0.985 reported in Table @tbl-final is the IoU between columns 4 and 5 aggregated across all 38 frames in the window.
+A correctly behaving pipeline produces a characteristic signature across the grid. In the original-minus-clean column (4), the player's silhouette is sharp and bright where they cover the wordmark and dark everywhere else; this is the ground-truth "where the player is" signal. In the survival column (5), the inserted Red Bull logo appears as bright red signal in the regions the player does *not* occupy, and is suppressed (dark blue) wherever the player covers it; this is "where the logo is visible." The red leak overlay (column 6) should be near-empty: a successful occlusion produces only sub-pixel anti-aliasing artefacts at the silhouette boundary. Reading down the rows tells the temporal story: at entry and exit the logo is fully visible and uncovered, at pre-contact and post-contact the player covers the wordmark progressively, and at the contact frame (row 3, $f704$) the player is directly atop the logo and the survival map shows the clean silhouette cutout. The walkover occlusion IoU of 0.985 reported in @tbl-final is the IoU between columns 4 and 5 aggregated across all 39 frames in the window.
 
-![Walkover sequence forensic decomposition. Rows top to bottom: $f685$ (entry, player begins entering), $f694$ (pre-contact, $\sim 25\%$ across the window), $f704$ (contact, player directly atop the logo, the showpiece frame), $f713$ (post-contact, $\sim 75\%$ across), $f723$ (exit, window closes). Columns left to right: original broadcast; clean court reference; our composite; original-minus-clean delta; logo-survival heatmap; suspected-leak red overlay. The composite column (3) shows the inserted Red Bull logo correctly occluded through the player's full silhouette across the entire window.](../public/final/walkover_grid.png){#fig-walkover-grid width=98%}
+![Walkover sequence forensic decomposition. Rows top to bottom: $f685$ (entry, player begins entering), $f694$ (pre-contact, approximately 25% across the window), $f704$ (contact, player directly atop the logo, the showpiece frame), $f713$ (post-contact, approximately 75% across), $f723$ (exit, window closes). Columns left to right: original broadcast; clean court reference; our composite; original-minus-clean delta; logo-survival heatmap; suspected-leak red overlay. The composite column (3) shows the inserted Red Bull logo correctly occluded through the player's full silhouette across the entire window.](../public/final/walkover_grid.png){#fig-walkover-grid width=98%}
 
 A side-by-side regression video stacks our composite, the V68 gold composite, and an absolute-difference heatmap into a single 2868 $\times$ 536 frame for scrubbing. Bright pixels in the heatmap denote larger per-pixel deviations from gold; on a successful candidate the heatmap is mostly dark.
 
 ## Throughput and resource use
 
-End-to-end inference runs at **2.68 fps** on a single NVIDIA H200 GPU for the 767-frame demonstration clip (286 seconds of wall-clock time, 139.8 GB of peak VRAM used). The throughput is dominated by SAM 2's video tracker (memory attention is the per-frame hot path) and the MatAnyone alpha-matte forward pass, both of which run at native resolution on every frame. The court-keypoint detector and the compositor stages are comparatively cheap. Table @tbl-gpu summarises the on-demand GPU options on the cloud platform used during iteration and their hourly cost; the project's iteration phase used the H200 for its memory headroom (the alpha-matting forward pass exceeds the working memory of smaller A-class GPUs on 1920-px frames) and ran approximately 50 cycles in Phase 3.
+End-to-end inference runs at **2.68 fps** on a single NVIDIA H200 GPU for the 767-frame demonstration clip (286 seconds of wall-clock time, 139.8 GB of peak VRAM used). The throughput is dominated by SAM 2's video tracker (memory attention is the per-frame hot path) and the MatAnyone alpha-matte forward pass, both of which run at native resolution on every frame. The court-keypoint detector and the compositor stages are comparatively cheap. @tbl-gpu summarises the on-demand GPU options on the cloud platform used during iteration and their hourly cost; the project's iteration phase used the H200 for its memory headroom (the alpha-matting forward pass exceeds the working memory of smaller A-class GPUs on 1920-px frames) and ran approximately 50 cycles in Phase 3.
 
 | GPU | VRAM | USD/hr |
 |:--|--:|--:|
@@ -603,23 +614,23 @@ End-to-end inference runs at **2.68 fps** on a single NVIDIA H200 GPU for the 76
 
 : On-demand GPU options used during iteration, with VRAM and per-hour cost (USD). The final run used a single H200 for 286 s, an end-to-end cost of approximately 0.36 USD per clip at on-demand pricing. {#tbl-gpu}
 
-The 2.68 fps figure is approximately one order of magnitude below the real-time broadcast target ($\sim 30$ fps). Closing that gap is an independent engineering axis discussed in Section [Future Work]: the pipeline is per-frame and each stage admits lower-precision inference, batched processing, or distillation to a smaller model without affecting the placement quality.
+The 2.68 fps figure is approximately one order of magnitude below the real-time broadcast target (approximately 30 fps). Closing that gap is an independent engineering axis discussed in @sec-future-work: the pipeline is per-frame and each stage admits lower-precision inference, batched processing, or distillation to a smaller model without affecting the placement quality.
 
 ## Headline numbers
 
 For at-a-glance reference:
 
-- **5** simultaneous virtual placements (three back banners, one left side panel, one court-floor walkover logo).
+- **5** simultaneous virtual placements (three back banners, one left-side banner, one court-floor walkover logo).
 - **0.9999** temporal SSIM on back banners (visually identical to V68 gold on locked frames).
 - **0.985** walkover occlusion IoU (gate threshold $> 0.80$; gold is 1.000).
-- **767** frames at 60 fps; a 13-second demonstration clip.
+- **767** frames at approximately 59 fps; a 13-second demonstration clip.
 - approximately **50** GPU iteration cycles in Phase 3.
-- **13 $\times$ 5** structured-rubric dimensions and regions scored per candidate.
+- **13** rubric dimensions per region, scored across the five placement regions (three walkover-only dimensions apply to the floor logo, giving approximately 60 rubric cells per candidate run).
 - **2.68 fps** end-to-end on H200 (real-time target approximately 30 fps is future work).
 
 
 
-# Discussion
+# Discussion {#sec-discussion}
 
 ## Strengths
 
@@ -640,15 +651,15 @@ Several quality limits remain.
 
 Three observations that the project's documentation should pass forward.
 
-**Per-frame estimator noise is the binding constraint, not frame-zero alignment.** Phase 2 chased the dynamic-homography axis with a line-based estimator that was unbiased in expectation but noisy frame-to-frame. No amount of EMA smoothing, ramp design, or tolerance tuning recovered a Pareto improvement over the always-locked baseline. The path forward was a different estimator, not a different controller.
+**For this estimator and this gate, per-frame estimator noise dominated the controller-side knobs.** Phase 2 chased the dynamic-homography axis with a line-based estimator that was unbiased in expectation but noisy frame-to-frame. No setting of EMA smoothing, ramp design, or tolerance in the swept grid recovered a Pareto improvement over the always-locked baseline. We caveat that an axis-decomposed gate metric was not tested and could partially confound this conclusion; with that caveat, the path forward was a more stable upstream estimator (the TrackNet-derived backend used in Phase 3) rather than further controller tuning.
 
-**Pixel-perfect seed beats per-frame estimation alone.** The frame-zero bridge that composes the keypoint detector's reference frame against the manually-clicked corners (Eq. @eq-frame-zero-bridge) is what makes the hybrid lock work. Without that bridge, per-frame estimates would live in their own coordinate frame and would not produce pixel-locked behaviour during the static portion. The combination wins; either piece alone does not.
+**Pixel-perfect seed beats per-frame estimation alone.** The frame-zero bridge that composes the keypoint detector's reference frame against the manually-clicked corners (@eq-frame-zero-bridge) is what makes the hybrid lock work. Without that bridge, per-frame estimates would live in their own coordinate frame and would not produce pixel-locked behaviour during the static portion. The combination wins; either piece alone does not.
 
 **Numerical rubrics are regression detectors, not accept-or-reject votes.** The Phase 3 visual-review override was the most important methodological finding of the project. The candidate that won the rubric on the user-flagged dimensions and passed every numerical gate was, on direct viewing, worse than the simpler baseline. We adopted a three-layer evaluation explicitly so that Layer 3 (direct visual review) overrides Layers 1 and 2 in cases of disagreement.
 
 
 
-# Future Work
+# Future Work {#sec-future-work}
 
 We list four directions in approximate order of expected payoff.
 
@@ -660,7 +671,7 @@ We list four directions in approximate order of expected payoff.
 
 **Auto-detection of placement regions.** A parallel branch in our implementation explored using SAM 3 text prompts to detect ad regions automatically, removing the manual click step on the seed frame. An HSV histogram scene-change gate brings cost down to 3 to 4 fps on A100-80GB while preserving detection quality on static and slowly-changing footage. This is a credible follow-up direction for the authoring workflow.
 
-# Conclusion
+# Conclusion {#sec-conclusion}
 
 We presented an end-to-end software pipeline for virtual advertising in tennis broadcasts, demonstrated on a thirteen-second sequence with five simultaneous placements and a player walkover through one of them. The pipeline combines three foundation models (SAM 2 for region segmentation, MatAnyone for player matting, and a TrackNet-derived 14-keypoint court detector) with two project-specific components: a hybrid-lock state machine that holds the placement pixel-locked to a manually-clicked seed when the camera is still and ramps to the dynamic estimate when motion exceeds tolerance, and a custom inpaint-plus-LED-blend compositor.
 
@@ -673,6 +684,8 @@ This work was conducted as part of the Computational Science and Engineering and
 The author team is split between Harvard and Politecnico di Milano. Raghav Punnam and Enrique Díaz de León Hicks are MS students in Computational Science and Engineering and Data Science at Harvard University. Giovanni Visi and Martina Maiorana are MS students in Computer Science and Engineering at Politecnico di Milano.
 
 We thank our MELIC industry partners for the problem framing and the regular feedback that shaped the quality bar, and our Harvard programme advisors for the structural guidance that shaped the methodology.
+
+# References {.unnumbered}
 
 ::: {#refs}
 :::
