@@ -74,25 +74,29 @@ export default function FinalResultRegions() {
           </div>
         </div>
 
-        {/* Image — much larger now, fills available width */}
-        <div className="relative w-full overflow-hidden rounded-xl border border-surface-light bg-black/40">
+        {/* Image — cap height so narrow-aspect images (e.g. single-crop left banner)
+            don't blow up to full screen when stretched to container width. */}
+        <div className="relative flex w-full items-center justify-center overflow-hidden rounded-xl border border-surface-light bg-black/40">
           {REGIONS.map((r, i) => {
             const isActive = step === i;
             return (
               <div
                 key={r.label}
-                className="transition-opacity duration-400"
+                className="flex transition-opacity duration-400"
                 style={{
                   position: isActive ? "relative" : "absolute",
                   inset: isActive ? "auto" : 0,
                   opacity: isActive ? 1 : 0,
                   pointerEvents: isActive ? "auto" : "none",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: isActive ? "100%" : "auto",
                 }}
               >
                 <img
                   src={`${BASE}/final/${r.image}`}
                   alt={`${r.label} — paired original vs composite crop strip`}
-                  className="block h-auto w-full object-contain"
+                  className="block max-h-[55vh] w-auto max-w-full object-contain"
                   loading={isActive ? "eager" : "lazy"}
                 />
               </div>

@@ -14,7 +14,7 @@ const DEMOS = [
     label: "Original broadcast",
     video: `${BASE}/final/input_clip.mov?v=${VIDEO_VERSION}`,
     badge: "BEFORE",
-    badgeAccent: "bg-zinc-900/85 text-zinc-100 ring-1 ring-white/20",
+    badgeAccent: "bg-accent/85 text-white ring-1 ring-white/30",
     caption: "767 frames @ 60 fps from the Melbourne broadcast — the input to the pipeline.",
     aspect: "video",
   },
