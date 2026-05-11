@@ -96,10 +96,10 @@ export default function PipelineOverview() {
             style={{ transition: "all 400ms" }}
           />
           <text x={272} y={68} fill={detectPlayer.lit ? HI : "#c4b5fd"} fontSize={11} textAnchor="middle" fontWeight={500} style={{ transition: "fill 400ms" }}>
-            player
+            person
           </text>
           <text x={272} y={82} fill={detectPlayer.lit ? HI : "#c4b5fd"} fontSize={11} textAnchor="middle" fontWeight={500} style={{ transition: "fill 400ms" }}>
-            segmentation
+            matte (MA2)
           </text>
         </g>
 
@@ -112,10 +112,10 @@ export default function PipelineOverview() {
             style={{ transition: "all 400ms" }}
           />
           <text x={205} y={196} fill={diamond.lit ? HI : AL} fontSize={10} textAnchor="middle" fontWeight={600} style={{ transition: "fill 400ms" }}>
-            new
+            motion
           </text>
           <text x={205} y={209} fill={diamond.lit ? HI : AL} fontSize={10} textAnchor="middle" fontWeight={600} style={{ transition: "fill 400ms" }}>
-            camera?
+            &gt; tol?
           </text>
         </g>
 
@@ -127,10 +127,10 @@ export default function PipelineOverview() {
             style={{ transition: "all 400ms" }}
           />
           <text x={367} y={196} fill={bannerSeg.lit ? HI : T} fontSize={11} textAnchor="middle" fontWeight={500} style={{ transition: "fill 400ms" }}>
-            banner
+            banner + court
           </text>
           <text x={367} y={210} fill={bannerSeg.lit ? HI : T} fontSize={11} textAnchor="middle" fontWeight={500} style={{ transition: "fill 400ms" }}>
-            segmentation
+            keypoints
           </text>
         </g>
 
@@ -142,10 +142,10 @@ export default function PipelineOverview() {
             style={{ transition: "all 400ms" }}
           />
           <text x={537} y={196} fill={homography.lit ? HI : T} fontSize={11} textAnchor="middle" fontWeight={500} style={{ transition: "fill 400ms" }}>
-            compute
+            BTN court
           </text>
           <text x={537} y={210} fill={homography.lit ? HI : T} fontSize={11} textAnchor="middle" fontWeight={500} style={{ transition: "fill 400ms" }}>
-            homography
+            geometry
           </text>
         </g>
 
@@ -157,7 +157,7 @@ export default function PipelineOverview() {
             style={{ transition: "all 400ms" }}
           />
           <text x={487} y={334} fill={opticalFlow.lit ? HI : T} fontSize={11} textAnchor="middle" fontWeight={500} style={{ transition: "fill 400ms" }}>
-            optical flow
+            stay at seed
           </text>
         </g>
 
@@ -169,7 +169,7 @@ export default function PipelineOverview() {
             style={{ transition: "all 400ms" }}
           />
           <text x={721} y={205} fill={overlayLogo.lit ? HI : AL} fontSize={12} textAnchor="middle" fontWeight={600} style={{ transition: "fill 400ms" }}>
-            overlay logo
+            LED-blend overlay
           </text>
         </g>
 
@@ -199,12 +199,12 @@ export default function PipelineOverview() {
           <polyline points="138,200 138,72 195,72" stroke={W} strokeWidth={1} markerEnd="url(#ah)" />
           <line x1={104} y1={200} x2={165} y2={200} stroke={W} strokeWidth={1} markerEnd="url(#ah)" />
           <line x1={245} y1={200} x2={296} y2={200} stroke={W} strokeWidth={1} markerEnd="url(#ah)" />
-          <text x={255} y={192} fill={AL} fontSize={10.5} fontWeight={600}>YES</text>
+          <text x={255} y={192} fill={AL} fontSize={10.5} fontWeight={600}>RAMP</text>
           <line x1={438} y1={200} x2={464} y2={200} stroke={W} strokeWidth={1} markerEnd="url(#ah)" />
           <line x1={610} y1={200} x2={635} y2={200} stroke={W} strokeWidth={1} />
           <polyline points="205,242 205,329 424,329" stroke={W} strokeWidth={1} markerEnd="url(#ah)" />
-          <text x={213} y={278} fill={AL} fontSize={10.5} fontWeight={600}>NO</text>
-          <text x={213} y={294} fill={TM} fontSize={9.5} opacity={0.75}>use cached homography</text>
+          <text x={213} y={278} fill={AL} fontSize={10.5} fontWeight={600}>STAY</text>
+          <text x={213} y={294} fill={TM} fontSize={9.5} opacity={0.75}>hybrid_lock — keep seed homography</text>
           <polyline points="550,329 635,329 635,200" stroke={W} strokeWidth={1} />
           <line x1={635} y1={200} x2={660} y2={200} stroke={W} strokeWidth={1} markerEnd="url(#ah)" />
           <polyline points="350,72 721,72 721,178" stroke={W} strokeWidth={1} markerEnd="url(#ah)" />

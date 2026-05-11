@@ -48,7 +48,7 @@ export default function ComparisonTable() {
       >
         <div className="w-full">
           <span className="mb-2 block font-mono text-sm tracking-widest text-accent">
-            05
+            06
           </span>
           <h2 className="text-3xl font-bold tracking-tight text-foreground">
             How We Compare
@@ -136,7 +136,7 @@ export default function ComparisonTable() {
             Fully software-based · Zero training · Minimal operator input · Per-pixel occlusion · Stable tracking
           </p>
           <p className="mt-1 text-center text-[10px] text-muted/50">
-            * Preliminary estimate — benchmarks in progress
+            * Measured end-to-end on H200, 767-frame demo clip; ~30 fps real-time target is future work
           </p>
         </div>
       </div>

@@ -5,8 +5,8 @@ import ProblemOutline from "@/components/deck/ProblemOutline";
 import Challenges from "@/components/deck/Challenges";
 import PriorWork from "@/components/deck/PriorWork";
 import OurApproach from "@/components/deck/OurApproach";
+import ProjectJourney from "@/components/deck/ProjectJourney";
 import ComparisonTable from "@/components/deck/ComparisonTable";
-import ModalSpeedBenchmark from "@/components/deck/ModalSpeedBenchmark";
 import PipelineOverview from "@/components/deck/PipelineOverview";
 import Sam2Architecture from "@/components/deck/Sam2Architecture";
 import Sam3Experiments from "@/components/deck/Sam3Experiments";
@@ -19,46 +19,49 @@ import LogoOverlay from "@/components/deck/LogoOverlay";
 import FinalResultRegions from "@/components/deck/FinalResultRegions";
 import WalkoverSequence from "@/components/deck/WalkoverSequence";
 import Demo from "@/components/deck/Demo";
+import HeadlineNumbers from "@/components/deck/HeadlineNumbers";
 import VisualReviewDiscipline from "@/components/deck/VisualReviewDiscipline";
+import ModalSpeedBenchmark from "@/components/deck/ModalSpeedBenchmark";
 import FutureImprovements from "@/components/deck/FutureImprovements";
 import Thanks from "@/components/deck/Thanks";
 
-// WARNING: minimap indices must match slide order below. Update if slides are added/removed.
-// Slide layout (final, post-hand-off):
+// Slide layout (final hand-off · 25 slides · ~30 min target):
 //   0  Title
 //   1  Team
-//   2  Problem Outline
-//   3  Challenges
-//   4  Prior Work
-//   5  Our Approach
-//   6  Comparison Table
-//   7  Modal + Speed Benchmarking
-//   8  Pipeline Overview        ← minimap host
-//   9  SAM2 Architecture        ← minimap range start
-//  10  SAM3 Experiments
-//  11  Player Tracking
-//  12  Banner Segmentation
-//  13  Banner Segmentation Videos
-//  14  Homography
-//  15  Single Vanishing Point
-//  16  Logo Overlay             ← minimap range end (last pipeline stage)
-//  17  Final Result — Region by Region   ← NEW (paired crop strips)
-//  18  Walkover Sequence                  ← NEW (5 forensic sheets)
-//  19  Demo                                (final video + side-by-side)
-//  20  Visual Review > Rubric              ← NEW (the discipline narrative)
-//  21  Future Improvements
-//  22  Thanks
+//   2  Problem Outline       (01)
+//   3  Challenges             (02)
+//   4  Prior Work             (03)
+//   5  Our Approach           (04)
+//   6  Project Journey        (05) ★ NEW — Phase 1 → 2 → 3 → Final
+//   7  Comparison Table       (06)
+//   8  Pipeline Overview      (07) ★ updated SVG labels
+//   9  SAM2 Architecture      (08)
+//  10  SAM3 Experiments       (09)
+//  11  Player Segmentation    (10)
+//  12  Banner Seg & Tracking  (11)
+//  13  Banner Seg Videos      (12)
+//  14  Homography             (13)
+//  15  Single Vanishing Point (14)
+//  16  Logo Overlay           (15)
+//  17  Final Result           (16)
+//  18  Walkover Sequence      (17)
+//  19  Demo                   (18)
+//  20  Headline Numbers       (19) ★ NEW
+//  21  Evaluation             (20)
+//  22  Modal + Speed          (21) ★ MOVED to engineering-rigor section
+//  23  Future Improvements    (—)
+//  24  Thanks                 (—)
 const PIPELINE_MINIMAP = {
   slide: 8, // Pipeline Overview
   range: [9, 16] as [number, number],
   highlights: {
     9: "sam2-arch",
-    10: "sam2-arch", // SAM3 Experiments — keep SAM-arch lit
+    10: "sam2-arch",
     11: "detect-player",
     12: "banner-seg",
     13: "banner-seg-videos",
     14: "homography",
-    15: "homography", // Single Vanishing Point — keep homography lit
+    15: "homography",
     16: "overlay-logo",
   },
 };
@@ -70,23 +73,25 @@ const SLIDE_STEPS = [
   1,  // 3  Challenges
   4,  // 4  Prior Work
   4,  // 5  Our Approach
-  2,  // 6  Comparison Table
-  1,  // 7  Modal + Speed Benchmarking
+  4,  // 6  Project Journey  (4 phase reveals)
+  2,  // 7  Comparison Table
   1,  // 8  Pipeline Overview
   1,  // 9  SAM2 Architecture
   1,  // 10 SAM3 Experiments
-  2,  // 11 Player Tracking
+  2,  // 11 Player Segmentation
   1,  // 12 Banner Segmentation
   5,  // 13 Banner Segmentation Videos
   15, // 14 Homography
   1,  // 15 Single Vanishing Point
   3,  // 16 Logo Overlay
-  4,  // 17 Final Result — Region by Region
+  4,  // 17 Final Result
   5,  // 18 Walkover Sequence
   3,  // 19 Demo
-  3,  // 20 Evaluation — three layers (Layer 1 / Layer 2 / Layer 3 reveals)
-  1,  // 21 Future Improvements
-  1,  // 22 Thanks
+  1,  // 20 Headline Numbers
+  3,  // 21 Evaluation
+  1,  // 22 Modal + Speed
+  1,  // 23 Future Improvements
+  1,  // 24 Thanks
 ];
 
 export default function Home() {
@@ -98,8 +103,8 @@ export default function Home() {
       <Challenges />
       <PriorWork />
       <OurApproach />
+      <ProjectJourney />
       <ComparisonTable />
-      <ModalSpeedBenchmark />
       <PipelineOverview />
       <Sam2Architecture />
       <Sam3Experiments />
@@ -112,7 +117,9 @@ export default function Home() {
       <FinalResultRegions />
       <WalkoverSequence />
       <Demo />
+      <HeadlineNumbers />
       <VisualReviewDiscipline />
+      <ModalSpeedBenchmark />
       <FutureImprovements />
       <Thanks />
     </Presentation>
