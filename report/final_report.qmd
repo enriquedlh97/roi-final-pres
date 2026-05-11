@@ -233,6 +233,8 @@ The decoder then attends $\tilde{F}_t$ against the prompt tokens to emit the fra
 
 This step replaces what would otherwise be either manual frame-by-frame mask annotation or a dedicated banner-detection model trained on tournament-specific data.
 
+![Architecture of SAM 2, reproduced from @ravi2025sam2. A Hiera image encoder feeds frame embeddings into a memory-attention block whose keys and values come from a memory bank of recent and prompted frames; the mask decoder takes the conditioned features together with prompt-encoder tokens and emits the per-frame mask. The memory encoder writes each output back into the memory bank for future frames. This is the design that turns a single click on one frame into a temporally coherent mask track across hundreds of frames.](../public/sam-architecture.png){#fig-sam2-arch width=90%}
+
 ## Hull-based quad fitting
 
 Each per-frame binary mask is reduced to a four-corner placement quadrilateral via convex-hull vertex deduction. We compute the convex hull $\mathcal{H}_t$ of the mask, then select four corner points that maximise perpendicular distance from each candidate edge. The hull fitter tolerates partial occlusion (a banner whose mask extends off-screen) better than principal-component or linear-programming alternatives. Exponential-moving-average smoothing with a small temporal coefficient keeps the four corners stable frame-to-frame.
@@ -353,6 +355,8 @@ $$ {#eq-occlusion}
 where $\alpha_t(p) = 0$ marks pure background (the logo is fully visible) and $\alpha_t(p) = 1$ marks pure foreground (the player covers the logo). Continuous values in between handle the silhouette anti-aliasing that binary segmentation cannot.
 
 The compositor additionally supports an optional shadow-synthesis mode (multiplying the placed pixels by a Gaussian-blurred dilation of the player mask, producing a soft player-foot cast shadow on a floor logo). This was disabled in the final configuration following the visual-review override described in Section [The visual-review override].
+
+![Compositor stage walkthrough on a single banner. Left to right: (1) the original broadcast crop containing the baked-in *blua.* ad; (2) the placement quad detected and outlined; (3) the quad rectified to a fronto-parallel rectangle in the canonical surface frame; (4) the replacement *Ferrari* logo composed in the same rectified frame; (5) the new logo warped back through the inverse homography into the original perspective and blended via the LED-style luminance re-bake (Eq. @eq-led-blend). The same pipeline runs per frame for every placement region.](../public/final/compositor_steps.png){#fig-compositor-steps width=100%}
 
 
 
@@ -490,6 +494,8 @@ We swept the tolerance $\tau_{\text{lock}} \in \{2, 4, 6, 10, 15, 30, 99999\}$ a
 
 **Diagnosis.** The line-based estimator is frame-to-frame noisy, not frame-zero misaligned. Even with the calibrated court-plane reference, per-frame projected corners deviated from the seed enough to fire the ramp gate on a substantial fraction of frames. Heavy EMA smoothing did not rescue tight tolerances. **Per-frame estimator noise is the binding constraint:** the hybrid-lock infrastructure was sound, it simply lacked a sufficiently stable upstream estimator.
 
+![The classical line-based estimator on the demonstration clip. Hough lines are detected on the court markings (yellow / red), classified by orientation into a depth family and a width family, and intersected to recover the depth vanishing point (off-frame to the left and right). The estimator is unbiased on a static camera in expectation, but the per-frame intersection point drifts by 5 to 15 pixels between consecutive frames because the underlying line set is itself noisy. That residual is large enough to fire the hybrid-lock ramp gate on a substantial fraction of frames and small enough that EMA smoothing cannot suppress it without introducing latency.](../public/homography/vanishing_point.png){#fig-vp width=85%}
+
 **Decision.** Hold V68 as the regression gold. Pivot the dynamic-homography axis to a more stable estimator (Phase 3).
 
 ## Phase 3: TrackNet-derived port and iteration
@@ -569,11 +575,33 @@ The `any_regression: true` flag is set against V68, driven by a single metric, t
 
 ![Court-floor logo during the walkover window. Three frames inside the auto-detected window of frames 685 to 723. Top row: original broadcast with the painted MELBOURNE wordmark. Bottom row: our composite with the inserted Red Bull logo, occluded correctly through the player's silhouette via the MatAnyone alpha matte.](../public/final/crops_floor_walkover.png){#fig-floor width=95%}
 
-@fig-contact shows the forensic sheet at the showpiece frame ($f704$), where the player is directly on top of the floor logo. The six columns are: original; clean court (no logo, no player); our composite; the original-minus-clean delta heatmap (which highlights the player's pixel footprint); a survival heatmap (logo pixels persisting through the matte); and a red leak overlay marking suspected mis-occlusion. On a successful run, columns 4 to 6 are visually quiet: large signal in column 4 means the player is genuinely there, and column 6 should be near-empty.
+@fig-walkover-grid shows the per-frame forensic decomposition across the entire walkover window. Each row is one of the five key frames in the auto-detected window (entry, pre-contact, contact, post-contact, exit). The six columns in each row are, left to right: the original broadcast crop; the clean court reference (no logo, no player); our composite; the absolute difference between original and clean (which highlights the player's pixel footprint, brighter where the player physically blocks the wordmark); a *survival* heatmap of inserted-logo pixels surviving the alpha-matte gate (red where the logo remains visible, dark blue where the player covers it); and a red leak overlay marking pixels suspected of mis-occlusion.
 
-![Walkover forensic sheet at frame 704, with the player directly on the floor logo. Six columns left-to-right: original broadcast; clean court reference; our composite; original-minus-clean delta; survival heatmap; red leak overlay.](../public/final/walkover_contact.png){#fig-contact width=95%}
+A correctly behaving pipeline produces a characteristic signature across the grid. In the original-minus-clean column (4), the player's silhouette is sharp and bright where they cover the wordmark and dark everywhere else; this is the ground-truth "where the player is" signal. In the survival column (5), the inserted Red Bull logo appears as bright red signal in the regions the player does *not* occupy, and is suppressed (dark blue) wherever the player covers it; this is "where the logo is visible." The red leak overlay (column 6) should be near-empty: a successful occlusion produces only sub-pixel anti-aliasing artefacts at the silhouette boundary. Reading down the rows tells the temporal story: at entry and exit the logo is fully visible and uncovered, at pre-contact and post-contact the player covers the wordmark progressively, and at the contact frame (row 3, $f704$) the player is directly atop the logo and the survival map shows the clean silhouette cutout. The walkover occlusion IoU of 0.985 reported in Table @tbl-final is the IoU between columns 4 and 5 aggregated across all 38 frames in the window.
+
+![Walkover sequence forensic decomposition. Rows top to bottom: $f685$ (entry, player begins entering), $f694$ (pre-contact, $\sim 25\%$ across the window), $f704$ (contact, player directly atop the logo, the showpiece frame), $f713$ (post-contact, $\sim 75\%$ across), $f723$ (exit, window closes). Columns left to right: original broadcast; clean court reference; our composite; original-minus-clean delta; logo-survival heatmap; suspected-leak red overlay. The composite column (3) shows the inserted Red Bull logo correctly occluded through the player's full silhouette across the entire window.](../public/final/walkover_grid.png){#fig-walkover-grid width=98%}
 
 A side-by-side regression video stacks our composite, the V68 gold composite, and an absolute-difference heatmap into a single 2868 $\times$ 536 frame for scrubbing. Bright pixels in the heatmap denote larger per-pixel deviations from gold; on a successful candidate the heatmap is mostly dark.
+
+## Throughput and resource use
+
+End-to-end inference runs at **2.68 fps** on a single NVIDIA H200 GPU for the 767-frame demonstration clip (286 seconds of wall-clock time, 139.8 GB of peak VRAM used). The throughput is dominated by SAM 2's video tracker (memory attention is the per-frame hot path) and the MatAnyone alpha-matte forward pass, both of which run at native resolution on every frame. The court-keypoint detector and the compositor stages are comparatively cheap. Table @tbl-gpu summarises the on-demand GPU options on the cloud platform used during iteration and their hourly cost; the project's iteration phase used the H200 for its memory headroom (the alpha-matting forward pass exceeds the working memory of smaller A-class GPUs on 1920-px frames) and ran approximately 50 cycles in Phase 3.
+
+| GPU | VRAM | USD/hr |
+|:--|--:|--:|
+| T4 | 16 GB | 0.59 |
+| L4 | 24 GB | 0.80 |
+| A10G | 24 GB | 1.10 |
+| L40S | 48 GB | 1.95 |
+| A100 | 40 GB | 2.10 |
+| A100-80GB | 80 GB | 2.50 |
+| H100 | 80 GB | 3.95 |
+| **H200 (final)** | **141 GB** | **4.54** |
+| B200 | 192 GB | 6.25 |
+
+: On-demand GPU options used during iteration, with VRAM and per-hour cost (USD). The final run used a single H200 for 286 s, an end-to-end cost of approximately 0.36 USD per clip at on-demand pricing. {#tbl-gpu}
+
+The 2.68 fps figure is approximately one order of magnitude below the real-time broadcast target ($\sim 30$ fps). Closing that gap is an independent engineering axis discussed in Section [Future Work]: the pipeline is per-frame and each stage admits lower-precision inference, batched processing, or distillation to a smaller model without affecting the placement quality.
 
 ## Headline numbers
 
