@@ -52,13 +52,18 @@ export default function ModalSpeedBenchmark() {
                 return (
                   <li
                     key={g.gpu}
-                    className={`flex items-baseline justify-between font-mono text-[12px] ${
-                      isFinal ? "rounded bg-accent/10 px-2 py-0.5 text-accent" : "text-muted"
+                    className={`grid items-baseline gap-3 font-mono text-[12px] ${
+                      isFinal ? "rounded bg-accent/10 px-2 py-0.5 text-accent" : "px-2 text-muted"
                     }`}
+                    style={{ gridTemplateColumns: "1fr 4.5rem 4rem" }}
                   >
                     <span>{g.gpu}</span>
-                    <span className="text-muted/60">{g.vram}</span>
-                    <span className={isFinal ? "text-accent" : "text-foreground/80"}>{g.cost}</span>
+                    <span className={`text-right tabular-nums ${isFinal ? "text-accent" : "text-muted/70"}`}>
+                      {g.vram}
+                    </span>
+                    <span className={`text-right tabular-nums ${isFinal ? "text-accent" : "text-foreground/80"}`}>
+                      {g.cost}
+                    </span>
                   </li>
                 );
               })}
