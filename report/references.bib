@@ -1,72 +1,113 @@
-@article{ravi2024sam2,
-  title   = {{SAM} 2: Segment Anything in Images and Videos},
-  author  = {Ravi, Nikhila and Gabeur, Valentin and Hu, Yuan-Ting and Hu, Ronghang and Ryali, Chaitanya and Ma, Tengyu and Khedr, Haitham and R{\"a}dle, Roman and Rolland, Chloe and Gustafson, Laura and others},
-  journal = {arXiv preprint arXiv:2408.00714},
-  year    = {2024},
-  url     = {https://github.com/facebookresearch/sam2}
+@inproceedings{ravi2025sam2,
+  title         = {{SAM} 2: Segment Anything in Images and Videos},
+  author        = {Ravi, Nikhila and Gabeur, Valentin and Hu, Yuan-Ting and Hu, Ronghang and Ryali, Chaitanya and Ma, Tengyu and Khedr, Haitham and R{\"a}dle, Roman and Rolland, Chloe and Gustafson, Laura and Mintun, Eric and Pan, Junting and Alwala, Kalyan Vasudev and Carion, Nicolas and Wu, Chao-Yuan and Girshick, Ross and Doll{\'a}r, Piotr and Feichtenhofer, Christoph},
+  booktitle     = {International Conference on Learning Representations (ICLR)},
+  year          = {2025},
+  note          = {Oral presentation},
+  eprint        = {2408.00714},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV},
+  url           = {https://openreview.net/forum?id=Ha6RTeWMd0}
 }
 
-@article{meta2024sam3,
-  title   = {{SAM} 3: Segment Anything with Concepts},
-  author  = {{Meta AI}},
-  journal = {Meta AI Research},
-  year    = {2024},
-  note    = {Foundation model with text-prompt segmentation. Used for auto-detection experiments on the `feat/sam3-light-v1` branch.}
+@inproceedings{yang2025matanyone,
+  title         = {{MatAnyone}: Stable Video Matting with Consistent Memory Propagation},
+  author        = {Yang, Peiqing and Zhou, Shangchen and Zhao, Jixin and Tao, Qingyi and Loy, Chen Change},
+  booktitle     = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year          = {2025},
+  eprint        = {2501.14677},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV},
+  url           = {https://arxiv.org/abs/2501.14677}
 }
 
-@inproceedings{yang2024matanyone,
-  title     = {{MatAnyone}: Stable Video Matting with Consistent Memory Propagation},
-  author    = {Yang, Peiqing and Zhou, Shangchen and Zhao, Jixin and Tao, Qingyi and Loy, Chen Change},
-  booktitle = {Proceedings of the {IEEE/CVF} Conference on Computer Vision and Pattern Recognition ({CVPR})},
-  year      = {2026},
-  note      = {Used for per-frame player alpha matting.}
+@inproceedings{huang2019tracknet,
+  title         = {{TrackNet}: A Deep Learning Network for Tracking High-Speed and Tiny Objects in Sports Applications},
+  author        = {Huang, Yu-Chuan and Liao, I-No and Chen, Ching-Hsuan and {\.I}k, Ts{\`i}-U{\'i} and Peng, Wen-Chih},
+  booktitle     = {Proceedings of the 16th IEEE International Conference on Advanced Video and Signal Based Surveillance (AVSS)},
+  year          = {2019},
+  doi           = {10.1109/AVSS.2019.8909871},
+  eprint        = {1907.03698},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CV}
 }
 
-@inproceedings{stylianou2020tracknet,
-  title     = {{TrackNet}: A Deep Learning Network for Tracking High-Speed and Tiny Objects in Sports Applications},
-  author    = {Huang, Yu-Chuan and Liao, I-No and Chen, Ching-Hsuan and {\.I}k, Tsi-Ui and Peng, Wen-Chih},
-  booktitle = {Proceedings of the {IEEE} International Conference on Advanced Video and Signal Based Surveillance ({AVSS})},
-  year      = {2019},
-  doi       = {10.1109/AVSS.2019.8909871},
-  note      = {Source of the 14-keypoint court detector architecture we port for our court-geometry estimator. The ball-tracking head is unused in our application; the court-keypoint head provides the corner localisation we need.}
+@misc{yastrebksv_tenniscourtdetector,
+  title        = {{TennisCourtDetector}: Deep Learning Network for Detecting Tennis-Court Keypoints},
+  author       = {{yastrebksv}},
+  year         = {2021},
+  howpublished = {\url{https://github.com/yastrebksv/TennisCourtDetector}},
+  note         = {MIT License. Adapts the TrackNet architecture of Huang et al.\ (2019) to regress fourteen tennis-court landmark keypoints. The basis for the court-geometry estimator used in this work.}
+}
+
+@inproceedings{kirillov2023sam,
+  title     = {Segment Anything},
+  author    = {Kirillov, Alexander and Mintun, Eric and Ravi, Nikhila and Mao, Hanzi and Rolland, Chloe and Gustafson, Laura and Xiao, Tete and Whitehead, Spencer and Berg, Alexander C. and Lo, Wan-Yen and Doll{\'a}r, Piotr and Girshick, Ross},
+  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+  year      = {2023}
 }
 
 @misc{supponor,
-  title        = {{Supponor}: Virtual Replacement Technology},
+  title        = {{Supponor}: Digital Billboard Replacement Technology},
   author       = {{Supponor}},
-  howpublished = {Commercial product},
-  url          = {https://supponor.com},
-  note         = {Hardware-instrumented virtual ad insertion, primarily for ice hockey dasherboards. Uses infrared-emitting hardware in the venue.}
+  howpublished = {Commercial product, \url{https://supponor.com}},
+  year         = {2024},
+  note         = {Hardware-instrumented virtual ad insertion, primarily for ice-hockey dasherboards; uses infrared-emitting installations.}
 }
 
 @misc{uniqfeed,
-  title        = {{uniqFEED}: Personalized Sports Broadcasting},
+  title        = {{uniqFEED}: Personalized Sports Broadcasting Platform},
   author       = {{uniqFEED AG}},
-  howpublished = {Commercial product},
-  url          = {https://uniqfeed.com},
+  howpublished = {Commercial product, \url{https://uniqfeed.com}},
+  year         = {2024},
   note         = {Software-only virtual ad insertion system for live sports broadcasts.}
 }
 
-@misc{vizrt,
+@misc{vizrt_arena,
   title        = {{Viz Arena}: Augmented-Reality Graphics for Live Sports},
   author       = {{Vizrt}},
-  howpublished = {Commercial product},
-  url          = {https://www.vizrt.com/products/viz-arena},
-  note         = {Augmented-reality graphics product with camera-rig instrumentation requirements.}
+  howpublished = {Commercial product, \url{https://www.vizrt.com/products/viz-arena}},
+  year         = {2024},
+  note         = {Augmented-reality graphics platform with camera-rig instrumentation requirements.}
 }
 
 @inproceedings{homayounfar2017,
   title     = {Sports Field Localization via Deep Structured Models},
   author    = {Homayounfar, Namdar and Fidler, Sanja and Urtasun, Raquel},
-  booktitle = {Proceedings of the {IEEE} Conference on Computer Vision and Pattern Recognition ({CVPR})},
-  year      = {2017},
-  note      = {Academic homography estimation for soccer-field registration. Closely related to the court-detection step in our pipeline but does not address downstream ad replacement.}
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2017}
 }
 
 @inproceedings{nie2021,
   title     = {A Robust and Efficient Framework for Sports-Field Registration},
   author    = {Nie, Xiaohan and Chen, Shixiang and Hamid, Raffay},
-  booktitle = {{IEEE/CVF} Winter Conference on Applications of Computer Vision ({WACV})},
-  year      = {2021},
-  note      = {Soccer-field registration via keypoint detection plus geometric optimisation.}
+  booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+  year      = {2021}
+}
+
+@inproceedings{fischler1981ransac,
+  title     = {Random Sample Consensus: A Paradigm for Model Fitting with Applications to Image Analysis and Automated Cartography},
+  author    = {Fischler, Martin A. and Bolles, Robert C.},
+  booktitle = {Communications of the ACM},
+  volume    = {24},
+  number    = {6},
+  pages     = {381--395},
+  year      = {1981}
+}
+
+@article{wang2004ssim,
+  title   = {Image Quality Assessment: From Error Visibility to Structural Similarity},
+  author  = {Wang, Zhou and Bovik, Alan C. and Sheikh, Hamid R. and Simoncelli, Eero P.},
+  journal = {IEEE Transactions on Image Processing},
+  volume  = {13},
+  number  = {4},
+  pages   = {600--612},
+  year    = {2004}
+}
+
+@inproceedings{cheng2024cutie,
+  title     = {Putting the Object Back into Video Object Segmentation},
+  author    = {Cheng, Ho Kei and Oh, Seoung Wug and Price, Brian and Lee, Joon-Young and Schwing, Alexander G.},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+  year      = {2024}
 }
