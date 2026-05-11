@@ -31,7 +31,7 @@ format:
     urlcolor: "blue"
     citecolor: "blue"
     colorlinks: true
-    fig-pos: "H"
+    fig-pos: "htbp"
     include-in-header:
       text: |
         \usepackage{tikz}
@@ -79,7 +79,7 @@ Section [Problem Formulation and Demonstration Clip] frames the placement proble
 
 [^repo]: Implementation: `https://github.com/enriquedlh97/homography-fitting`.
 
-{{< pagebreak >}}
+
 
 # Problem Formulation and Demonstration Clip
 
@@ -101,7 +101,7 @@ Our canonical test case is `melbourne-walking-over-logo.mov`, a thirteen-second 
 - **A player walkover** between approximately frames 685 and 723: a player enters the floor-logo region, walks directly across it, and exits. This is the demanding occlusion case.
 - **Mostly static camera with subtle drift and a clearly visible motion segment during the walkover.** This is the exact failure mode that makes a statically-locked placement insufficient.
 
-Table @tbl-regions summarises the five regions and the quality constraint that dominates each.
+@tbl-regions summarises the five regions and the quality constraint that dominates each.
 
 | Region | Surface | Dominant constraint |
 |---|---|---|
@@ -111,7 +111,7 @@ Table @tbl-regions summarises the five regions and the quality constraint that d
 
 : Five placement regions on the demonstration clip and the quality constraint that dominates each. {#tbl-regions}
 
-{{< pagebreak >}}
+
 
 # Related Work
 
@@ -133,7 +133,7 @@ Foundation-model segmentation has matured rapidly in the last two years. SAM [@k
 
 To our knowledge, no published system combines foundation-model segmentation (SAM 2), foundation-model alpha matting (MatAnyone), and a learned-keypoint court estimator (TrackNet-derived) into a single end-to-end ad-replacement pipeline. Our system targets the same effect as hardware-instrumented commercial solutions with two cost reductions: zero in-venue instrumentation and a one-click-per-region operator input. The final pipeline is not yet at the per-frame latency a live broadcast demands (we measure 2.68 fps on a single NVIDIA H200), but it is broadcast-credible on static-camera portions and the per-frame design admits throughput optimisation as an independent engineering axis (Section [Future Work]).
 
-{{< pagebreak >}}
+
 
 # Pipeline Architecture
 
@@ -354,7 +354,7 @@ where $\alpha_t(p) = 0$ marks pure background (the logo is fully visible) and $\
 
 The compositor additionally supports an optional shadow-synthesis mode (multiplying the placed pixels by a Gaussian-blurred dilation of the player mask, producing a soft player-foot cast shadow on a floor logo). This was disabled in the final configuration following the visual-review override described in Section [The visual-review override].
 
-{{< pagebreak >}}
+
 
 # Evaluation Framework
 
@@ -370,19 +370,54 @@ A central deliverable of this project is the evaluation framework we built to sc
 
 ## Layer 1: numerical metrics
 
-Each candidate run is scored by the eval framework. The framework reads the run's composited video plus its frozen configuration, auto-discovers placement regions, and computes per-region metrics. Hard gates are listed in Table @tbl-gates.
+Each candidate run is scored by the eval framework. The framework reads the run's composited video plus its frozen configuration, auto-discovers placement regions, and computes per-region metrics. Hard gates are listed in @tbl-gates.
 
-| Metric | Symbol / definition | Gate | What it catches |
-|---|---|---|---|
-| `corner_max_jump_px` | $\max_t \|\mathbf{c}_t - \mathbf{c}_{t-1}\|_\infty$ | $< 2.0$ | single-frame placement jump |
-| `corner_accel_p95_px` | $\mathrm{pct}_{95}\, \|\mathbf{c}_{t+1} - 2\mathbf{c}_t + \mathbf{c}_{t-1}\|$ | $< 1.0$ | jittery corner trajectory |
-| `quad_area_cv` | $\sigma(A_t) / \mu(A_t)$, $A_t = \mathrm{area}(\text{quad}_t)$ | $< 0.05$ | placement-area flicker |
-| `roi_jitter_ratio` | $\frac{\text{frame-diff}_{\text{ROI}}^{\text{comp}}}{\text{frame-diff}_{\text{ROI}}^{\text{orig}}}$ | $\leq 1.05$ | ROI instability vs original |
-| `roi_temporal_ssim_mean` | $\mathrm{mean}_t \, \mathrm{SSIM}(\mathrm{ROI}_t, \mathrm{ROI}_{t-1})$ [@wang2004ssim] | $> 0.95$ | temporal coherence in ROI |
-| `walkover_logo_visible_pct` | fraction of $\text{quad}_t$ pixels where $|O_t - C_t| > T$, in player-absent rows | $> 0.10$ | logo over-erased during walkover |
-| `walkover_occlusion_iou` | $\mathrm{IoU}\!\bigl(\mathbf{1}\{|I_t - C_t| > T\}, \mathbf{1}\{|O_t - L_t^{\text{baked}}| > T\}\bigr)$ inside $\text{quad}_t$ | $> 0.80$ | occlusion accuracy in walkover window |
+::: {#tbl-gates}
 
-: Hard gates in the eval framework. Each region must pass all applicable gates to ship; the two walkover gates apply only to the court-floor region. $C_t$ denotes the clean-plate frame and $L_t^{\text{baked}}$ denotes the gold composite's logo at the same frame index. {#tbl-gates}
+```{=latex}
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\footnotesize
+\begin{tabular}{@{} p{0.23\textwidth} p{0.30\textwidth} p{0.10\textwidth} p{0.27\textwidth} @{}}
+\toprule
+\textbf{Metric} & \textbf{Symbol / definition} & \textbf{Gate} & \textbf{What it catches} \\
+\midrule
+\texttt{corner\_max\_jump\_px} &
+$\max_t \|\mathbf{c}_t - \mathbf{c}_{t-1}\|_\infty$ &
+$< 2.0$ &
+single-frame placement jump \\[2pt]
+\texttt{corner\_accel\_p95\_px} &
+$\mathrm{pct}_{95}\, \|\mathbf{c}_{t+1} - 2\mathbf{c}_t + \mathbf{c}_{t-1}\|$ &
+$< 1.0$ &
+jittery corner trajectory \\[2pt]
+\texttt{quad\_area\_cv} &
+$\sigma(A_t) / \mu(A_t)$, $A_t = \mathrm{area}(\text{quad}_t)$ &
+$< 0.05$ &
+placement-area flicker \\[2pt]
+\texttt{roi\_jitter\_ratio} &
+$\dfrac{\text{frame-diff}_{\text{ROI}}^{\text{comp}}}{\text{frame-diff}_{\text{ROI}}^{\text{orig}}}$ &
+$\leq 1.05$ &
+ROI instability vs original \\[6pt]
+\texttt{roi\_temporal\_ssim\_mean} &
+$\mathrm{mean}_t \, \mathrm{SSIM}(\mathrm{ROI}_t, \mathrm{ROI}_{t-1})$ &
+$> 0.95$ &
+temporal coherence in ROI \\[2pt]
+\texttt{walkover\_logo\_visible\_pct} &
+fraction of $\text{quad}_t$ pixels with logo signal in player-absent rows &
+$> 0.10$ &
+logo over-erased during walkover \\[2pt]
+\texttt{walkover\_occlusion\_iou} &
+$\mathrm{IoU}$ of $\mathbf{1}\{|I_t - C_t| > T\}$ vs $\mathbf{1}\{|O_t - L_t^{\text{baked}}| > T\}$ inside $\text{quad}_t$ &
+$> 0.80$ &
+occlusion accuracy in walkover window \\
+\bottomrule
+\end{tabular}
+\end{center}
+```
+
+Hard gates in the eval framework. Each region must pass all applicable gates to ship; the two walkover gates apply only to the court-floor region. $C_t$ denotes the clean-plate frame and $L_t^{\text{baked}}$ denotes the gold composite's logo at the same frame index. The SSIM definition follows @wang2004ssim.
+
+:::
 
 A secondary set of warning-only metrics surfaces issues without gating the build: Lab $\Delta E$ colour match against a neighbouring same-surface patch, noise-variance ratio (warns when the placed region is noticeably smoother than its neighbour, i.e., the "pasted-on" failure mode), and edge-sharpness ratio (warns when the placement-quad boundary has materially higher gradient magnitude than the rest of the frame).
 
@@ -420,7 +455,7 @@ The floor-logo walkover-specific metrics require knowing which frames the player
 
 On the Melbourne clip this auto-detects frames 685 to 723 as the walkover window, which matches manual annotation.
 
-{{< pagebreak >}}
+
 
 # Project Journey
 
@@ -440,7 +475,7 @@ V68's per-region scorecard (held as the regression-gold reference for the rest o
 
 **Hypothesis.** Replace the static homography with a per-frame `classical_lines_v1` estimator (Canny edges, probabilistic Hough lines, RANSAC over candidate line intersections), gated by a hybrid-lock state machine so noisy frames stay at the seed.
 
-We swept the tolerance $\tau_{\text{lock}} \in \{2, 4, 6, 10, 15, 30, 99999\}$ and ramp speed $\in \{0.3, 1.0, 2.0\}~\text{px/frame}$ over two waves of parallel runs on H200 GPUs. The result is unambiguous (Table @tbl-phase2).
+We swept the tolerance $\tau_{\text{lock}} \in \{2, 4, 6, 10, 15, 30, 99999\}$ and ramp speed $\in \{0.3, 1.0, 2.0\}~\text{px/frame}$ over two waves of parallel runs on H200 GPUs. The result is unambiguous (@tbl-phase2).
 
 | $\tau_{\text{lock}}$ (px) | Floor ROI SSIM | Back ROI SSIM |
 |---:|---:|---:|
@@ -486,7 +521,7 @@ The probable cause is that the rubric is scored in absolute terms (1 to 5 per di
 
 **Decision.** P3-A1, the TrackNet-port baseline before any compositor tweaks, was designated the final deliverable. The shadow-synthesis code and the v2 rubric both remain on the production branch behind feature flags so future work can revisit those knobs if it wishes; the final configuration does not enable them.
 
-{{< pagebreak >}}
+
 
 # Results
 
@@ -501,7 +536,7 @@ The final delivered configuration is **P3-A1**, with the recipe:
 
 ## Quantitative results
 
-Table @tbl-final reports per-region results extracted from the eval framework's machine-readable summary. All four region scorecards pass; the walkover-window evaluation passes both floor-specific gates.
+@tbl-final reports per-region results extracted from the eval framework's machine-readable summary. All four region scorecards pass; the walkover-window evaluation passes both floor-specific gates.
 
 | Region | Pass | Temporal SSIM | Jitter ratio | Walkover visible % | Walkover IoU |
 |:--|:--:|--:|--:|--:|--:|
@@ -518,7 +553,7 @@ The walkover occlusion IoU at 0.985 is the most important single number on this 
 
 The walkover *visible* percentage of 0.179 means that 17.9% of pixels inside the floor placement quad show logo signal in player-absent regions of the frame. The gate requires $> 0.10$; the gold's value is 0.179 (we match by design). A low value here would indicate that the inpaint had over-erased.
 
-The `any_regression: true` flag is set against V68, driven by a single metric: $\text{regression\_floor\_roi\_jitter\_ratio}$, which moves from 0.494 (gold) to 0.805 (P3-A1), a 63% increase. **This is by design**: V68 is statically locked, so its floor jitter is the lowest physically possible (frame-to-frame inpaint variance only). P3-A1's hybrid lock introduces a small amount of correctly-tracked motion in the walkover window, which the jitter metric flags as a deviation. The visual outcome is the desired one (the placement now follows the camera), so the flag is treated as an expected side effect, not as a regression.
+The `any_regression: true` flag is set against V68, driven by a single metric, the floor-region jitter-ratio regression flag (`regression_floor_roi_`\allowbreak`jitter_ratio`), which moves from 0.494 (gold) to 0.805 (P3-A1), a 63% increase. **This is by design**: V68 is statically locked, so its floor jitter is the lowest physically possible (frame-to-frame inpaint variance only). P3-A1's hybrid lock introduces a small amount of correctly-tracked motion in the walkover window, which the jitter metric flags as a deviation. The visual outcome is the desired one (the placement now follows the camera), so the flag is treated as an expected side effect, not as a regression.
 
 ## Visual results
 
@@ -552,7 +587,7 @@ For at-a-glance reference:
 - **13 $\times$ 5** structured-rubric dimensions and regions scored per candidate.
 - **2.68 fps** end-to-end on H200 (real-time target $\sim$30 fps is future work).
 
-{{< pagebreak >}}
+
 
 # Discussion
 
@@ -581,7 +616,7 @@ Three observations that the project's documentation should pass forward.
 
 **Numerical rubrics are regression detectors, not accept-or-reject votes.** The Phase 3 visual-review override was the most important methodological finding of the project. The candidate that won the rubric on the user-flagged dimensions and passed every numerical gate was, on direct viewing, worse than the simpler baseline. We adopted a three-layer evaluation explicitly so that Layer 3 (direct visual review) overrides Layers 1 and 2 in cases of disagreement.
 
-{{< pagebreak >}}
+
 
 # Future Work
 
