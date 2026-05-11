@@ -13,25 +13,31 @@ type VideoEntry = {
   segmented?: number;
   highlight?: string;
   note?: string;
+  tag?: string;
 };
 
 const VIDEOS: VideoEntry[] = [
   {
     label: "SAM 3",
-    prompt: "logo",
-    fps: 0.93,
-    detected: 34,
-    segmented: 21,
-    video: `${BASE}/sam3-pipeline/sam3_static.mp4`,
+    prompt: "sponsor logo on fixed advertising board",
+    fps: 1.83,
+    segmented: 10,
+    video: `${BASE}/sam3-pipeline/sam3_static_v2.mp4`,
   },
   {
     label: "SAM 3-Light",
     prompt: "sponsor logo on fixed advertising board",
     fps: 3.95,
-    detected: 9,
     segmented: 9,
     video: `${BASE}/sam3-pipeline/sam3light_static_v2.mp4`,
-    highlight: "9 segmented objects at ~4 fps",
+  },
+  {
+    label: "SAM 3-Light",
+    prompt: "KIA sponsor logo on fixed advertising board",
+    fps: 4.09,
+    segmented: 8,
+    video: `${BASE}/sam3-pipeline/sam3light_kia.mp4`,
+    tag: "experiment",
   },
 ];
 
@@ -56,7 +62,7 @@ export default function FullPipelineExperiments() {
               const isActive = activeIdx === i;
               return (
                 <li
-                  key={v.label}
+                  key={v.label + i}
                   className="rounded-md px-3 py-2 transition-all duration-300"
                   style={{
                     background: isActive ? "rgba(255,255,255,0.05)" : "transparent",
@@ -70,6 +76,11 @@ export default function FullPipelineExperiments() {
                   >
                     {v.label}
                   </span>
+                  {v.tag && (
+                    <span className="mt-1 inline-block rounded-full bg-accent/15 px-1.5 py-0.5 font-mono text-[9px] text-accent">
+                      {v.tag}
+                    </span>
+                  )}
                 </li>
               );
             })}
@@ -83,7 +94,7 @@ export default function FullPipelineExperiments() {
               const isActive = activeIdx === i;
               return (
                 <div
-                  key={v.label}
+                  key={v.label + i}
                   className="absolute inset-0 flex items-center justify-center transition-opacity duration-400"
                   style={{
                     opacity: isActive ? 1 : 0,
@@ -108,24 +119,20 @@ export default function FullPipelineExperiments() {
               <span className="font-mono text-[10px] uppercase tracking-wider text-accent">
                 {active.label}
               </span>
-              <span className="ml-auto font-mono text-[11px] text-accent">
+              <span className="ml-auto rounded-md bg-accent/15 px-2 py-0.5 font-mono text-[14px] font-bold text-accent">
                 {active.fps.toFixed(2)} fps
               </span>
             </div>
             <p className="mt-1.5 text-[12px] leading-relaxed text-muted">
               <span className="font-mono text-[10px] text-muted/60">prompt</span>{" "}
               <span className="text-foreground/80">&ldquo;{active.prompt}&rdquo;</span>
-              {(active.detected !== undefined || active.segmented !== undefined) && (
-                <>
-                  {" · "}
-                  <span className="font-mono text-[10px] text-muted/60">
-                    {active.detected !== undefined && <>det {active.detected}</>}
-                    {active.detected !== undefined && active.segmented !== undefined && " / "}
-                    {active.segmented !== undefined && <>seg {active.segmented}</>}
-                  </span>
-                </>
-              )}
             </p>
+            {active.segmented !== undefined && (
+              <p className="mt-1 text-[12px] leading-relaxed text-muted">
+                <span className="font-mono text-[10px] text-muted/60">segmented objects</span>{" "}
+                <span className="text-foreground/80">{active.segmented}</span>
+              </p>
+            )}
             {active.highlight && (
               <p className="mt-1 text-[12px] font-medium leading-relaxed text-accent-light">
                 {active.highlight}

@@ -71,7 +71,7 @@ const VIDEOS: VideoEntry[] = [
     prompt: "logo",
     fps: 1.762,
     video: `${BASE}/sam3/sam3light_zoom_sim97.mp4`,
-    note: "Higher similarity → more re-runs to catch the progressive zoom (+ optical flow)",
+    note: "Higher similarity → more re-runs to catch the progressive zoom",
   },
 ];
 
