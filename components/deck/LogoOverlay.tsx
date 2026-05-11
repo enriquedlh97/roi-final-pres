@@ -39,7 +39,7 @@ export default function LogoOverlay() {
       <div className="flex w-full max-w-7xl items-center gap-10">
         {/* Left — techniques + step indicator */}
         <div className="flex w-[230px] shrink-0 flex-col">
-          <span className="mb-2 font-mono text-sm tracking-widest text-accent">17</span>
+          <span className="mb-2 font-mono text-sm tracking-widest text-accent">15</span>
           <h2 className="text-2xl font-bold tracking-tight text-foreground">
             New logo overlay
           </h2>

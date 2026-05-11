@@ -21,7 +21,7 @@ export default function BannerSegmentationVideos() {
       <div className="flex w-full max-w-6xl items-start gap-8">
         {/* Left — compact title + experiment list */}
         <div className="flex w-[180px] shrink-0 flex-col pt-1">
-          <span className="mb-2 font-mono text-sm tracking-widest text-accent">10</span>
+          <span className="mb-2 font-mono text-sm tracking-widest text-accent">12</span>
           <h2 className="text-lg font-bold tracking-tight text-foreground">
             Banner Segmentation
           </h2>

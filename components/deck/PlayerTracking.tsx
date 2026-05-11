@@ -19,7 +19,7 @@ export default function PlayerTracking() {
         }}
       >
         <div className="animate-stagger flex max-w-2xl flex-col items-start">
-          <span className="mb-4 font-mono text-sm tracking-widest text-accent">08</span>
+          <span className="mb-4 font-mono text-sm tracking-widest text-accent">10</span>
           <h2 className="text-5xl font-bold leading-tight tracking-tight text-foreground">
             Player<br />Segmentation
           </h2>
