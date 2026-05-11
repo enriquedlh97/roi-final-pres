@@ -20,7 +20,7 @@ Read `README.md` for the human-facing version of this. This file is the operatio
 
 - Deck has **25 slides** producing a ~30-min final presentation
 - Latest deploy: live at https://enriquedlh97.github.io/roi-final-pres/
-- Default branch: `enrique-changes` (push here → auto-deploy via `.github/workflows/deploy.yml`)
+- Default branch: `main` (push here → auto-deploy via `.github/workflows/deploy.yml`)
 - Local Node requirement: **20+** for `next build`. The user has nvm with v20.19.5 available, `export PATH="$HOME/.nvm/versions/node/v20.19.5/bin:$PATH"` if the default shell node is too old (it usually is, the system node is 16.13.2).
 - The user has **a Chrome tab open at the deployed URL** (tab ID may have changed between sessions). They also have a separate `localhost:8765` tab for an unrelated project, don't touch it.
 
@@ -32,7 +32,7 @@ Read `README.md` for the human-facing version of this. This file is the operatio
 1. Find the slide in `components/deck/` (see table below).
 2. Edit the string literals.
 3. `npm run dev` → http://localhost:3000 to preview, OR `npx next build` to verify there are no type errors.
-4. Commit + push to `enrique-changes`. Wait ~45s for GH Pages to redeploy.
+4. Commit + push to `main`. Wait ~45s for GH Pages to redeploy.
 5. Validate via browser automation if available (see "Browser validation" below).
 
 ### "Swap a video on the Demo slide"
@@ -163,10 +163,10 @@ npx next build       # should end with "○  (Static)  prerendered as static con
 
 # 2. Push
 git add -A && git -c commit.gpgsign=false commit --no-verify -m "..."
-git push origin enrique-changes
+git push origin main
 
 # 3. Wait for deploy + verify
-RUN_ID=$(gh run list --repo enriquedlh97/roi-final-pres --branch enrique-changes --limit 1 --json databaseId --jq '.[0].databaseId')
+RUN_ID=$(gh run list --repo enriquedlh97/roi-final-pres --branch main --limit 1 --json databaseId --jq '.[0].databaseId')
 gh run watch $RUN_ID --repo enriquedlh97/roi-final-pres --exit-status
 
 # 4. Smoke-test from terminal (HTML must say "Final Presentation", asset must serve)

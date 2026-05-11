@@ -24,8 +24,8 @@ npm run dev
 npx next build
 # → emits ./out/ (static HTML/CSS/JS)
 
-# 4. Deploy = push to enrique-changes
-git push origin enrique-changes
+# 4. Deploy = push to main
+git push origin main
 # → GitHub Actions builds + publishes to gh-pages within ~1 min
 ```
 
@@ -46,7 +46,7 @@ git push origin enrique-changes
 | [`public/`](public) | Static assets. **Videos and large images live here.** Subdirs: `homography/` (midterm geometry figures), `final/` (everything from the final P3-A1 run). |
 | [`lib/basePath.ts`](lib/basePath.ts) | One-liner that returns the production basePath `/roi-final-pres`. **All asset URLs must use this** (e.g. `` `${BASE}/final/composited.mp4` ``) or they'll 404 on GitHub Pages. |
 | [`next.config.ts`](next.config.ts) | `output: "export"` (static), `basePath: "/roi-final-pres"`, `images: { unoptimized: true }`. |
-| [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) | GitHub Actions workflow. Triggers on push to `enrique-changes`. Builds with Node 20, uploads `out/` artifact, deploys to GH Pages. |
+| [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) | GitHub Actions workflow. Triggers on push to `main`. Builds with Node 20, uploads `out/` artifact, deploys to GH Pages. |
 
 ---
 
@@ -229,13 +229,13 @@ If you're trying to **modify the pipeline itself**, you're in the wrong repo, go
 ## Deployment
 
 ### How it works
-- Default branch: `enrique-changes`
-- Push to `enrique-changes` → GitHub Actions workflow (`.github/workflows/deploy.yml`) → static export to `out/` → `actions/deploy-pages@v4` publishes
+- Default branch: `main`
+- Push to `main` → GitHub Actions workflow (`.github/workflows/deploy.yml`) → static export to `out/` → `actions/deploy-pages@v4` publishes
 - Cycle time: ~45 seconds from push to live
 
 ### Watching a deploy
 ```bash
-gh run list --repo enriquedlh97/roi-final-pres --branch enrique-changes --limit 3
+gh run list --repo enriquedlh97/roi-final-pres --branch main --limit 3
 gh run watch <RUN_ID> --repo enriquedlh97/roi-final-pres --exit-status
 ```
 
