@@ -39,6 +39,10 @@ format:
         \usepackage{amsmath}
         \usepackage{booktabs}
         \usepackage{array}
+        % Force the table of contents onto its own page (after the title page
+        % with abstract, before the body) by clearing the page after \maketitle.
+        \let\quartoorigmaketitle\maketitle
+        \renewcommand{\maketitle}{\quartoorigmaketitle\clearpage}
   html:
     toc: true
     toc-depth: 3
@@ -137,26 +141,26 @@ To our knowledge, no published system combines foundation-model segmentation (SA
 
 The pipeline is a single-pass, per-frame system. @fig-pipeline summarises the data flow.
 
-::: {.content-visible when-format="pdf"}
+::: {#fig-pipeline}
 
 ```{=latex}
-\begin{figure}[H]
-\centering
+\begin{center}
+\resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[
-  node distance=8mm and 14mm,
-  block/.style={rectangle, draw, rounded corners=2pt, minimum width=24mm, minimum height=10mm, align=center, font=\footnotesize},
-  decision/.style={diamond, draw, aspect=2, minimum width=20mm, minimum height=8mm, align=center, font=\scriptsize, inner sep=1pt},
-  frame/.style={rectangle, draw, dashed, minimum width=16mm, minimum height=8mm, align=center, font=\scriptsize},
+  node distance=6mm and 10mm,
+  block/.style={rectangle, draw, rounded corners=2pt, minimum width=20mm, minimum height=9mm, align=center, font=\scriptsize},
+  decision/.style={diamond, draw, aspect=2, minimum width=16mm, minimum height=7mm, align=center, font=\tiny, inner sep=1pt},
+  frame/.style={rectangle, draw, dashed, minimum width=14mm, minimum height=7mm, align=center, font=\tiny},
   arrow/.style={-{Latex[length=2mm]}, thick}
 ]
 \node[frame] (input) {Input frame $I_t$};
 \node[block, right=of input] (sam) {SAM 2\\segmenter};
-\node[block, below=8mm of sam] (btn) {TrackNet\\court keypoints};
+\node[block, below=8mm of sam] (btn) {TrackNet\\court kpts};
 \node[block, right=of sam] (hull) {Hull quad\\fitter};
 \node[block, right=of btn] (ransac) {RANSAC\\homography $H_t$};
 \node[decision, right=8mm of ransac] (gate) {$d_t > \tau$?};
-\node[block, above=14mm of gate] (mat) {MatAnyone\\matte $\alpha_t$};
-\node[block, right=14mm of gate] (comp) {Inpaint +\\LED-blend};
+\node[block, above=12mm of gate] (mat) {MatAnyone\\matte $\alpha_t$};
+\node[block, right=12mm of gate] (comp) {Inpaint +\\LED-blend};
 \node[frame, right=of comp] (output) {Output $O_t$};
 \draw[arrow] (input) -- (sam);
 \draw[arrow] (input.south) -- ++(0,-3mm) -| (btn.west);
@@ -164,16 +168,17 @@ The pipeline is a single-pass, per-frame system. @fig-pipeline summarises the da
 \draw[arrow] (sam) -- (hull);
 \draw[arrow] (btn) -- (ransac);
 \draw[arrow] (ransac) -- (gate);
-\draw[arrow] (hull.east) -- ++(8mm,0) |- node[above, font=\tiny, near end] {placement quads} (comp.north west);
-\draw[arrow] (gate.east) -- node[above, font=\scriptsize] {ramp} (comp);
-\draw[arrow] (gate.south) -- ++(0,-3mm) -| node[below, font=\scriptsize, near start] {stay} (comp.south);
+\draw[arrow] (hull.east) -- ++(6mm,0) |- node[above, font=\tiny, near end] {quads} (comp.north west);
+\draw[arrow] (gate.east) -- node[above, font=\tiny] {ramp} (comp);
+\draw[arrow] (gate.south) -- ++(0,-3mm) -| node[below, font=\tiny, near start] {stay} (comp.south);
 \draw[arrow] (mat) -- (comp.north);
 \draw[arrow] (comp) -- (output);
-\end{tikzpicture}
-\caption{End-to-end pipeline data flow. Per frame: SAM 2 produces banner-region masks; TrackNet-derived keypoint regression yields fourteen court landmarks; RANSAC fits a homography $H_t$; the hybrid-lock state machine decides whether to ramp toward $H_t$ or stay at the manually-clicked seed. MatAnyone produces a per-frame alpha matte $\alpha_t$. The compositor erases the original ad, warps the new logo through the chosen homography, applies LED-style brightness re-baking, and occludes through $\alpha_t$.}
-\label{fig-pipeline}
-\end{figure}
+\end{tikzpicture}%
+}
+\end{center}
 ```
+
+End-to-end pipeline data flow. Per frame: SAM 2 produces banner-region masks; TrackNet-derived keypoint regression yields fourteen court landmarks; RANSAC fits a homography $H_t$; the hybrid-lock state machine decides whether to ramp toward $H_t$ or stay at the manually-clicked seed. MatAnyone produces a per-frame alpha matte $\alpha_t$. The compositor erases the original ad, warps the new logo through the chosen homography, applies LED-style brightness re-baking, and occludes through $\alpha_t$.
 
 :::
 
