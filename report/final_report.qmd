@@ -613,9 +613,9 @@ For at-a-glance reference:
 - **0.9999** temporal SSIM on back banners (visually identical to V68 gold on locked frames).
 - **0.985** walkover occlusion IoU (gate threshold $> 0.80$; gold is 1.000).
 - **767** frames at 60 fps; a 13-second demonstration clip.
-- **$\sim$50** GPU iteration cycles in Phase 3.
+- approximately **50** GPU iteration cycles in Phase 3.
 - **13 $\times$ 5** structured-rubric dimensions and regions scored per candidate.
-- **2.68 fps** end-to-end on H200 (real-time target $\sim$30 fps is future work).
+- **2.68 fps** end-to-end on H200 (real-time target approximately 30 fps is future work).
 
 
 
