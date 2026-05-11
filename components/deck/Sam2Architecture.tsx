@@ -10,25 +10,29 @@ export default function Sam2Architecture() {
           <div className="flex shrink-0 flex-col">
             <span className="mb-2 font-mono text-sm tracking-widest text-accent">08</span>
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
-              Segment Anything<br />Model 2
+              SAM2 Model
             </h2>
             <div className="mt-3 h-px w-16 bg-accent" />
           </div>
           <div className="flex flex-col justify-center pt-6">
             <p className="text-sm leading-relaxed text-muted">
-              We use Meta&apos;s <span className="text-foreground/90 font-medium">SAM 2</span> as the backbone for banner segmentation. Given a single click prompt on the first frame, SAM 2 tracks and segments across all subsequent frames.
+              We use Meta&apos;s <span className="text-foreground/90 font-medium">SAM 2</span> as the backbone for banner segmentation: it requires <span className="text-foreground/90 font-medium">Manual ROI selection on frame 0</span> — a single click, box, or mask prompt — and then tracks and segments the region across all subsequent frames.
             </p>
-            <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1.5">
-              {[
-                "Pre-trained on 11M images, 1B+ masks",
-                "Prompt with points, boxes, or masks",
-                "Memory bank for temporal consistency",
-              ].map((pt) => (
-                <li key={pt} className="flex items-start gap-2 text-[13px] leading-snug text-muted">
+            <ul className="mt-3 flex flex-col gap-y-3">
+              <li className="flex items-start gap-2 whitespace-nowrap text-[13px] leading-snug text-muted">
+                <span className="mt-[5px] h-1 w-1 shrink-0 rounded-full bg-accent-light/60" />
+                Pre-trained on SA-1B dataset (11M images, 1B+ masks),trained on SA-V video dataset (50.9K videos,35.5M masks)
+              </li>
+              <li className="flex flex-wrap justify-between gap-x-6 gap-y-1.5">
+                <span className="flex items-start gap-2 text-[13px] leading-snug text-muted">
                   <span className="mt-[5px] h-1 w-1 shrink-0 rounded-full bg-accent-light/60" />
-                  {pt}
-                </li>
-              ))}
+                  Prompt with points, boxes, or masks
+                </span>
+                <span className="flex items-start gap-2 text-[13px] leading-snug text-muted">
+                  <span className="mt-[5px] h-1 w-1 shrink-0 rounded-full bg-accent-light/60" />
+                  Memory bank for temporal consistency
+                </span>
+              </li>
             </ul>
           </div>
         </div>
@@ -42,7 +46,7 @@ export default function Sam2Architecture() {
             />
           </div>
           <p className="mt-2 text-center font-mono text-[10px] text-muted/50">
-            SAM 2 architecture — Ravi et al., 2024
+            SAM 2 Architecture — Meta AI, <a href="https://arxiv.org/abs/2408.00714" target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:underline text-accent/80">&ldquo;SAM 2: Segment Anything in Images and Videos&rdquo; (arXiv:2408.00714)</a>
           </p>
         </div>
       </div>

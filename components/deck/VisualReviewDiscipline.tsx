@@ -45,7 +45,7 @@ export default function VisualReviewDiscipline() {
       <div className="flex w-full max-w-[1500px] flex-col gap-4">
         {/* Header */}
         <div className="animate-stagger flex flex-col">
-          <span className="mb-1 block font-mono text-sm tracking-widest text-accent">20</span>
+          <span className="mb-1 block font-mono text-sm tracking-widest text-accent">21</span>
           <h2 className="text-3xl font-bold tracking-tight text-foreground">
             Evaluation — three layers
           </h2>

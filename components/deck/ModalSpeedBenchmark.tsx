@@ -26,7 +26,7 @@ export default function ModalSpeedBenchmark() {
     <div className="flex h-full w-full items-center justify-center px-16">
       <div className="flex w-full max-w-5xl flex-col gap-6">
         <div className="animate-stagger flex flex-col">
-          <span className="mb-1 block font-mono text-sm tracking-widest text-accent">21</span>
+          <span className="mb-1 block font-mono text-sm tracking-widest text-accent">22</span>
           <h2 className="text-3xl font-bold tracking-tight text-foreground">
             Modal + Speed Benchmarking
           </h2>

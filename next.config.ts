@@ -1,8 +1,10 @@
 import type { NextConfig } from "next";
 
+const isProd = process.env.NODE_ENV === "production";
+
 const nextConfig: NextConfig = {
   output: "export",
-  basePath: "/roi-final-pres",
+  basePath: isProd ? "/roi-final-pres" : "",
   images: { unoptimized: true },
 };
 

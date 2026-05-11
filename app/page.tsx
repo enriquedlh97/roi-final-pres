@@ -9,6 +9,7 @@ import ProjectJourney from "@/components/deck/ProjectJourney";
 import ComparisonTable from "@/components/deck/ComparisonTable";
 import PipelineOverview from "@/components/deck/PipelineOverview";
 import Sam2Architecture from "@/components/deck/Sam2Architecture";
+import Sam3Model from "@/components/deck/Sam3Model";
 import Sam3Experiments from "@/components/deck/Sam3Experiments";
 import PlayerTracking from "@/components/deck/PlayerTracking";
 import BannerSegmentation from "@/components/deck/BannerSegmentation";
@@ -36,33 +37,35 @@ import Thanks from "@/components/deck/Thanks";
 //   7  Comparison Table       (06)
 //   8  Pipeline Overview      (07) ★ updated SVG labels
 //   9  SAM2 Architecture      (08)
-//  10  SAM3 Experiments       (09)
-//  11  Player Segmentation    (10)
-//  12  Banner Seg & Tracking  (11)
-//  13  Banner Seg Videos      (12)
-//  14  Homography             (13)
-//  15  Single Vanishing Point (14)
-//  16  Logo Overlay           (15)
-//  17  Final Result           (16)
-//  18  Walkover Sequence      (17)
-//  19  Demo                   (18)
-//  20  Headline Numbers       (19) ★ NEW
-//  21  Evaluation             (20)
-//  22  Modal + Speed          (21) ★ MOVED to engineering-rigor section
-//  23  Future Improvements    (—)
-//  24  Thanks                 (—)
+//  10  Player Segmentation    (09)
+//  11  Banner Seg & Tracking  (10)
+//  12  Banner Seg Videos      (11)
+//  13  SAM3 Model             (12) ★ NEW
+//  14  SAM3 Experiments       (13)
+//  15  Homography             (14)
+//  16  Single Vanishing Point (15)
+//  17  Logo Overlay           (16)
+//  18  Final Result           (17)
+//  19  Walkover Sequence      (18)
+//  20  Demo                   (19)
+//  21  Headline Numbers       (20)
+//  22  Evaluation             (21)
+//  23  Modal + Speed          (22)
+//  24  Future Improvements    (—)
+//  25  Thanks                 (—)
 const PIPELINE_MINIMAP = {
   slide: 8, // Pipeline Overview
-  range: [9, 16] as [number, number],
+  range: [9, 17] as [number, number],
   highlights: {
     9: "sam2-arch",
-    10: "sam2-arch",
-    11: "detect-player",
-    12: "banner-seg",
-    13: "banner-seg-videos",
-    14: "homography",
+    10: "detect-player",
+    11: "banner-seg",
+    12: "banner-seg-videos",
+    13: "sam2-arch",
+    14: "sam2-arch",
     15: "homography",
-    16: "overlay-logo",
+    16: "homography",
+    17: "overlay-logo",
   },
 };
 
@@ -77,21 +80,22 @@ const SLIDE_STEPS = [
   2,  // 7  Comparison Table
   1,  // 8  Pipeline Overview
   1,  // 9  SAM2 Architecture
-  1,  // 10 SAM3 Experiments
-  2,  // 11 Player Segmentation
-  1,  // 12 Banner Segmentation
-  5,  // 13 Banner Segmentation Videos
-  15, // 14 Homography
-  1,  // 15 Single Vanishing Point
-  3,  // 16 Logo Overlay
-  4,  // 17 Final Result
-  5,  // 18 Walkover Sequence
-  3,  // 19 Demo
-  1,  // 20 Headline Numbers
-  3,  // 21 Evaluation
-  1,  // 22 Modal + Speed
-  1,  // 23 Future Improvements
-  1,  // 24 Thanks
+  2,  // 10 Player Segmentation
+  1,  // 11 Banner Segmentation
+  5,  // 12 Banner Segmentation Videos
+  1,  // 13 SAM3 Model
+  1,  // 14 SAM3 Experiments
+  15, // 15 Homography
+  1,  // 16 Single Vanishing Point
+  3,  // 17 Logo Overlay
+  4,  // 18 Final Result
+  5,  // 19 Walkover Sequence
+  3,  // 20 Demo
+  1,  // 21 Headline Numbers
+  3,  // 22 Evaluation
+  1,  // 23 Modal + Speed
+  1,  // 24 Future Improvements
+  1,  // 25 Thanks
 ];
 
 export default function Home() {
@@ -107,10 +111,11 @@ export default function Home() {
       <ComparisonTable />
       <PipelineOverview />
       <Sam2Architecture />
-      <Sam3Experiments />
       <PlayerTracking />
       <BannerSegmentation />
       <BannerSegmentationVideos />
+      <Sam3Model />
+      <Sam3Experiments />
       <Homography />
       <SingleVanishingPoint />
       <LogoOverlay />

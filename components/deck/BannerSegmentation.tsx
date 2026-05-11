@@ -4,7 +4,7 @@ export default function BannerSegmentation() {
   return (
     <div className="flex h-full w-full items-center justify-center px-16">
       <div className="animate-stagger flex max-w-2xl flex-col items-start">
-        <span className="mb-4 font-mono text-sm tracking-widest text-accent">11</span>
+        <span className="mb-4 font-mono text-sm tracking-widest text-accent">10</span>
         <h2 className="text-5xl font-bold leading-tight tracking-tight text-foreground">
           Banner Segmentation<br />& Tracking
         </h2>

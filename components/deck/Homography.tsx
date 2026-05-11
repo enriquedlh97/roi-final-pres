@@ -32,7 +32,7 @@ export default function Homography() {
         }}
       >
         <div className="animate-stagger flex max-w-2xl flex-col items-start">
-          <span className="mb-4 font-mono text-sm tracking-widest text-accent">13</span>
+          <span className="mb-4 font-mono text-sm tracking-widest text-accent">14</span>
           <h2 className="text-5xl font-bold leading-tight tracking-tight text-foreground">
             Homography &<br />Perspective Geometry
           </h2>
@@ -111,7 +111,7 @@ export default function Homography() {
       >
         <div className="flex w-full max-w-6xl items-center gap-12">
           <div className="flex w-[240px] shrink-0 flex-col">
-            <span className="mb-2 font-mono text-sm tracking-widest text-accent">13</span>
+            <span className="mb-2 font-mono text-sm tracking-widest text-accent">14</span>
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
               Vanishing<br />Point
             </h2>
@@ -142,7 +142,7 @@ export default function Homography() {
         <div className="flex w-full max-w-6xl items-center gap-12">
           {/* Left — title + step list */}
           <div className="flex w-[220px] shrink-0 flex-col">
-            <span className="mb-2 font-mono text-sm tracking-widest text-accent">13</span>
+            <span className="mb-2 font-mono text-sm tracking-widest text-accent">14</span>
             <h2 className="text-2xl font-bold tracking-tight text-foreground">
               Quadrilateral<br />Fitting
             </h2>

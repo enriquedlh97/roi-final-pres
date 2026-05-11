@@ -9,6 +9,9 @@ interface TeamMember {
   color: string;
   linkedin?: string;
   photo?: string;
+  photoScale?: number;
+  photoOffsetX?: string;
+  photoOffsetY?: string;
 }
 
 interface TeamSlideProps {
@@ -62,7 +65,15 @@ export default function TeamSlide({ title = "Meet the Team", members }: TeamSlid
                 }}
               >
                 {member.photo ? (
-                  <img src={member.photo} alt={member.name} className="h-full w-full object-cover" />
+                  <img
+                    src={member.photo}
+                    alt={member.name}
+                    className="h-full w-full object-cover"
+                    style={{
+                      transform: `scale(${member.photoScale ?? 1}) translate(${member.photoOffsetX ?? "0"}, ${member.photoOffsetY ?? "0"})`,
+                      transformOrigin: "center center",
+                    }}
+                  />
                 ) : (
                   member.initials
                 )}
