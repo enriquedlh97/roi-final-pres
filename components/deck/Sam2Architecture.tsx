@@ -10,7 +10,7 @@ export default function Sam2Architecture() {
           <div className="flex shrink-0 flex-col">
             <span className="mb-2 font-mono text-sm tracking-widest text-accent">08</span>
             <h2 className="text-3xl font-bold tracking-tight text-foreground">
-              SAM2 Model
+              SAM2 model
             </h2>
             <div className="mt-3 h-px w-16 bg-accent" />
           </div>

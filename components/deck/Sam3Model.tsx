@@ -45,6 +45,28 @@ export default function Sam3Model() {
             SAM 3 Architecture — Meta AI, <a href="https://arxiv.org/pdf/2511.16719v1" target="_blank" rel="noopener noreferrer" className="underline-offset-2 hover:underline text-accent/80">&ldquo;SAM 3: Segment Anything with Concepts&rdquo; (arXiv:2511.16719)</a>
           </p>
         </div>
+
+        {/* Pipeline equations — subtle, single row */}
+        <div className="flex w-full flex-wrap items-center justify-center gap-x-14 gap-y-1 text-[12px] leading-none text-foreground/75">
+          <span className="whitespace-nowrap">
+            <span className="italic">M̂</span><sub className="italic">t</sub>
+            {" = "}
+            <span className="font-mono">propagate</span>
+            {"("}<span className="italic">M</span><sub className="italic">t−1</sub>{")"}
+          </span>
+          <span className="whitespace-nowrap">
+            <span className="italic">O</span><sub className="italic">t</sub>
+            {" = "}
+            <span className="font-mono">detect</span>
+            {"("}<span className="italic">I</span><sub className="italic">t</sub>{", "}<span className="italic">P</span>{")"}
+          </span>
+          <span className="whitespace-nowrap">
+            <span className="italic">M</span><sub className="italic">t</sub>
+            {" = "}
+            <span className="font-mono">match_and_update</span>
+            {"("}<span className="italic">M̂</span><sub className="italic">t</sub>{", "}<span className="italic">O</span><sub className="italic">t</sub>{")"}
+          </span>
+        </div>
       </div>
     </div>
   );
