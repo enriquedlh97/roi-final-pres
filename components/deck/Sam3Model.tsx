@@ -47,7 +47,7 @@ export default function Sam3Model() {
         </div>
 
         {/* Pipeline equations — subtle, single row */}
-        <div className="flex w-full flex-wrap items-center justify-center gap-x-14 gap-y-1 text-[12px] leading-none text-foreground/75">
+        <div className="flex w-full flex-wrap items-center justify-center gap-x-14 gap-y-1 text-[14px] leading-none text-foreground/75">
           <span className="whitespace-nowrap">
             <span className="italic">M̂</span><sub className="italic">t</sub>
             {" = "}
