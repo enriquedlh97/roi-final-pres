@@ -23,7 +23,7 @@ const ACADEMIC = [
   "Virtual ad insertion research — soccer-only, predates foundation models, uses hand-crafted features.",
 ];
 
-const MEIL_CHALLENGES = [
+const MELIC_CHALLENGES = [
   { label: "Jittering", detail: "Overlay instability across frames — tracking drift causes visible shaking in replaced banners." },
   { label: "Occlusion", detail: "Players walking in front of banners cause artifacts — overlays render on top of or through players." },
   { label: "Speed", detail: "Processing speed below real-time thresholds, limiting viability for live broadcast scenarios." },
@@ -52,7 +52,7 @@ export default function PriorWork() {
           <div className="mt-3 h-px w-16 bg-accent" />
         </div>
 
-        {/* Three-column: Commercial + Academic + MEIL Challenges */}
+        {/* Three-column: Commercial + Academic + MELIC Challenges */}
         <div className="flex gap-8">
           {/* Commercial systems — step >= 1 */}
           <div
@@ -111,7 +111,7 @@ export default function PriorWork() {
             </div>
           </div>
 
-          {/* MEIL known challenges — step >= 2 */}
+          {/* MELIC known challenges — step >= 2 */}
           <div
             className="flex-1 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]"
             style={{
@@ -123,7 +123,7 @@ export default function PriorWork() {
               KNOWN CHALLENGES
             </h3>
             <div className="flex flex-col gap-2">
-              {MEIL_CHALLENGES.map((item, i) => (
+              {MELIC_CHALLENGES.map((item, i) => (
                 <div
                   key={item.label}
                   className="rounded-lg border border-amber-500/20 bg-amber-500/5 px-3 py-2.5"

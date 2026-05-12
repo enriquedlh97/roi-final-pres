@@ -21,7 +21,7 @@ const ROWS = [
     isOurs: false,
   },
   {
-    system: "MEIL (Prior)",
+    system: "MELIC (Prior)",
     cells: ["None", "Custom", "Manual", "Limited", "Jittering", "Below real-time"],
     isOurs: false,
     isPrior: true,
