@@ -27,10 +27,9 @@ const items = [
   },
   {
     tag: "Auto",
-    title: "Auto-detection of regions",
+    title: "Refine pipeline for Automatic ROI detection",
     points: [
-      "Remove the manual click step (see feat/sam3-light-v1)",
-      "Best generic SAM3 prompt: \"sponsor logo on fixed advertising board\"",
+      "Best prompt so far: \"sponsor logo on fixed advertising board\" (~3.95 fps on A100-80GB)",
     ],
   },
   {
