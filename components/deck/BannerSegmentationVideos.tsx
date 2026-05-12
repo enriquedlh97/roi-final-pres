@@ -23,7 +23,7 @@ export default function BannerSegmentationVideos() {
         <div className="flex w-[180px] shrink-0 flex-col pt-1">
           <span className="mb-2 font-mono text-sm tracking-widest text-accent">11</span>
           <h2 className="text-lg font-bold tracking-tight text-foreground">
-            Banner Segmentation
+            SAM2 - Banners Segmentation
           </h2>
           <div className="mt-2 h-px w-10 bg-accent" />
 
