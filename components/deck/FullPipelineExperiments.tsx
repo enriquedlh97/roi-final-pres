@@ -30,6 +30,7 @@ const VIDEOS: VideoEntry[] = [
     fps: 3.95,
     segmented: 9,
     video: `${BASE}/sam3-pipeline/sam3light_static_v2.mp4`,
+    highlight: "~2.2× the FPS vs full SAM 3 (1.83 → 3.95)",
   },
   {
     label: "SAM 3-Light",
@@ -38,6 +39,7 @@ const VIDEOS: VideoEntry[] = [
     segmented: 8,
     video: `${BASE}/sam3-pipeline/sam3light_kia.mp4`,
     tag: "experiment",
+    highlight: "~2.2× the FPS vs full SAM 3 (1.83 → 4.09)",
   },
 ];
 

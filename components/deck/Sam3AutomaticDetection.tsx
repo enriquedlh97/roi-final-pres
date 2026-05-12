@@ -10,9 +10,11 @@ type VideoEntry = {
   videoTitle?: string;      // shown below the video; falls back to label
   prompt: string;
   fps: number;
+  reruns?: string;          // shown below the prompt, value emphasized
   video: string;
   highlight?: string;       // accent-colored line below the prompt
   note?: string;            // muted line below the prompt / highlight
+  finalNote?: string;       // extra muted line appended at the bottom
 };
 
 const VIDEOS: VideoEntry[] = [
@@ -36,12 +38,14 @@ const VIDEOS: VideoEntry[] = [
     prompt: "sponsor logo on fixed courtside advertising board",
     fps: 1.86,
     video: `${BASE}/sam3/sam3_zoom.mp4`,
+    finalNote: "With P2 fewer objects were detected and segmented",
   },
   {
     group: "SAM 3-Light",
     label: "Static",
     prompt: "logo",
     fps: 2.136,
+    reruns: "1",
     video: `${BASE}/sam3/sam3light_static.mp4`,
     highlight: "Double the FPS vs full SAM 3 (1.001 → 2.136)",
   },
@@ -51,9 +55,9 @@ const VIDEOS: VideoEntry[] = [
     videoTitle: "Zoom + change (similarity = 0.85)",
     prompt: "logo",
     fps: 2.326,
+    reruns: "2",
     video: `${BASE}/sam3/sam3light_zoom_sim85.mp4`,
-    highlight: "~2.8× the FPS vs full SAM 3 on zoom (0.84 → 2.326)",
-    note: "Too low to trigger SAM 3 re-computation on the zoom",
+    note: "Too low Similarity to trigger SAM 3 re-computation on the zoom",
   },
   {
     group: "SAM 3-Light",
@@ -61,8 +65,9 @@ const VIDEOS: VideoEntry[] = [
     videoTitle: "Zoom + change (similarity = 0.95)",
     prompt: "logo",
     fps: 1.917,
+    reruns: "3",
     video: `${BASE}/sam3/sam3light_zoom_sim95.mp4`,
-    note: "3 re-runs across the clip",
+    highlight: "~2.3× the FPS vs full SAM 3 on zoom (0.84 → 1.917)",
   },
   {
     group: "SAM 3-Light",
@@ -70,8 +75,9 @@ const VIDEOS: VideoEntry[] = [
     videoTitle: "Zoom + change (similarity = 0.97)",
     prompt: "logo",
     fps: 1.762,
+    reruns: "7",
     video: `${BASE}/sam3/sam3light_zoom_sim97.mp4`,
-    note: "Higher similarity → more re-runs to catch the progressive zoom",
+    note: "Higher similarity → more re-runs to catch the progressive zoom → lower fps",
   },
 ];
 
@@ -175,6 +181,12 @@ export default function Sam3AutomaticDetection() {
               <span className="font-mono text-[10px] text-muted/60">prompt</span>{" "}
               <span className="text-foreground/80">&ldquo;{active.prompt}&rdquo;</span>
             </p>
+            {active.reruns && (
+              <p className="mt-1 text-[12px] leading-relaxed text-muted">
+                <span className="font-mono text-[10px] text-muted/60">re-runs</span>{" "}
+                <span className="text-foreground/80">{active.reruns}</span>
+              </p>
+            )}
             {active.highlight && (
               <p className="mt-1 text-[12px] font-medium leading-relaxed text-accent-light">
                 {active.highlight}
@@ -183,6 +195,11 @@ export default function Sam3AutomaticDetection() {
             {active.note && (
               <p className="mt-1 text-[12px] leading-relaxed text-muted/80">
                 {active.note}
+              </p>
+            )}
+            {active.finalNote && (
+              <p className="mt-1 text-[12px] leading-relaxed text-muted/80">
+                {active.finalNote}
               </p>
             )}
           </div>
