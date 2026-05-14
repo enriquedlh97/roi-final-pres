@@ -86,7 +86,7 @@ This paper makes three contributions, each demonstrated on the Melbourne walkove
 
 @sec-problem frames the placement problem and introduces the Melbourne walkover demonstration clip. @sec-related positions our system against the commercial and academic landscape. @sec-pipeline describes the production architecture component by component, with the relevant equations for each stage. @sec-eval presents the three-layer evaluation framework. @sec-journey reports the three iteration phases that produced the final design. @sec-results presents per-region quantitative metrics, the component-evidence map, and the throughput discussion. Discussion, future work, and conclusion close the paper, followed by reproducibility, code-availability, and trademark statements. The implementation is available in our companion code repository [^repo].
 
-[^repo]: Implementation: `https://github.com/enriquedlh97/homography-fitting`.
+[^repo]: Implementation: <https://github.com/enriquedlh97/homography-fitting>.
 
 
 
@@ -350,10 +350,10 @@ $$
 **(3) LED-style brightness re-bake.** For each pixel inside the placement quad, the warped logo's chrominance is preserved while its luminance is re-baked against the local surface luminance computed from the inpainted background. Let $Y$ denote the luminance channel. We compute a per-pixel shade map $s_t(p)$ that compares the Gaussian-blurred background luminance at $p$ to the median background luminance inside the placement quad, raised to a configurable strength $s$ and clipped:
 
 $$
-\tilde{L}_t^{\text{led}}(p) \;=\; \tilde{L}_t(p) \,\cdot\, \mathrm{clip}\!\left(\frac{Y\!\bigl(G_\sigma * \hat{I}_t^{\text{inpaint}}\bigr)(p)}{\bar{Y}_{\text{quad}, t}}\right)^{\!s}, \qquad \bar{Y}_{\text{quad}, t} = \operatorname{med}_{q \in \text{quad}_t} Y\!\bigl(G_\sigma * \hat{I}_t^{\text{inpaint}}\bigr)(q),
+\tilde{L}_t^{\text{led}}(p) \;=\; \tilde{L}_t(p) \,\cdot\, \mathrm{clip}\!\left(\frac{Y\!\bigl(G_\sigma * \hat{I}_t^{\text{inpaint}}\bigr)(p)}{\bar{Y}_{\text{quad}, t}}\right)^{\!s},
 $$ {#eq-led-blend}
 
-with the gain clipped to $[\texttt{shade\_clip\_min}, \texttt{shade\_clip\_max}]$, $\sigma$ set by `shade_blur_ksize`, and $s$ set by `shade_strength`. This makes the inserted logo read like a physically painted or printed ad whose brightness tracks the local lighting on the surface: a logo placed in a shaded part of the court darkens, a logo in a bright patch brightens, all without altering the logo's intrinsic colours. Without this step the logo reads as a 2D overlay floating on top of the frame.
+where $\bar{Y}_{\text{quad}, t} = \operatorname{med}_{q \in \text{quad}_t} Y\!\bigl(G_\sigma * \hat{I}_t^{\text{inpaint}}\bigr)(q)$ is the median Gaussian-blurred background luminance inside the placement quad, the gain is clipped to $[\texttt{shade\_clip\_min}, \texttt{shade\_clip\_max}]$, $\sigma$ is set by `shade_blur_ksize`, and $s$ by `shade_strength`. This makes the inserted logo read like a physically painted or printed ad whose brightness tracks the local lighting on the surface: a logo placed in a shaded part of the court darkens, a logo in a bright patch brightens, all without altering the logo's intrinsic colours. Without this step the logo reads as a 2D overlay floating on top of the frame.
 
 **(4) Person-matte occlusion.** The final composite uses the MatAnyone alpha matte to occlude logo pixels behind the player:
 
