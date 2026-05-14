@@ -252,7 +252,7 @@ Each per-frame binary mask is reduced to a four-corner placement quadrilateral v
 
 The court-geometry estimator is the dynamic component of the placement. It computes a per-frame homography that maps the canonical court plane to the broadcast image plane.
 
-We adapt the heatmap-regression convolutional network of TrackNet [@huang2019tracknet], following the open-source `TennisCourtDetector` adaptation [@yastrebksv_tenniscourtdetector] that regresses fourteen semantically labelled court landmarks (four baseline corners, four singles-line intersections, four service-line corners, and two T-points at the centre service line). The model is a fully convolutional encoder-decoder: a VGG-style contracting path of three pooling stages with 64, 128, 256 channels, followed by a symmetric expanding path with bilinear up-sampling, producing a fifteen-channel output tensor at the input resolution of $640 \times 360$ pixels (fourteen keypoint channels and one auxiliary channel). Each output channel is passed through a sigmoid activation to yield a per-pixel confidence map for one court landmark:
+We adapt the heatmap-regression convolutional network of TrackNet [@huang2019tracknet], following the open-source `TennisCourtDetector` adaptation [@yastrebksv_tenniscourtdetector] that regresses fourteen semantically labelled court landmarks (four baseline corners, four singles-line intersections, four service-line corners, and two T-points at the centre service line).^[Implementation: [`src/banner_pipeline/court_geometry_ball_tracker.py`](https://github.com/enriquedlh97/homography-fitting/blob/f1e148c/src/banner_pipeline/court_geometry_ball_tracker.py#L450-L720)] The model is a fully convolutional encoder-decoder: a VGG-style contracting path of three pooling stages with 64, 128, 256 channels, followed by a symmetric expanding path with bilinear up-sampling, producing a fifteen-channel output tensor at the input resolution of $640 \times 360$ pixels (fourteen keypoint channels and one auxiliary channel). Each output channel is passed through a sigmoid activation to yield a per-pixel confidence map for one court landmark:
 
 $$
 \hat{Y}_k(u,v) \;=\; \sigma\!\bigl(\,f_\theta(I_t)\bigr)_{k,u,v},
@@ -297,7 +297,7 @@ $$
 \mathbf{c}_i^{(\text{out}, k)} \;=\; \mathbf{c}_i^{(\text{out}, k-1)} \;+\; \frac{1}{n - k + 1}\,\bigl(\pi(H_t \mathbf{c}_i) \,-\, \mathbf{c}_i^{(\text{out}, k-1)}\bigr), \quad k = 1, \dots, n,
 $$ {#eq-hybrid-lock}
 
-with ramp length $n = \max(R_{\min}, \lceil d_t / v_{\max} \rceil)$, $R_{\min} = 3$, $v_{\max} = 2~\text{px/frame}$. The output homography $H_t^{(\text{out})}$ is reconstructed at each frame by fitting a DLT homography from the canonical corners $\{\mathbf{c}_i\}$ to the current committed positions $\{\mathbf{c}_i^{(\text{out},k)}\}$. Our final configuration uses $\tau_{\text{lock}} = 30~\text{px}$: loose enough that keypoint-detection noise does not fire the gate spuriously, tight enough that real camera motion crosses the threshold and the dynamic estimate engages. The ramp length is adaptive: small displacements ramp in three frames; aggressive motion (large $d_t$) ramps over more frames so that the per-frame motion remains bounded by $v_{\max}$ pixels. This prevents pop artefacts when the gate fires.
+with ramp length $n = \max(R_{\min}, \lceil d_t / v_{\max} \rceil)$, $R_{\min} = 3$, $v_{\max} = 2~\text{px/frame}$.^[Implementation: [`HybridLockState` in `src/banner_pipeline/court_geometry.py`](https://github.com/enriquedlh97/homography-fitting/blob/f1e148c/src/banner_pipeline/court_geometry.py#L1390-L1450)] The output homography $H_t^{(\text{out})}$ is reconstructed at each frame by fitting a DLT homography from the canonical corners $\{\mathbf{c}_i\}$ to the current committed positions $\{\mathbf{c}_i^{(\text{out},k)}\}$. Our final configuration uses $\tau_{\text{lock}} = 30~\text{px}$: loose enough that keypoint-detection noise does not fire the gate spuriously, tight enough that real camera motion crosses the threshold and the dynamic estimate engages. The ramp length is adaptive: small displacements ramp in three frames; aggressive motion (large $d_t$) ramps over more frames so that the per-frame motion remains bounded by $v_{\max}$ pixels. Operationally this matches the placement's tracking velocity to the camera's apparent motion: a slow drift produces a short, gentle ramp; an aggressive pan or zoom stretches the ramp out so the placement never moves faster than $v_{\max}$ pixels per frame. That is why a zoom-in does not produce a visible "snap" on the inserted logo: the controller's per-frame motion budget is matched to the same scale as the camera's apparent per-frame motion, and pop artefacts are eliminated.
 
 On the Melbourne clip the eval-framework counters report 751 of 767 frames locked at $H_{\text{seed}}$ (visually pixel-identical to the manually-clicked baseline), 16 frames inside the walkover window ramping toward the dynamic estimate, and 0 frames reaching the full estimate state (the camera motion subsides before any ramp completes). Without the hybrid lock the placement would either drift during the walkover (always-locked) or pulse with per-frame keypoint noise during the static portion (always-dynamic).
 
@@ -325,7 +325,7 @@ Binary segmentation (or a bounding box) was rejected because the player's silhou
 
 ## Inpaint plus LED-style compositor
 
-Per frame, per placed region, the compositor performs four operations.
+Per frame, per placed region, the compositor performs four operations.^[Implementation: [`src/banner_pipeline/composite/painted.py`](https://github.com/enriquedlh97/homography-fitting/blob/f1e148c/src/banner_pipeline/composite/painted.py)]
 
 **(1) Erase the original ad.** Inside each placement quad we identify the text-mask region (the baked-in ad pixels) and replace it with a smooth fill matched to the surrounding court colour, plus matched-noise injection so the result does not read as a flat patch:
 
@@ -381,7 +381,7 @@ A central deliverable of this project is the evaluation framework we built to sc
 
 ## Layer 1: numerical metrics
 
-Each candidate run is scored by the eval framework. The framework reads the run's composited video plus its frozen configuration, auto-discovers placement regions, and computes per-region metrics. Hard gates are listed in @tbl-gates.
+Each candidate run is scored by the eval framework. The framework reads the run's composited video plus its frozen configuration, auto-discovers placement regions, and computes per-region metrics. Hard gates are listed in @tbl-gates.^[Threshold definitions: [`GATES` / `WALKOVER_GATES` / `WARNINGS` dicts in `src/banner_pipeline/eval/report.py`](https://github.com/enriquedlh97/homography-fitting/blob/f1e148c/src/banner_pipeline/eval/report.py#L20-L37)]
 
 ::: {#tbl-gates}
 
@@ -459,7 +459,7 @@ The reason for this third layer is that Layer 1 and Layer 2 can both miss the sa
 
 ## Walkover-window detection
 
-The floor-logo walkover-specific metrics require knowing which frames the player is on the logo. We auto-detect the walkover window:
+The floor-logo walkover-specific metrics require knowing which frames the player is on the logo. We auto-detect the walkover window:^[Implementation: [`detect_walkover_window()` in `src/banner_pipeline/eval/walkover.py`](https://github.com/enriquedlh97/homography-fitting/blob/f1e148c/src/banner_pipeline/eval/walkover.py#L37-L156)]
 
 1. Pad the floor placement quad's bounding box by 30 px horizontal $\times$ 60 px vertical.
 2. Compute the per-frame mean absolute colour delta between the original video and a clean-court reference video, restricted to the padded quad and averaged over BGR channels: $\Delta_t = \mathrm{mean}_{p \in \text{padded quad}} \, \frac{1}{3} \,\| I_t(p) - C_t(p) \|_1$.
@@ -488,7 +488,7 @@ V68's per-region scorecard (held as the regression-gold reference for the rest o
 
 ## Phase 2: hybrid-lock with a line-based estimator (failed axis)
 
-**Hypothesis.** Replace the static homography with a per-frame `classical_lines_v1` estimator (Canny edges [@canny1986edge], probabilistic Hough lines [@duda1972hough; @matas2000probabilistic], RANSAC over candidate line intersections), gated by a hybrid-lock state machine so noisy frames stay at the seed.
+**Hypothesis.** Replace the static homography with a per-frame `classical_lines_v1` estimator (Canny edges [@canny1986edge], probabilistic Hough lines [@duda1972hough; @matas2000probabilistic], RANSAC over candidate line intersections), gated by a hybrid-lock state machine so noisy frames stay at the seed.^[Implementation: [`CourtGeometryEstimator` in `src/banner_pipeline/court_geometry.py`](https://github.com/enriquedlh97/homography-fitting/blob/f1e148c/src/banner_pipeline/court_geometry.py#L551-L809)]
 
 We swept the tolerance $\tau_{\text{lock}} \in \{2, 4, 6, 10, 15, 30, 99999\}$ and ramp speed $\in \{0.3, 1.0, 2.0\}~\text{px/frame}$ over two waves of parallel runs on H200 GPUs. @tbl-phase2 reports the tolerance axis at the $1.0~\text{px/frame}$ ramp setting; the full 7 $\times$ 3 grid is in the project's experiment ledger and exhibits the same monotonic regression along the tolerance axis at each ramp speed. The headline result is unambiguous.
 
@@ -737,7 +737,7 @@ On the Melbourne demonstration clip the delivered pipeline passes every per-regi
 
 The headline numbers in this paper come from a single run on a single GPU with a single configuration file. To make the run reproducible the following artefacts are pinned.
 
-- **Code.** The implementation repository is referenced in §1.3 (footnote). The headline run is on commit `80b4b60` of branch `feat/quality-fixes-next` (or any descendant on the same branch with the eval framework intact). The configuration file is `configs/experiments/eval_walkover_p3_a1_ball_tracker_net_v1.yaml`.
+- **Code.** The implementation repository is referenced in §1.4 (footnote). The headline run is reproducible at commit [`f1e148c`](https://github.com/enriquedlh97/homography-fitting/tree/f1e148c) of `main` (or any descendant with the eval framework intact). All in-text source-code footnotes throughout this report (§4.2, §4.5, §4.7, §5.2, §5.5, §6.2) are anchored to that same commit. The configuration file is [`configs/experiments/eval_walkover_p3_a1_ball_tracker_net_v1.yaml`](https://github.com/enriquedlh97/homography-fitting/blob/f1e148c/configs/experiments/eval_walkover_p3_a1_ball_tracker_net_v1.yaml).
 - **Foundation-model checkpoints.** SAM 2: `sam2.1_hiera_tiny.pt` with model config `configs/sam2.1/sam2.1_hiera_t.yaml`. MatAnyone: the public release as of submission; the checkpoint name and SHA are recorded in the run's frozen-config dump. The TrackNet-derived court-keypoint detector loads weights from the upstream `yastrebksv/TennisCourtDetector` release.
 - **Hardware and software stack.** One NVIDIA H200 GPU (141 GB VRAM) under a CUDA 12.x driver, Python 3.10, PyTorch 2.x. The full Python environment is captured in the repository's `uv` lockfile.
 - **Randomness.** RANSAC is seeded via `np.random.seed(0)` per the evaluation specification. SAM 2 video propagation, MatAnyone propagation, and the Gaussian noise injection in the inpaint are not seeded; we have observed run-to-run noise at the fourth decimal place on temporal SSIM (e.g., 0.1787 versus 0.1788 on `floor_walkover_logo_visible_pct`) but not at the third decimal.
