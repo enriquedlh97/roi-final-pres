@@ -54,6 +54,18 @@ format:
           \end{center}%
           \clearpage%
         }
+        % Override Pandoc's auto-generated author block with a 2-column grid
+        % so Harvard sits on the left and Politecnico di Milano on the right,
+        % rather than spilling Martina alone onto a second row.
+        \AtBeginDocument{%
+          \author{%
+            \begin{tabular}{cc}
+              {\small\textit{Harvard University}} & {\small\textit{Politecnico di Milano}} \\[4pt]
+              Raghav Punnam & Giovanni Visi \\[1.2ex]
+              Enrique D\'iaz de Le\'on Hicks & Martina Maiorana
+            \end{tabular}%
+          }%
+        }
   html:
     toc: true
     toc-depth: 3
