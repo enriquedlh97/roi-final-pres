@@ -234,8 +234,10 @@ The per-frame image branch follows the SAM lineage but replaces the original Vis
 The principal departure from SAM 1 is the introduction of a *memory module* that turns the per-image segmenter into a video tracker. Each processed frame is encoded into a compact set of spatial memory tokens and object pointers, written to a first-in-first-out memory bank of recent and prompted frames. When segmenting frame $t$, the mask decoder is conditioned on the current frame features and on cross-attention against this bank. The memory-attention block of [@ravi2025sam2] stacks $L$ transformer layers, each performing self-attention followed by cross-attention against the concatenated memory; schematically, with $F_t$ the Hiera image embedding of frame $t$, $M$ the spatial memory tokens, and $P$ the object pointers, a single block computes
 
 $$
-F'_t \;=\; F_t \;+\; \mathrm{SelfAttn}(F_t), \qquad
-\tilde{F}_t \;=\; F'_t \;+\; \mathrm{CrossAttn}\bigl(Q\!=\!F'_t W_Q,\; K\!=\![M;P] W_K,\; V\!=\![M;P] W_V\bigr).
+\begin{aligned}
+F'_t \;&=\; F_t \;+\; \mathrm{SelfAttn}(F_t), \\[2pt]
+\tilde{F}_t \;&=\; F'_t \;+\; \mathrm{CrossAttn}\!\bigl(\,Q = F'_t W_Q,\; K = [M;P]\,W_K,\; V = [M;P]\,W_V\,\bigr).
+\end{aligned}
 $$ {#eq-sam2-memory}
 
 The decoder then attends $\tilde{F}_t$ against the prompt tokens to emit the frame-$t$ mask. For each prompt the decoder produces $N{=}3$ candidate masks $\{\hat{m}_t^{(k)}\}_{k=1}^{3}$ with predicted IoU scores $s_t^{(k)}$, and the deployed mask is $\hat{m}_t^{\star} = \hat{m}_t^{(k^\star)}$ with $k^\star = \arg\max_k s_t^{(k)}$. This score also gates whether the frame's embedding is written into the memory bank, preventing low-quality frames from corrupting propagation.
