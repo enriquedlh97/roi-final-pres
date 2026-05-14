@@ -50,7 +50,7 @@ format:
           \begin{center}%
           \small%
           \textbf{Academic advisors:} Pavlos Protopapas, Chris Gumb (Harvard SEAS); Marco Brambilla (Politecnico di Milano).\\[2pt]%
-          \textbf{MELIC industry partners:} Zafer Sahinoglu, Alyssa Taliotis, Ismail Ozyigit.%
+          \textbf{Mitsubishi Electric Innovation Center (MELIC) industry partners:} Zafer Sahinoglu, Alyssa Taliotis, Ismail Ozyigit.%
           \end{center}%
           \clearpage%
         }
