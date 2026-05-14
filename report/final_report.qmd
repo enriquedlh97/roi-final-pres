@@ -42,12 +42,18 @@ format:
         \usepackage{amsmath}
         \usepackage{booktabs}
         \usepackage{array}
-        % Force the table of contents onto its own page after the abstract.
-        % Quarto renders the abstract via \begin{abstract}...\end{abstract}
-        % OUTSIDE \maketitle, so we hook the end of the abstract environment
-        % rather than overriding \maketitle itself.
+        % Inject the advisors / industry-partners block on the title page
+        % immediately after the abstract, then force the TOC to its own page.
         \usepackage{etoolbox}
-        \AtEndEnvironment{abstract}{\clearpage}
+        \AtEndEnvironment{abstract}{%
+          \vspace{14pt}%
+          \begin{center}%
+          \small%
+          \textbf{Academic advisors:} Pavlos Protopapas, Chris Gumb (Harvard SEAS); Marco Brambilla (Politecnico di Milano).\\[2pt]%
+          \textbf{MELIC industry partners:} Zafer Sahinoglu, Alyssa Taliotis, Ismail Ozyigit.%
+          \end{center}%
+          \clearpage%
+        }
   html:
     toc: true
     toc-depth: 3
