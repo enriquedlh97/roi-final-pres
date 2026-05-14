@@ -19,6 +19,8 @@ abstract: |
 
   We also describe a three-layer evaluation framework that combines deterministic per-region numerical gates, a structured visual rubric scored against paired original-vs-composite crop strips, and direct visual review against the original broadcast. We report a case where the rubric and the numerical gates agreed on a candidate that visual review ultimately rejected, and use this to motivate the three-layer design. On the canonical Melbourne demonstration clip the delivered pipeline passes every per-region quality gate, achieves a walkover-window occlusion intersection-over-union of 0.985 (gate $> 0.80$), and maintains temporal structural similarity above 0.99 for every placement region. We treat these numbers as a case-study demonstration on one clip rather than a benchmark; multi-clip validation, ablation against the foundation-model components, and a per-frame-latency optimisation pass are the immediate follow-up axes.
 keywords: [virtual ad insertion, sports broadcast, region-of-interest tracking, homography, image segmentation, video matting, evaluation framework]
+link-citations: true
+link-bibliography: true
 format:
   pdf:
     toc: true
