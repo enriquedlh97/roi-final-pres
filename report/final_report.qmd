@@ -82,7 +82,7 @@ csl: ieee.csl
 
 ## Motivation
 
-Live sports broadcasts are a primary inventory channel for sponsor advertising: courtside boards, back-wall banners, painted floor logos, scoreboard placements, and umpire-stand signage are all monetised. In current practice these placements are physically painted onto the venue and therefore identical for every viewer. *Virtual ad insertion* replaces those those physical ads with software-rendered logos at broadcast time. The commercial opportunity is large because it permits regional, demographic, and ultimately personalised sponsor targeting on the same physical broadcast, but the technical bar is correspondingly high: the viewer must not be able to tell that the ad has been swapped. The inserted logo must track the camera, occlude correctly when players move in front of it, and look photographically integrated with the surface it is painted on.
+Live sports broadcasts are a primary inventory channel for sponsor advertising: courtside boards, back-wall banners, painted floor logos, scoreboard placements, and umpire-stand signage are all monetised. In current practice these placements are physically painted onto the venue and therefore identical for every viewer. *Virtual ad insertion* replaces those physical ads with software-rendered logos at broadcast time. The commercial opportunity is large because it permits regional, demographic, and ultimately personalised sponsor targeting on the same physical broadcast, but the technical bar is correspondingly high: the viewer must not be able to tell that the ad has been swapped. The inserted logo must track the camera, occlude correctly when players move in front of it, and look photographically integrated with the surface it is painted on.
 
 Several commercial systems already exist for this task (Supponor for ice-hockey dasherboards [@supponor], uniqFEED for general sports broadcasts [@uniqfeed], and Vizrt's Viz Arena for augmented-reality graphics [@vizrt_arena]), but they typically rely on infrared markers, custom camera-rig instrumentation, or trained operator-in-the-loop tools. Our project asks whether the same effect can be achieved purely in software, with off-the-shelf foundation models and a minimal operator-input step (a few clicks on a single seed frame).
 
@@ -608,7 +608,7 @@ The walkover *visible* percentage of 0.179 means that 17.9% of pixels inside the
 
 ## Component evidence and the ablation gap
 
-The pipeline has five primary components: (i) SAM 2 segmentation, (ii) hull-based quad fitting, (iii) TrackNet-derived court-keypoint detector with the frame-zero bridge, (iv) the hybrid-lock state machine, (v) MatAnyone alpha matting, and (vi) the inpaint-plus-LED-blend compositor. Evidence for each component's contribution comes from different parts of the experimental record (rather than from a single coordinated ablation pass that we did not run), summarised in @tbl-ablation.
+The pipeline has six primary components: (i) SAM 2 segmentation, (ii) hull-based quad fitting, (iii) TrackNet-derived court-keypoint detector with the frame-zero bridge, (iv) the hybrid-lock state machine, (v) MatAnyone alpha matting, and (vi) the inpaint-plus-LED-blend compositor. Evidence for each component's contribution comes from different parts of the experimental record (rather than from a single coordinated ablation pass that we did not run), summarised in @tbl-ablation.
 
 ::: {#tbl-ablation}
 
